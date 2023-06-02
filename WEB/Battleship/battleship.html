@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Battleship</title>
+        <link href="./bscss.css" rel="stylesheet"/>
+    </head>
+    
+    <body>
+        <div class="container">
+
+            <div class="menu-info">
+
+                <!-- Info Titles -->
+                <span style="color: navy; font-size: 26px;" class="bold-text text-center">BATTLESHIP!</span>
+                <br>
+                <span id="status" class="bold-text text-center"></span>
+
+                <!-- Other Stats -->
+                <span id="info-time" class="bold-text text-center" style="color: rgb(20, 175, 14);">Time: 00:00.000</span>
+                <span id="info-points" class="bold-text text-center" style="color: rgb(90, 77, 4);">Points: 0</span>
+
+                <form style="text-align:center; margin-top: 8px;">
+
+                    <!-- Cruisers Info -->
+                    <div style="text-align: right;">
+                        <span class="bold-text"> Cruisers: &nbsp; </span>
+                        <span id="info-cruisers" class="bold-text">loading...</span>
+                        <span class="bold-text"> &nbsp; of &nbsp; </span>
+                        <input id="cruisers" type="number" min="0" max="5"/>
+                        <span> &nbsp; </span> <br>
+
+                        <!-- Ships Info -->
+                        <span class="bold-text"> Ships: &nbsp; </span>
+                        <span id="info-ships" class="bold-text">loading...</span>
+                        <span class="bold-text"> &nbsp; of &nbsp; </span>
+                        <input id="ships" type="number" min="0" max="5"/>
+                        <span> &nbsp; </span> <br>
+
+                        <!-- Yachts Info -->
+                        <span class="bold-text"> Yachts: &nbsp; </span>
+                        <span id="info-yachts" class="bold-text">loading...</span>
+                        <span class="bold-text"> &nbsp; of &nbsp; </span>
+                        <input id="yachts" type="number" min="0" max="5"/>
+                        <span> &nbsp; </span> <br>
+                    </div>
+    
+                    <br>
+
+                    <!-- Missiles Info -->
+                    <span class="bold-text">Missiles: &nbsp; </span>
+                    <span id="info-missiles" class="bold-text text-center" style="color: rgb(168, 2, 2);">loading...</span>
+                    <span class="bold-text"> &nbsp; of &nbsp; </span>
+                    <input id="missiles" type="number" min="1" max="150"/> <br><br>
+                
+
+                    <!-- Chart Info -->
+                    <label class="bold-text" for="chart-x">Chart size:</label>
+                    <input id="chart-x" type="number" min="3" max="12"/>
+                    <label class="bold-text" for="chart-y">x</label>
+                    <input id="chart-y" type="number" min="3" max="12"/>
+                    <br>
+
+                </form>
+
+                <!-- Buttons -->
+                <button id="new-game-button" class="bold-text"> New Game </button>
+                <button id="random-button" class="bold-text"> Random Pick </button>
+                <button id="default-button" class="bold-text"> Default Settings </button>
+                <br>
+                
+                <!-- Change colors settings -->
+                <div class="color-table">
+                    <button id="button-color-minus"> < </button>
+                    <span id="button-color" style="margin: 0px;" class="bold-text text-center"> color </span>
+                    <button id="button-color-plus"> > </button>
+                </div>
+                <br>
+
+                <!-- Change music settings -->
+                <div class="sound-table">
+                    <button id="button-music-minus"> < </button>
+                    <button id="button-music" style="margin: 0px; font-size: 14px;" class="bold-text text-center">Play track 1</button>
+                    <button id="button-music-plus"> > </button>
+                </div>
+                <br>
+
+                <!-- Volume slider -->
+                <input id="volume-slider" type="range" min="0" max="100" value="50"/>
+
+                <span id="error"></span>
+
+            </div>
+
+            <!-- Chart -->
+            <div style="display: flex; flex-grow: 2; justify-content: center;"> 
+                <div class="chart-size">
+                    <div style="background-color: transparent;" class="square-size"> </div>
+
+                    <div class="chart-row"> </div>
+                    
+                    <div class="chart-column"> </div>
+                    
+                    <div id="chart"> </div>
+
+                </div>
+            </div>
+
+        </div>
+        <script type="text/javascript" src="./test.js"></script>
+    </body>
+
+</html>

@@ -1,0 +1,229 @@
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video, main {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+/* aqui comienzan los estilos personalizados */
+
+html{
+    box-sizing: border-box;
+    --margin-normal: 16px;
+    --square-size: calc((100vh / 9));
+    --chart-size: calc(100vh - var(--square-size));
+    --chart-hsize: auto;
+    --chart-vsize: auto;
+
+    --color-fail-red: #CB2B1D;
+    --color-hit-yellow: #FFCA27;
+    --color-hit-green: #A7D74A;
+    --color-win-blue: #2196CD;
+    --color-reveal-purple: #544CBF;
+
+    /* Colors */
+    /* Super navy */
+    --color-supernavy-1: hsl(351deg 89% 61%);
+    --color-supernavy-2: hsl(236deg 28% 72%);
+}
+
+*{
+    box-sizing: inherit;
+}
+
+body{
+    font-family: sans-serif;
+}
+
+/* Proyect data */
+
+.container{
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    width: calc(100%);
+    background-color: #FFC06C;
+}
+
+#chart{
+    display: flex;
+    flex-wrap: wrap;
+    width: var(--chart-hsize);
+    height: var(--chart-vsize);
+    background-color: skyblue;
+    align-content: flex-start;
+    /* border: 1px black solid; */
+}
+
+.chart-size{
+    display: flex;
+    flex-wrap: wrap;
+    width: calc(var(--chart-hsize) + var(--square-size));
+    height: 100vh;
+    /* background-color: wheat; */
+    align-content: center;
+}
+
+.chart-row{
+    display: flex;
+    /* justify-content: space-around; */
+    justify-content: flex-start;
+    align-items: center;
+    width:  var(--chart-hsize);
+    height: var(--square-size);
+    background-color: yellow;
+}
+
+.chart-column{
+    display: flex;
+    flex-direction: column;
+    /* justify-content: space-around; */
+    justify-content: flex-start;
+    align-items: center;
+    width: var(--square-size);
+    /* height: var(--chart-size); */
+    background-color: violet;
+}
+
+.square-size{
+    /* background-color: rgba(234, 123, 100, 0.15); */
+    width:  var(--square-size);
+    height: var(--square-size);
+
+    font-size: calc( var(--square-size) / 3 );
+
+    margin: 0px !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.square{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    font-weight: 700;
+    border: 1px solid black;
+    background-color: cadetblue;
+    width:  var(--square-size);
+    height: var(--square-size);
+}
+
+.menu-info{
+    display: flex;
+    flex-direction: column;
+    width: 320px;
+    padding: 32px;
+    margin-left: 10vw;
+
+    /* background-image: url("./scroll-1033117.jpg"); */
+    /* background-size: 252.05px 614px; */
+
+    /* background-color: lemonchiffon; */
+}
+
+.bold-text{
+    margin: 8px 0px;
+    font-weight: 700;
+    font-size: 20px;
+    color: black;
+    text-decoration: none;
+}
+
+.square:hover{
+    background-color: darkcyan;
+}
+
+.text-center{
+    text-align: center;
+}
+
+#error{
+    font-weight: 700;
+    font-size: 12px;
+    color: red;
+}
+
+#missiles{
+    width: 48px;
+    min-width: 48px;
+}
+
+#yachts, #ships, #cruisers{
+    width: 34px;
+    min-width: 34px;
+    margin-right: 24px;
+}
+
+#chart-x, #chart-y{
+    width: 42px;
+    min-width: 42px;
+}
+
+#new-game-button{
+    margin-top: 1.5em;
+    padding: 6px 4px;
+    
+}
+
+#random-button, #default-button{
+    padding: 4px 3px;
+    font-size: 16px;
+}
+
+.color-table{
+    display: flex;
+    justify-content: space-between;
+    text-align: center;
+    height: 28px;
+}
+
+.sound-table{
+    display: flex;
+    justify-content: space-between;
+    text-align: center;
+    height: 28px;
+}

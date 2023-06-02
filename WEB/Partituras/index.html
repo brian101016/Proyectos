@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Partituras</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div id="controls">
+      <button id="save">Save current</button>
+      <select id="pieces"></select>
+      <button id="load">Load selected</button>
+      <button id="remove">Remove selected</button>
+      <button id="print" onclick="window.print()">Print current piece</button>
+      <button id="download">Download txt</button>
+    </div>
+
+    <p id="piece-title">Undefined - Untitled</p>
+    <div id="output-content"></div>
+    <textarea id="input-content"></textarea>
+
+    <script src="partituras.js"></script>
+  </body>
+</html>

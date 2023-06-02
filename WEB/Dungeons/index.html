@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dungeons test</title>
+    <link rel="stylesheet" href="../Wold Global/rem_def.css">
+</head>
+    <style>
+        form > *{
+            margin: 8px 0px;
+        }
+        form{
+            display: flex;
+            flex-wrap: wrap;
+            flex-direction: column;
+            justify-content: center;
+            width: 25vw;            
+        }
+    </style>
+    <body class="flex flex-justify-center">
+        <form>
+            <span>ID: 0</span>
+            <br>
+            <label for="weapons-name">Weapon's name:&nbsp;</label>
+            <input type="text" name="name" id="weapons-name">
+            <br>
+            <label for="weapons-desc">Weapon's description:&nbsp;</label>
+            <input type="text" name="desc" id="weapons-desc" max="255">
+            <br>
+            <label for="weapons-img">Weapon's sprite:&nbsp;</label>
+            <input type="number" name="img" id="weapons-img">
+            <br>
+            <label for="weapons-perks">Weapon's perks:&nbsp;</label>
+            <select name="perks" id="weapons-perks">
+                <option value="perk 1">perk 1</option>
+                <option value="perk 2">perk 2</option>
+                <option value="perk 3">perk 3</option>
+                <option value="perk 4">perk 4</option>
+                <option value="perk 5">perk 5</option>
+            </select>
+            <br>
+            <button>Add perk</button>
+            <br>
+            <label for="weapons-unique">Unique variant from: </label>
+            <select name="unique-variants" id="weapons-unique">
+                <option value="weapon 1">weapon 1</option>
+                <option value="weapon 2">weapon 2</option>
+                <option value="weapon 3">weapon 3</option>
+            </select>
+            <br>
+            <label for="weapons-souls">Soul gathering:&nbsp;</label>
+            <input type="checkbox" name="souls" id="weapons-souls">
+            <br>
+            <label for="weapons-speed">Weapon's speed:&nbsp;</label>
+            <input type="range" name="speed" id="weapons-speed" min="0" max="100">
+            <br>
+            <label for="weapons-range">Weapon's range:&nbsp;</label>
+            <input type="range" name="range" id="weapons-range" min="0" max="100">
+            <br>
+            <label for="weapons-damage">Weapon's damage:&nbsp;</label>
+            <input type="range" name="damage" id="weapons-damage" min="0" max="100">
+            <br>
+            <br>
+            <br>
+            <button type="submit">Submit new weapon</button>
+        </form>
+    </body>
+</html>

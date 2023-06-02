@@ -1,0 +1,79 @@
+html {
+    --chart-size: 100vh;
+    --chart-cell-size: calc((var(--chart-size) - 5px) / 5);
+
+    --color-blue: #3d6387;
+    --color-blue-hover: #3a7696;
+    --color-red: #b31d1d;
+    --color-red-hover: #c81313;
+    --color-yellow: #e5a722;
+    --color-yellow-hover: #e8cd0e;
+    --color-green: #3cb84d;
+    --color-green-hover: #34e94b;
+}
+
+#chart {
+    width: var(--chart-size);
+    height: var(--chart-size);
+    text-align: center;
+    vertical-align: middle;
+    background-color: coral;
+}
+
+.chart-cell {
+    width: var(--chart-cell-size);
+    height: var(--chart-cell-size);
+
+    border: 5px solid black;
+    border-top: 0px;
+    border-left: 0px;
+
+    color: black;
+    font-size: 2.7vh;
+    
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.border-top-on {
+    border-top: 5px solid black;
+    height: calc(var(--chart-cell-size) + 5px);
+}
+
+.border-left-on {
+    border-left: 5px solid black;
+    width: calc(var(--chart-cell-size) + 5px);
+}
+
+/* CELL COLORS */
+.cell-color-blue { background-color: var(--color-blue); }
+.cell-color-blue:hover{ background-color: var(--color-blue-hover); }
+
+.cell-color-red { background-color: var(--color-red); }
+.cell-color-red:hover{ background-color: var(--color-red-hover); }
+
+.cell-color-yellow { background-color: var(--color-yellow); }
+.cell-color-yellow:hover{ background-color: var(--color-yellow-hover); }
+
+.cell-color-green { background-color: var(--color-green); }
+.cell-color-green:hover{ background-color: var(--color-green-hover); }
+
+.cell-color-blue:hover,
+.cell-color-red:hover,
+.cell-color-yellow:hover,
+.cell-color-green:hover {
+    color: rgb(44, 43, 43);
+}
+
+#menu {
+    width: fit-content;
+    /* height: 50vh; */
+    font-size: 26px;
+    font-weight: 600;
+}
+
+#stop-timer {
+    background-color: #7a7c75;
+}

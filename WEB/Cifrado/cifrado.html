@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cifrado</title>
+    <!-- STYLE -->
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      div {
+        text-align: center;
+        margin: 1rem 0;
+      }
+
+      textarea {
+        width: 100%;
+        min-height: 300px;
+        padding: 1rem;
+      }
+    </style>
+  </head>
+  <!-- BODY -->
+  <body>
+    <textarea id="input" placeholder="Escribe algo..."></textarea>
+    <div>
+      <h2 id="text">Normal -> Cifrado</h2>
+      <button id="cambiar">Cambiar</button>
+    </div>
+    <textarea readonly id="output"></textarea>
+  </body>
+  <!-- SCRIPT -->
+  <script>
+    var input = document.getElementById("input");
+    var text = document.getElementById("text");
+    var cambiar = document.getElementById("cambiar");
+    var output = document.getElementById("output");
+    var cifrando = true;
+
+    // El cifrado si que va a distinguir entre mayusculas y minusculas
+    var alpha = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+
+    cambiar.onclick = () => {
+      cifrando = !cifrando;
+      reverse();
+      text.textContent = cifrando ? "Normal -> Cifrado" : "Cifrado -> Normal";
+      var temp = input.value;
+      input.value = output.value;
+      output.value = temp;
+
+      input.oninput();
+    };
+
+    function cifrar() {
+      let it = input.value || "";
+      let regex = /[a-z]/gim;
+      let prevIndex = 0;
+      let ot = "";
+      let num = 0;
+
+      for (let match = regex.exec(it); match !== null; match = regex.exec(it)) {
+        let index = alpha.indexOf(match[0]);
+        let newchar = alpha.charAt((index + num) % alpha.length);
+
+        ot += it.slice(prevIndex, match.index) + newchar;
+
+        prevIndex = match.index + 1;
+        num++;
+      }
+
+      ot += it.slice(prevIndex);
+      output.value = ot;
+    }
+
+    function reverse() {
+      let rev = "";
+      for (let i = 0; i < alpha.length; i++) {
+        rev = alpha[i] + rev;
+      }
+      alpha = rev;
+    }
+
+    input.oninput = cifrar;
+  </script>
+</html>
+
+<!-- Cvcqht yl ivk l GAo EuIKHHv OB yLA UCO GTSV Mb, KfZdiT df kXU Xkjm tnp sxmxolzj AFq sItIv -->
+
+<!-- 
+  
+  Uxhvwudv#yLgdv#vhghiLuhu#sruuxhvwvd#rsruwxqLgdgdhv#Lufoxvrodv#txh#shughprv
+
+  Yo digo que # es ' '
+  La unica letra que esta en mayus de verdad, es la primera
+  las otras L son para diferenciarlas de I
+
+  La mayoría de palabras terminan con 'v', en el español, las palabras suelen terminar con N S
+  La letra J, K, H, Z, X, Y, W, Q son las menos usadas
+
+  Va a ser muy facil descifrar si la profe nos manda una lista, porque la nuestra tiene coma ,
+
+  Las LL o RR
+  significa que despues tiene una vocal a fuerzas
+
+  La X es vocal
+  La H puede ser consonante, porque se repite frecuente y va antes de vocales (X)
+
+  8  - Uxhvwudv
+  5  - yLgdv
+  9  - vhghiLuhu
+  10 - sruuxhvwvd
+  14 - rsruwxqLgdgdhv
+  10 - Lufoxvrodv
+  3  - txh
+  8  - shughprv
+
+-->
