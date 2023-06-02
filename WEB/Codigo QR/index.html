@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <title>Página principal | Revise su recibo de pago</title>
+  </head>
+  <body>
+    <div id="seccion-info">
+      <label for="folio"> Folio: </label>
+      <input id="folio" readonly /> <br />
+
+      <label for="nombre">Nombre: </label>
+      <input id="nombre" readonly /> <br />
+
+      <label for="campo-1">Campo 1: </label>
+      <input id="campo-1" readonly /> <br />
+
+      <label for="campo-2">Campo 2: </label>
+      <input id="campo-2" readonly /> <br />
+
+      <label for="fecha">Fecha: </label>
+      <input id="fecha" readonly /> <br />
+
+      <a href="./index.html">Buscar otro folio</a>
+    </div>
+    <div id="seccion-search">
+      <label for="search"><h3>Buscar por folio:</h3></label>
+      <input id="search" /> <br />
+
+      <button id="button">Buscar</button>
+    </div>
+    <div id="not-found" style="display: none">
+      <h1>No se ha encontrado el folio que busca</h1>
+      <a href="./index.html">Buscar otro folio</a>
+    </div>
+  </body>
+  <script src="./index.js"></script>
+</html>
