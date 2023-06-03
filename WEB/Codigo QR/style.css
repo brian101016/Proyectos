@@ -25,7 +25,7 @@ html {
 }
 
 body {
-  min-width: 100vh;
+  min-width: 100vw;
 
   font-family: "Myriad Pro", sans-serif;
   font-size: 1rem;
@@ -36,6 +36,7 @@ body {
 
 .card {
   width: 75%;
+  /* min-width: 600px; */
   margin: 4rem auto;
 
   background-clip: border-box;
@@ -72,19 +73,28 @@ body {
   line-height: 1;
 }
 
-table {
+table,
+.as-table {
   width: 100%;
   border-spacing: 0;
 }
 
-table > tr > td {
+.as-tr {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+table > tr > td,
+.as-td {
   padding: 0.25rem 1rem;
   text-align: left;
 }
 
-table > tr > td:first-child {
+table > tr > td:first-child,
+.as-td:first-child {
   width: 33.3333%;
-  margin-bottom: 5px;
   font-size: 15px;
 
   text-align: right;
@@ -191,4 +201,36 @@ button:hover {
 .hide {
   visibility: hidden !important;
   display: none !important;
+}
+
+@media screen and (max-width: 600px) {
+  html {
+    font-size: 15px;
+  }
+
+  .card {
+    width: 90%;
+  }
+}
+
+@media screen and (max-width: 512px) {
+  html {
+    font-size: 14px;
+  }
+
+  .as-tr {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .as-td {
+    width: 100%;
+    text-align: right;
+  }
+
+  .as-td:first-child {
+    width: 100%;
+    text-align: left;
+    border: 0;
+  }
 }

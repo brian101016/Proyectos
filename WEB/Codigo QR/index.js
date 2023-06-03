@@ -74,20 +74,22 @@ document.addEventListener("DOMContentLoaded", () => {
       data.fecha_validacion,
     ];
 
-    const table = document.createElement("table");
+    // const table = document.createElement("table");
+    const table = document.getElementById("table-container");
 
     for (let i = 0; i < tags.length; i += 2) {
-      const tr = document.createElement("tr");
+      const tr = document.createElement("div");
+      tr.classList.add("as-tr");
       if ((i + 4) % 4 === 0) tr.classList.add("table-row-par");
-      const td1 = document.createElement("td");
+      const td1 = document.createElement("div");
       td1.textContent = tags[i];
-      const td2 = document.createElement("td");
+      td1.classList.add("as-td");
+      const td2 = document.createElement("div");
       td2.textContent = tags[i + 1];
+      td2.classList.add("as-td");
       tr.appendChild(td1);
       tr.appendChild(td2);
       table.appendChild(tr);
     }
-
-    document.getElementById("table-container").appendChild(table);
   }
 });
