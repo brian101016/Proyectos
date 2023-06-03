@@ -4,37 +4,44 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://use.fontawesome.com/a6f90f3f59.js"></script>
+    <link
+      href="https://use.fontawesome.com/a6f90f3f59.css"
+      media="all"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v4.7.0/css/font-awesome-css.min.css"
+    />
     <link rel="stylesheet" href="style.css" />
     <title>Página principal | Revise su recibo de pago</title>
   </head>
   <body>
-    <div id="seccion-info">
-      <label for="folio"> Folio: </label>
-      <input id="folio" readonly /> <br />
+    <div class="card">
+      <p class="card-header">VERIFICACIÓN DE RECIBOS</p>
 
-      <label for="nombre">Nombre: </label>
-      <input id="nombre" readonly /> <br />
+      <div class="card-body">
+        <p id="title" class="card-title">BUSCAR RECIBO</p>
 
-      <label for="campo-1">Campo 1: </label>
-      <input id="campo-1" readonly /> <br />
+        <div id="seccion-search">
+          <label for="search">Folio:</label>
+          <input id="search" /><button id="button">Buscar</button>
+        </div>
 
-      <label for="campo-2">Campo 2: </label>
-      <input id="campo-2" readonly /> <br />
+        <div id="table-container"></div>
 
-      <label for="fecha">Fecha: </label>
-      <input id="fecha" readonly /> <br />
+        <div id="not-found" class="warning">
+          <i class="fa-solid fa-bell"></i>
+          &nbsp; No se encontró el folio ingresado, favor de consultar
+          nuevamente.
+        </div>
+      </div>
 
-      <a href="./index.html">Buscar otro folio</a>
-    </div>
-    <div id="seccion-search">
-      <label for="search"><h3>Buscar por folio:</h3></label>
-      <input id="search" /> <br />
-
-      <button id="button">Buscar</button>
-    </div>
-    <div id="not-found" style="display: none">
-      <h1>No se ha encontrado el folio que busca</h1>
-      <a href="./index.html">Buscar otro folio</a>
+      <div class="card-footer">
+        Para obtener más información acerca de su Recibo, favor de comunicarse
+        al 01 800 00 83xxx.
+      </div>
     </div>
   </body>
   <script src="./index.js"></script>

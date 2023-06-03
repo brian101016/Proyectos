@@ -1,62 +1,36 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const folio = document.getElementById("folio");
-  const nombre = document.getElementById("nombre");
-  const campo1 = document.getElementById("campo-1");
-  const campo2 = document.getElementById("campo-2");
-  const fecha = document.getElementById("fecha");
-
-  const seccion_info = document.getElementById("seccion-info");
+  // Variables
   const seccion_search = document.getElementById("seccion-search");
   const not_found = document.getElementById("not-found");
-
   const search = document.getElementById("search");
   const button = document.getElementById("button");
+  const title = document.getElementById("title");
 
   button.onclick = () => {
-    window.location.href += "?id=" + search.value;
+    location.search = "id=" + search.value;
   };
 
+  // Base de datos improvisada
   const db = {
-    ["a53asd21"]: {
-      nombre: "Joe Doe",
-      campo1: "Informacion 1",
-      campo2: "prueba 1",
-      fecha: "12/12/12",
+    ["ACJPI-77292"]: {
+      fecha_pago: "07/01/2023",
+      total: "244.00",
+      nombre: "DENISSE ELISA CERECER ESQUER",
+      rfc: "CEED760315LE5",
+      fecha_validacion: "02/06/2023 07:16:34",
     },
-    ["nd295sdf"]: {
-      nombre: "Joe Doe 2",
-      campo1: "Informacion 2",
-      campo2: "prueba 2",
-      fecha: "12/12/13",
-    },
-    ["paf48vna"]: {
-      nombre: "Joe Doe 3",
-      campo1: "Informacion 3",
-      campo2: "prueba 3",
-      fecha: "12/12/14",
-    },
-    ["vja842df"]: {
-      nombre: "Joe Doe 4",
-      campo1: "Informacion 4",
-      campo2: "prueba asadasd 4",
-      fecha: "12/12/15",
-    },
-    ["0vdcasdn"]: {
-      nombre: "Joe Doe 5",
-      campo1: "Informacion 5",
-      campo2: "prueba asadasd 5",
-      fecha: "12/12/16",
-    },
-    ["vnaisd62"]: {
-      nombre: "Joe Doe 6",
-      campo1: "Informacion 6",
-      campo2: "prueba 6",
-      fecha: "12/12/17",
+    ["ACJLC002-7417"]: {
+      fecha_pago: "30/04/2023",
+      total: "778.00",
+      nombre: "CINDY CALBIMONTE PEREZ",
+      rfc: "CAPC8902191S6",
+      fecha_validacion: "20/05/2023 11:43:11",
     },
   };
 
+  // Function Get URL Parameters
   function getURLParameter(param) {
-    const url = window.location.search.substring(1); // Quitamos el ? por default
+    const url = location.search.substring(1); // Quitamos el ? por default
     if (url === "") return null;
     const vars = url.split("&");
     for (let i = 0; i < vars.length; i++) {
@@ -66,20 +40,54 @@ document.addEventListener("DOMContentLoaded", () => {
     return null;
   }
 
-  if (window.location.search === "") seccion_info.style.display = "none";
-  else {
-    seccion_search.style.display = "none";
+  // Verificamos si hay algo que mostrar
+  if (location.search === "") {
+    title.textContent = "BUSCAR RECIBO";
+    seccion_search.classList.remove("hidden");
+    not_found.classList.add("hidden");
+  } else {
     const id = getURLParameter("id");
     if (!id || !db[id]) {
-      not_found.style.display = "initial";
-      seccion_info.style.display = "none";
+      title.textContent = "RECIBO NO ENCONTRADO";
+      seccion_search.classList.remove("hidden");
+      not_found.classList.remove("hidden");
       return;
     }
 
-    folio.value = id;
-    nombre.value = db[id].nombre;
-    campo1.value = db[id].campo1;
-    campo2.value = db[id].campo2;
-    fecha.value = db[id].fecha;
+    title.textContent = "RECIBO VÁLIDO";
+    seccion_search.classList.add("hidden");
+    not_found.classList.add("hidden");
+
+    const data = db[id];
+    const tags = [
+      "Folio del Recibo:",
+      id,
+      "Fecha de Pago:",
+      data.fecha_pago,
+      "Total:",
+      data.total,
+      "Nombre:",
+      data.nombre,
+      "RFC:",
+      data.rfc,
+      "Fecha de Validación:",
+      data.fecha_validacion,
+    ];
+
+    const table = document.createElement("table");
+
+    for (let i = 0; i < tags.length; i += 2) {
+      const tr = document.createElement("tr");
+      if ((i + 4) % 4 === 0) tr.classList.add("table-row-par");
+      const td1 = document.createElement("td");
+      td1.textContent = tags[i];
+      const td2 = document.createElement("td");
+      td2.textContent = tags[i + 1];
+      tr.appendChild(td1);
+      tr.appendChild(td2);
+      table.appendChild(tr);
+    }
+
+    document.getElementById("table-container").appendChild(table);
   }
 });
