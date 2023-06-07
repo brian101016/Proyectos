@@ -24,17 +24,13 @@ body {
 input {
   font-family: "Cambria";
   font-weight: 500;
-  font-size: 1rem;
+  font-size: 13px;
   text-transform: uppercase;
   background-color: #d8e1f4a8;
   border: 0;
   border-radius: 0;
   /* border-bottom: 1px solid black; */
   /* border: 1px solid black; */
-}
-
-input:first-child {
-  font-weight: 700;
 }
 
 input:active,
@@ -99,8 +95,6 @@ input:focus-visible {
 
 /* ############################################# DOCUMENT IMAGE ############################################# */
 #image {
-  width: 150mm;
-  height: 150mm;
   margin: 0 auto;
 
   background-size: cover;
@@ -135,6 +129,10 @@ button:active {
   background-color: #d8e1f4;
 }
 
+@page {
+  margin: 0mm 0mm;
+}
+
 /* ############################################# PRINT ############################################# */
 @media print {
   body {
@@ -146,12 +144,27 @@ button:active {
     background-color: transparent;
   }
 
-  #controls {
-    display: none !important;
-    visibility: hidden !important;
+  input::placeholder {
+    opacity: 0;
+    visibility: hidden;
+    display: none;
+    color: transparent;
   }
 
-  #content {
-    margin: 0;
+  .will-hide {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0;
+  }
+
+  body.landscape {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+  }
+
+  body.landscape #content {
+    transform: rotate(90deg);
   }
 }

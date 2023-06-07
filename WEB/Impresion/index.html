@@ -6,9 +6,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="style.css" />
     <title>Imprimir documentos | Seleccione</title>
+    <style id="stylesheet">
+      @media print {
+        body.landscape {
+          width: 170.5mm;
+          height: 229.5mm;
+        }
+      }
+    </style>
   </head>
   <body>
-    <div id="controls">
+    <div id="controls" class="will-hide">
       <select id="select"></select>
       <button id="print">Imprimir</button>
       <label for="toggle">Incluir fondo?</label>
@@ -17,7 +25,7 @@
     </div>
 
     <div id="content">
-      <img id="image" src="./docs/bautizo.jpg" alt="doc" />
+      <img id="image" class="will-hide" src="./docs/bautizo.jpg" alt="doc" />
       <form id="form" onsubmit="(e) => { e.target.preventDefault() }"></form>
     </div>
 
