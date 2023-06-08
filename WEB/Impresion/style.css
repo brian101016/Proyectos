@@ -133,6 +133,38 @@ button:active {
   margin: 3mm 1mm 0mm 0mm;
 }
 
+.bg-grid {
+  /* background-color: #ffffff;
+  opacity: 1;
+  background-image: linear-gradient(#000000 1mm, transparent 1mm),
+    linear-gradient(90deg, #000000 1mm, transparent 1mm),
+    linear-gradient(#000000 0.5mm, transparent 0.5mm),
+    linear-gradient(90deg, #000000 0.5mm, #ffffff 0.5mm);
+  background-size: 35px 35px, 35px 35px, 7px 7px, 7px 7px;
+  background-position: -1mm -1mm, -1mm -1mm, -0.5mm -0.5mm, -0.5mm -0.5mm; */
+
+  background-color: #ffffff;
+  opacity: 1;
+  background-image: linear-gradient(red 2px, transparent 0px),
+    linear-gradient(blue 2px, transparent 0px),
+    linear-gradient(green 2px, transparent 0px),
+    linear-gradient(purple 2px, transparent 0px),
+    linear-gradient(black 2px, transparent 0px),
+    linear-gradient(90deg, red 2px, transparent 0px),
+    linear-gradient(90deg, blue 2px, transparent 0px),
+    linear-gradient(90deg, green 2px, transparent 0px),
+    linear-gradient(90deg, purple 2px, transparent 0px),
+    linear-gradient(90deg, black 2px, transparent 0px),
+    linear-gradient(brown 2px, transparent 0px),
+    linear-gradient(90deg, brown 2px, transparent 0px);
+  background-size: 25mm 25mm, 25mm 25mm, 25mm 25mm, 25mm 25mm, 25mm 25mm,
+    25mm 25mm, 25mm 25mm, 25mm 25mm, 25mm 25mm, 25mm 25mm, 100mm 100mm,
+    100mm 100mm;
+  background-position: 5mm 5mm, 10mm 10mm, 15mm 15mm, 20mm 20mm, 25mm 25mm,
+    5mm 5mm, 10mm 10mm, 15mm 15mm, 20mm 20mm, 25mm 25mm, 132.5mm 132.5mm,
+    57.5mm 57.5mm;
+}
+
 /* ############################################# PRINT ############################################# */
 @media print {
   body {
