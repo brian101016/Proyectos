@@ -1,105 +1,154 @@
 class database {
   parroquias = [new Parroquia()];
   secretos = [new Secreto()];
+
+  constructor(parroquias = [new Parroquia()], secretos = [new Secreto()]) {
+    this.parroquias = parroquias;
+    this.secretos = secretos;
+  }
 }
 
 class Persona {
-  nombres = "";
-  apellidos = "";
-  direccion = "";
-  telefono_celular = "";
-  telefono_auxiliar = "";
-  telefono_casa = "";
-  correo = "";
-  notas = "";
+  nombres = "nombre-persona";
+  apellidos = "apellidos-persona";
+  direccion = "direccion-persona";
+  telefono_celular = "tel-cel-persona";
+  telefono_auxiliar = "tel-aux-persona";
+  telefono_casa = "tel-casa-persona";
+  correo = "correo-persona";
+  notas = "notas-personas";
+
+  constructor(
+    nombres = "nombre-persona",
+    apellidos = "apellidos-persona",
+    direccion = "direccion-persona",
+    telefono_celular = "tel-cel-persona",
+    telefono_auxiliar = "tel-aux-persona",
+    telefono_casa = "tel-casa-persona",
+    correo = "correo-persona",
+    notas = "notas-personas"
+  ) {
+    this.nombres = nombres;
+    this.apellidos = apellidos;
+    this.direccion = direccion;
+    this.telefono_celular = telefono_celular;
+    this.telefono_auxiliar = telefono_auxiliar;
+    this.telefono_casa = telefono_casa;
+    this.correo = correo;
+    this.notas = notas;
+  }
 }
 
 class Secreto {
-  email = "";
-  pass = "";
-  parroquia = "";
-  notas = "";
+  email = "email-secreto";
+  pass = "pass-secreto";
+  parroquia = "parroquia-secreto";
+  notas = "notas-secreto";
+
+  constructor(
+    email = "email-secreto",
+    pass = "pass-secreto",
+    parroquia = "parroquia-secreto",
+    notas = "notas-secreto"
+  ) {
+    this.email = email;
+    this.pass = pass;
+    this.parroquia = parroquia;
+    this.notas = notas;
+  }
 }
 
 class Tipo_Nicho {
-  nombre = "";
-  capacidad = 0;
-  precio = 0;
-  notas = "";
+  nombre = "nombre-tipo";
+  capacidad = 1;
+  precio = 1;
+  notas = "notas-tipo";
+
+  constructor(
+    nombre = "nombre-tipo",
+    capacidad = 1,
+    precio = 1,
+    notas = "notas-tipo"
+  ) {
+    nombre = "nombre-tipo";
+    capacidad = 1;
+    precio = 1;
+    notas = "notas-tipo";
+  }
 }
 
 class Parroquia {
-  nombre = "";
+  nombre = "nombre-parroquia";
   secciones = [new Seccion()];
   documentos = [new Documento()];
   tipos_nichos = [new Tipo_Nicho()];
-  notas = "";
+  notas = "notas-parroquia";
 }
 
 class Documento {
-  nombre = "";
-  entregado = false;
-  notas = "";
+  nombre = "nombre-documento";
+  entregado = true;
+  notas = "notas-documento";
 }
 
 class Seccion {
-  nombre = "";
-  color = "";
-  orden = 0;
+  nombre = "nombre-seccion";
+  color = "color-seccion";
+  orden = 1;
   nichos = [[new Nicho()]];
-  notas = "";
+  notas = "notas-seccion";
 }
 
 class Vendedor extends Persona {
-  activo = false;
-  notas = "";
+  activo = true;
+  notas = "notas-vendedor";
 }
 
 class Nicho {
-  placa = "";
-  tipo = "";
-  precio = 0;
-  capacidad = 0;
+  placa = "placa-nicho";
+  tipo = "tipo-nicho";
+  precio = 1;
+  capacidad = 1;
   unido_con = "0-0";
   expediente = new Expediente();
   vendedor = new Vendedor();
   cenizas = [new Ceniza()];
   pagos = [new Pago()];
   beneficiaros = [new Beneficiario()];
-  notas = "";
+  notas = "notas-nicho";
 }
 
 class Beneficiario extends Persona {
-  orden = 0;
-  cancelado = false;
-  nuevo_titular = false;
-  titulo_entregado = false;
-  fecha_entrega = new Date();
-  notas = "";
+  orden = 1;
+  cancelado = true;
+  nuevo_titular = true;
+  titulo_entregado = true;
+  fecha_entrega = "date"; // new Date();
+  notas = "notas-beneficiario";
 }
 
 class Ceniza {
-  nombres = "";
-  apellidos = "";
-  fecha_defuncion = new Date();
+  nombres = "nombres-ceniza";
+  apellidos = "apellidos-ceniza";
+  fecha_defuncion = "date"; //new Date();
   documentos = [new Documento()];
-  notas = "";
+  notas = "notas-ceniza";
 }
 
 class Expediente extends Persona {
-  folio = "";
-  titulo_entregado = false;
-  fecha_entrega = new Date();
-  cancelado = false;
-  notas = "";
+  folio = "folio-expediente";
+  titulo_entregado = true;
+  fecha_entrega = "date"; //new Date();
+  cancelado = true;
+  notas = "notas-expediente";
 }
 
 class Pago {
-  folio = "";
-  cargo = 0;
-  fecha = new Date();
-  anticipo = false;
-  notas = "";
+  folio = "folio-pago";
+  cargo = 1;
+  fecha = "date"; //new Date();
+  anticipo = true;
+  notas = "notas-pago";
 }
 
 const secciones = {
@@ -130,55 +179,81 @@ const secciones = {
 };
 
 const db = new database();
+const stack = [];
 
-document.addEventListener("DOMContentLoaded", () => {
-  function display(object) {
-    if (!object) return document.createTextNode("...undefined");
+function manageDisplay(object, onto = document.getElementById("showcase")) {
+  stack.push({ object, onto });
+  onto.replaceChildren();
+  const starttime = new Date().getTime();
 
-    // Arreglos
-    if (object.length !== undefined) {
-      const fg = document.createDocumentFragment();
-      const open = document.createElement("p");
-      open.textContent = "[";
-      fg.appendChild(open);
+  do {
+    const s = stack.shift();
+    s.onto.appendChild(display(s.object));
 
-      const ol = document.createElement("ol");
-      for (const item of object) {
-        const li = document.createElement("li");
-        li.appendChild(display(item));
-      }
-      fg.appendChild(ol);
+    if (new Date().getTime() - starttime > 3000) break;
+  } while (stack.length > 0);
+}
 
-      const close = document.createElement("p");
-      close.textContent = "]";
-      fg.appendChild(close);
-      return fg;
+function display(object) {
+  if (!object) return document.createTextNode("...undefined");
+
+  // Arreglos
+  if (typeof object !== "string" && object.length !== undefined) {
+    const fg = document.createDocumentFragment();
+    const open = document.createTextNode("[");
+    fg.appendChild(open);
+
+    const ol = document.createElement("ol");
+    for (let i = 0; i < object.length; i++) {
+      const li = document.createElement("li");
+      stack.push({ object: object[i], onto: li });
+      ol.appendChild(li);
     }
+    fg.appendChild(ol);
 
-    // Objetos
-    if (object.notas !== undefined || object.secretos !== undefined) {
-      const fg = document.createDocumentFragment();
-      const open = document.createElement("p");
-      open.textContent = "{";
-      fg.appendChild(open);
+    const close = document.createElement("p");
+    close.textContent = "]";
+    fg.appendChild(close);
 
-      const ul = document.createElement("ul");
-      for (const key in object) {
-        const li = document.createElement("li");
-        li.appendChild(document.createTextNode(key.toString() + ": "));
-        li.appendChild(display(object[key]));
-      }
-      fg.appendChild(ul);
-
-      const close = document.createElement("p");
-      close.textContent = "}";
-      fg.appendChild(close);
-      return fg;
-    }
-
-    // Primitivos
-    return document.createTextNode(object.toString?.());
+    return fg;
   }
 
-  document.getElementById("container").appendChild(display(db));
+  // Objetos
+  if (typeof object === "object") {
+    const fg = document.createDocumentFragment();
+    const open = document.createElement("p");
+    open.textContent = "{";
+    fg.appendChild(open);
+
+    const ul = document.createElement("ul");
+    for (const key in object) {
+      const li = document.createElement("li");
+      li.appendChild(document.createTextNode(key.toString() + ": "));
+      stack.push({ object: object[key], onto: li });
+
+      ul.appendChild(li);
+    }
+    fg.appendChild(ul);
+
+    const close = document.createElement("p");
+    close.textContent = "}";
+    fg.appendChild(close);
+
+    return fg;
+  }
+
+  // Primitivos
+  return document.createTextNode(object.toString?.());
+}
+
+function dummyInfo() {
+  db.secretos = [new Secreto()];
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  // const input_documents = document.getElementById("input-documents");
+
+  dummyInfo();
+
+  manageDisplay(db);
 });

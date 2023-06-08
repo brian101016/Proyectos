@@ -13,3 +13,20 @@ body {
 
   width: 100vw;
 }
+
+#showcase {
+  max-height: 500px;
+  width: 100%;
+  background-color: bisque;
+  border: 2px solid burlywood;
+  overflow: auto;
+}
+
+#showcase ul,
+#showcase ol {
+  padding-inline-start: 16px;
+}
+
+#showcase li > ::content:first-child {
+  font-weight: 700;
+}
