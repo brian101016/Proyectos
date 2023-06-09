@@ -154,7 +154,7 @@ document.addEventListener("DOMContentLoaded", () => {
       "227.92mm",
       "167.64mm",
       "landscape",
-      "11mm 0mm 0mm 0mm",
+      "3mm 0mm 0mm 0mm",
       [
         new INPUT(
           "48.5mm",
@@ -174,9 +174,9 @@ document.addEventListener("DOMContentLoaded", () => {
         new INPUT("98mm", "120.5mm", "83.5mm", "", "", "", ""),
         new INPUT("110mm", "28.5mm", "83.5mm", "", "", "", ""),
         new INPUT("110mm", "120.5mm", "83.5mm", "", "", "", ""),
-        new INPUT("117mm", "51mm", "45mm", "", "", "", ""),
+        new INPUT("116mm", "51mm", "45mm", "", "", "", ""),
         new INPUT("121mm", "51mm", "45mm", "", "", "", ""),
-        new INPUT("121mm", "51mm", "45mm", "", "", "", ""),
+        new INPUT("126mm", "51mm", "45mm", "", "", "", ""),
         new INPUT("131mm", "75mm", "21mm", "", "", "", ""),
         new INPUT("136mm", "29mm", "67mm", "", "", "", ""),
         new INPUT(
