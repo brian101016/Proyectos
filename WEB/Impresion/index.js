@@ -1,215 +1,4 @@
-const db = {
-  "bautizo.jpg": {
-    width: "136mm",
-    height: "213mm",
-    top: "0mm",
-    left: "42mm",
-    flip: false,
-    inputs: [
-      {
-        top: "59mm",
-        left: "65mm",
-        width: "100mm",
-        placeholder: "Nombre del bebé...",
-        fontWeight: 700,
-      },
-      { top: "66.5mm", left: "62mm", width: "7mm", placeholder: "O/A" },
-      { top: "66.5mm", left: "78mm", width: "87mm" },
-      { top: "74mm", left: "65mm", width: "100mm" },
-      {
-        top: "82mm",
-        left: "85mm",
-        width: "80mm",
-        placeholder: "Ciudad...",
-      },
-      {
-        top: "89.5mm",
-        left: "67mm",
-        width: "12mm",
-        textAlign: "center",
-      },
-      { top: "89.5mm", left: "103.5mm", width: "42mm" },
-      {
-        top: "89.5mm",
-        left: "152mm",
-        width: "11mm",
-        textAlign: "center",
-      },
-      {
-        top: "105.25mm",
-        left: "67mm",
-        width: "13mm",
-        textAlign: "center",
-      },
-      { top: "105.25mm", left: "105mm", width: "36mm" },
-      {
-        top: "105.25mm",
-        left: "149mm",
-        width: "14mm",
-        textAlign: "center",
-      },
-      { top: "125.5mm", left: "86mm", width: "80mm" },
-      { top: "133mm", left: "112mm", width: "54mm" },
-      { top: "141mm", left: "54mm", width: "23mm" },
-      { top: "141mm", left: "84mm", width: "82mm" },
-      {
-        top: "148.5mm",
-        left: "121mm",
-        width: "42mm",
-        textAlign: "center",
-      },
-      {
-        top: "156.25mm",
-        left: "75mm",
-        width: "27mm",
-        textAlign: "center",
-      },
-      {
-        top: "156.25mm",
-        left: "125mm",
-        width: "38mm",
-        textAlign: "center",
-      },
-      {
-        top: "163mm",
-        left: "50mm",
-        width: "117mm",
-        placeholder: "Notas marginales...",
-        textAlign: "center",
-        fontWeight: 700,
-      },
-      {
-        top: "172mm",
-        left: "84.5mm",
-        width: "9mm",
-        textAlign: "center",
-      },
-      { top: "172mm", left: "117mm", width: "24mm" },
-      {
-        top: "172mm",
-        left: "147.5mm",
-        width: "15mm",
-        textAlign: "center",
-      },
-      {
-        top: "198.75mm",
-        left: "66mm",
-        width: "84mm",
-        placeholder: "RECTOR PBRO. Luis Armando González Torres",
-        value: "RECTOR PBRO. Luis Armando González Torres",
-        textAlign: "center",
-      },
-    ],
-  },
-
-  "comunion.jpg": {
-    width: "214mm",
-    height: "138mm",
-    left: "1.5mm",
-    top: "38mm",
-    flip: true,
-    inputs: [
-      { top: "74mm", left: "56mm", width: "115mm", fontWeight: 700 },
-      { top: "88mm", left: "51mm", width: "22mm", textAlign: "center" },
-      { top: "88mm", left: "82mm", width: "63mm" },
-      { top: "88mm", left: "150mm", width: "21mm", textAlign: "center" },
-      { top: "95mm", left: "82mm", width: "116mm" },
-      { top: "102mm", left: "46mm", width: "152mm" },
-      { top: "109mm", left: "46mm", width: "152mm" },
-      { top: "116mm", left: "46mm", width: "152mm" },
-      { top: "123mm", left: "55mm", width: "143mm" },
-      { top: "130mm", left: "46mm", width: "152mm" },
-      { top: "137mm", left: "28mm", width: "170mm" },
-      { top: "144mm", left: "36mm", width: "27mm", textAlign: "center" },
-      { top: "151mm", left: "36mm", width: "27mm", textAlign: "center" },
-      { top: "158mm", left: "36mm", width: "27mm", textAlign: "center" },
-      {
-        top: "154.5mm",
-        left: "122mm",
-        width: "80mm",
-        placeholder: "RECTOR PBRO. LUIS ARMANDO GONZÁLEZ TORRES",
-        value: "RECTOR PBRO. LUIS ARMANDO GONZÁLEZ TORRES",
-        textAlign: "center",
-      },
-    ],
-  },
-
-  "matrimonio.jpg": {
-    width: "233mm",
-    height: "172mm",
-    left: "1mm",
-    top: "19mm",
-    flip: true,
-    inputs: [
-      {
-        top: "68mm",
-        left: "35mm",
-        width: "165mm",
-        placeholder: "Nombre de los novios...",
-        textAlign: "center",
-        fontWeight: 700,
-        fontSize: "16px",
-      },
-      { top: "98mm", left: "35mm", width: "10mm", textAlign: "center" },
-      { top: "98mm", left: "55mm", width: "40mm" },
-      { top: "98mm", left: "115mm", width: "6mm", textAlign: "center" },
-      { top: "98mm", left: "162mm", width: "53mm" },
-      { top: "118mm", left: "30mm", width: "85mm" },
-      { top: "118mm", left: "124mm", width: "85mm" },
-      { top: "130mm", left: "30mm", width: "85mm" },
-      { top: "130mm", left: "124mm", width: "85mm" },
-      { top: "136.5mm", left: "54mm", width: "46mm", textAlign: "center" },
-      { top: "141.5mm", left: "54mm", width: "46mm", textAlign: "center" },
-      { top: "146.5mm", left: "54mm", width: "46mm", textAlign: "center" },
-      { top: "151.5mm", left: "78mm", width: "22mm" },
-      { top: "156.5mm", left: "30mm", width: "70mm" },
-      {
-        top: "156mm",
-        left: "124mm",
-        width: "85mm",
-        placeholder: "PBRO. LUIS ARMANDO GONZÁLEZ TORRES",
-        value: "PBRO. LUIS ARMANDO GONZÁLEZ TORRES",
-        textAlign: "center",
-      },
-    ],
-  },
-
-  "confirmacion.jpg": {
-    width: "212.96mm",
-    height: "134.79mm",
-    left: "1.5mm",
-    top: "41mm",
-    flip: true,
-    inputs: [
-      { top: "91mm", left: "105mm", width: "10mm", textAlign: "center" },
-      { top: "91mm", left: "123mm", width: "42mm" },
-      { top: "91mm", left: "173mm", width: "22mm", textAlign: "center" },
-      { top: "98mm", left: "40mm", width: "155mm", fontWeight: 700 },
-      { top: "105mm", left: "25mm", width: "6mm", textAlign: "center" },
-      { top: "105mm", left: "35mm", width: "160mm" },
-      { top: "112mm", left: "30mm", width: "165mm" },
-      { top: "119mm", left: "63mm", width: "132mm" },
-      { top: "128mm", left: "80mm", width: "115mm" },
-      { top: "141.5mm", left: "105mm", width: "10mm", textAlign: "center" },
-      { top: "141.5mm", left: "123mm", width: "42mm" },
-      { top: "141.5mm", left: "173mm", width: "22mm", textAlign: "center" },
-      { top: "135mm", left: "35mm", width: "160mm" },
-      { top: "142mm", left: "40mm", width: "25mm", textAlign: "center" },
-      { top: "149mm", left: "40mm", width: "25mm", textAlign: "center" },
-      { top: "156mm", left: "40mm", width: "25mm", textAlign: "center" },
-      {
-        top: "156mm",
-        left: "116mm",
-        width: "84mm",
-        placeholder: "RECTOR PBRO. LUIS ARMANDO GONZÁLEZ TORRES",
-        value: "RECTOR PBRO. LUIS ARMANDO GONZÁLEZ TORRES",
-        textAlign: "center",
-      },
-    ],
-  },
-};
-
-document.addEventListener("DOMContentLoaded", async () => {
+document.addEventListener("DOMContentLoaded", () => {
   // ################################################################ VARS
   // const controls = document.getElementById("controls");
   const image = document.getElementById("image");
@@ -223,32 +12,191 @@ document.addEventListener("DOMContentLoaded", async () => {
   const stylesheet = document.getElementById("stylesheet");
 
   class DOC {
-    width = 10;
-    height = 10;
-    top = 0;
-    left = 0;
-    flip = false;
-    inputs = [input()];
-  }
+    name = "";
+    width = "";
+    height = "";
+    orientation = "";
+    margins = "";
+    inputs = [new INPUT(0, 0, 1, "", "")];
 
-  function input(data = {}) {
-    const i = document.createElement("input");
-    for (const prop in data) {
-      if (i.style[prop] === undefined) i[prop] = data[prop];
-      else i.style[prop] = data[prop];
+    constructor(n, w, h, o, m, i) {
+      this.name = n;
+      this.width = w;
+      this.height = h;
+      this.orientation = o;
+      this.margins = m;
+      this.inputs = i;
     }
-    return i;
   }
 
-  // let docs = { name: new DOC() };
-  // docs = await (await fetch("./db.json")).json();
-  const docs = db;
+  class INPUT {
+    left = "";
+    top = "";
+    width = "";
+    placeholder = "";
+    value = "";
+    textAlign = "";
+    fontWeight = "";
+    fontSize = "";
+
+    constructor(
+      ttop,
+      lleft,
+      wwidth,
+      pplaceholder,
+      vvalue,
+      aalign,
+      ffont,
+      ssize = "13px"
+    ) {
+      this.top = ttop;
+      this.left = lleft;
+      this.width = wwidth;
+      this.placeholder = pplaceholder;
+      this.value = vvalue;
+      this.textAlign = aalign;
+      this.fontWeight = ffont;
+      this.fontSize = ssize;
+    }
+  }
+
+  const docs = [
+    new DOC(
+      "bautizo.jpg",
+      "134.11mm",
+      "209.97mm",
+      "portrait",
+      "3mm 0mm 0mm 6mm",
+      [
+        new INPUT(
+          "57.75mm",
+          "23mm",
+          "97mm",
+          "Nombre del bebé...",
+          "",
+          "",
+          "700"
+        ),
+        new INPUT("65.5mm", "19mm", "7mm", "O/A", "", "", ""),
+        new INPUT("65.5mm", "36mm", "84mm", "", "", "", ""),
+        new INPUT("73mm", "22mm", "98mm", "", "", "", ""),
+        new INPUT("80.5mm", "42.25mm", "77mm", "Ciudad...", "", "", ""),
+        new INPUT("88.5mm", "24mm", "12.5mm", "", "", "center", ""),
+        new INPUT("88.5mm", "59.5mm", "42mm", "", "", "", ""),
+        new INPUT("88.5mm", "109.25mm", "10mm", "", "", "center", ""),
+        new INPUT("103.75mm", "24mm", "13mm", "", "", "center", ""),
+        new INPUT("103.75mm", "60.75mm", "37mm", "", "", "", ""),
+        new INPUT("103.75mm", "105.5mm", "13.5mm", "", "", "center", ""),
+        new INPUT("124mm", "43.25mm", "76mm", "", "", "", ""),
+        new INPUT("131.5mm", "67.75mm", "51.5mm", "", "", "", ""),
+        new INPUT("139.25mm", "11.25mm", "23mm", "", "", "", ""),
+        new INPUT("139.25mm", "41mm", "78mm", "", "", "", ""),
+        new INPUT("146.5mm", "82mm", "37mm", "", "", "", ""),
+        new INPUT("154mm", "33.5mm", "24.5mm", "", "", "", ""),
+        new INPUT("154mm", "82mm", "37mm", "", "", "", ""),
+        new INPUT(
+          "161.5mm",
+          "11mm",
+          "109mm",
+          "Notas marginales...",
+          "",
+          "center",
+          "700"
+        ),
+        new INPUT("169.75mm", "42mm", "8mm", "", "", "center", ""),
+        new INPUT("169.75mm", "73mm", "23mm", "", "", "", ""),
+        new INPUT("169.75mm", "105mm", "14mm", "", "", "center", ""),
+        new INPUT(
+          "195.75mm",
+          "26mm",
+          "78mm",
+          "RECTOR PBRO. Luis Armando González Torres",
+          "RECTOR PBRO. Luis Armando González Torres",
+          "center",
+          ""
+        ),
+      ]
+    ),
+    new DOC(
+      "comunion.jpg",
+      "208.96mm",
+      "134.79mm",
+      "landscape",
+      "3mm 0mm 0mm 0mm",
+      [
+        new INPUT("33.5mm", "52.5mm", "117mm", "", "", "", "700"),
+        new INPUT("47.5mm", "49mm", "19mm", "", "", "center", ""),
+        new INPUT("47.5mm", "77.5mm", "62mm", "", "", "", ""),
+        new INPUT("47.5mm", "146.5mm", "17mm", "", "", "center", ""),
+        new INPUT("55mm", "78.5mm", "113mm", "", "", "", ""),
+        new INPUT("62mm", "43.5mm", "148mm", "", "", "", ""),
+        new INPUT("69mm", "40.5mm", "151mm", "", "", "", ""),
+        new INPUT("76mm", "40.5mm", "151mm", "", "", "", ""),
+        new INPUT("83.5mm", "51mm", "140mm", "", "", "", ""),
+        new INPUT("90.25mm", "41.5mm", "150mm", "", "", "", ""),
+        new INPUT("96.75mm", "25mm", "166mm", "", "", "", ""),
+        new INPUT("103.75mm", "32.5mm", "28mm", "", "", "center", ""),
+        new INPUT("110.5mm", "32.5mm", "28mm", "", "", "center", ""),
+        new INPUT("117.5mm", "32.5mm", "28mm", "", "", "center", ""),
+        new INPUT(
+          "113.5mm",
+          "117mm",
+          "78mm",
+          "RECTOR PBRO. LUIS ARMANDO GONZÁLEZ TORRES",
+          "RECTOR PBRO. LUIS ARMANDO GONZÁLEZ TORRES",
+          "",
+          ""
+        ),
+      ]
+    ),
+    new DOC(
+      "matrimonio.jpg",
+      "227.92mm",
+      "167.64mm",
+      "landscape",
+      "3mm 0mm 0mm 0mm",
+      [
+        new INPUT(
+          "48.5mm",
+          "34mm",
+          "162mm",
+          "Nombre de los novios...",
+          "",
+          "center",
+          "700",
+          "16px"
+        ),
+        new INPUT("78.5mm", "34mm", "10mm", "", "", "center", ""),
+        new INPUT("78.5mm", "52mm", "44mm", "", "", "", ""),
+        new INPUT("78.5mm", "111.5mm", "7mm", "", "", "center", ""),
+        new INPUT("78.5mm", "155.5mm", "53mm", "", "", "", ""),
+        new INPUT("98mm", "28.5mm", "83.5mm", "", "", "", ""),
+        new INPUT("98mm", "120.5mm", "83.5mm", "", "", "", ""),
+        new INPUT("110mm", "28.5mm", "83.5mm", "", "", "", ""),
+        new INPUT("110mm", "120.5mm", "83.5mm", "", "", "", ""),
+        new INPUT("116mm", "51mm", "45mm", "", "", "", ""),
+        new INPUT("121mm", "51mm", "45mm", "", "", "", ""),
+        new INPUT("126mm", "51mm", "45mm", "", "", "", ""),
+        new INPUT("131mm", "75mm", "21mm", "", "", "", ""),
+        new INPUT("136mm", "29mm", "67mm", "", "", "", ""),
+        new INPUT(
+          "133.25mm",
+          "120mm",
+          "83mm",
+          "PBRO. LUIS ARMANDO GONZÁLEZ TORRES",
+          "PBRO. LUIS ARMANDO GONZÁLEZ TORRES",
+          "center",
+          ""
+        ),
+      ]
+    ),
+  ];
 
   // ################################################################ SETUP
-  for (const doc in docs) {
+  for (const doc of docs) {
     const op = document.createElement("option");
-    op.value = doc;
-    op.text = doc.substring(0, doc.length - 4).toUpperCase();
+    op.value = doc.name;
+    op.text = doc.name.substring(0, doc.name.length - 4).toUpperCase();
     select.appendChild(op);
   }
 
@@ -259,79 +207,56 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // ################################################################ SELECT CHANGE
   select.onchange = () => {
-    const doc = docs[select.value];
+    const doc = docs[select.selectedIndex];
 
-    image.src = `./docs/${select.value}`;
-    image.style.backgroundImage = `url(./docs/${select.value})`;
+    image.src = `./docs/${doc.name}`;
+    image.style.backgroundImage = `url(./docs/${doc.name})`;
     image.style.width = doc.width;
     image.style.height = doc.height;
-    image.style.left = doc.left;
-    image.style.top = doc.top;
 
     form.replaceChildren();
-    for (const data of doc.inputs) {
-      const io = input(data);
-      io.onchange = () => (data.value = io.value);
+    for (const input of doc.inputs) {
+      const io = document.createElement("input");
+      io.style.top = input.top;
+      io.style.left = input.left;
+      io.style.width = input.width;
+      io.placeholder = input.placeholder;
+      io.value = input.value;
+      io.style.textAlign = input.textAlign;
+      io.style.fontWeight = input.fontWeight;
+      io.style.fontSize = input.fontSize;
+
+      io.onchange = () => {
+        input.value = io.value;
+      };
 
       form.appendChild(io);
     }
-
-    if (doc.flip) document.body.classList.add("landscape");
-    else document.body.classList.remove("landscape");
   };
 
-  // select.selectedIndex = 3;
   select.onchange();
 
   // ################################################################ PRINT CLICK
   print.onclick = () => {
-    const doc = docs[select.value];
-    if (doc.flip) {
+    const doc = docs[select.selectedIndex];
+    if (doc.orientation === "landscape") {
       document.body.classList.add("landscape");
-      stylesheet.innerHTML = `@media print {body.landscape {width: ${doc.height}; height: ${doc.width};}}`;
+      stylesheet.innerHTML = `@media print {body.landscape {width: ${doc.height}; height: ${doc.width};}} @page{ margin: ${doc.margins}; }`;
     } else {
       document.body.classList.remove("landscape");
-      stylesheet.innerHTML = `@media print {body.landscape {width: ${doc.width}; height: ${doc.height};}}`;
+      stylesheet.innerHTML = `@media print {body.landscape {width: ${doc.width}; height: ${doc.height};}} @page{ margin: ${doc.margins}; }`;
     }
 
     window.print();
   };
 
-  function plain(str = "") {
-    return str
-      .toString()
-      .toLowerCase()
-      .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "");
-  }
-
   // ################################################################ CLEAR CLICK
   clear.onclick = () => {
     for (const input of form.children) {
-      if (plain(input.value) !== plain(input.placeholder)) {
+      if (input.value !== input.placeholder) {
         input.value = "";
         input.onchange();
       }
     }
   };
-
-  window.onmousedown = (e) => {
-    console.log(e.pageX / 3.7795280352161, e.pageY / 3.7795280352161);
-  };
 });
-
-function saveStyles(el = document.getElementById("form")) {
-  for (const i of el.children) {
-    let ss = "{ ";
-    ss += i.style.top && `top: "${i.style.top}", `;
-    ss += i.style.left && `left: "${i.style.left}", `;
-    ss += i.style.width && `width: "${i.style.width}", `;
-    ss += i.placeholder && `placeholder: "${i.placeholder}", `;
-    ss += i.value && `value: "${i.value}", `;
-    ss += i.style.textAlign && `textAlign: "${i.style.textAlign}", `;
-    ss += i.style.fontWeight && `fontWeight: ${i.style.fontWeight}, `;
-    ss += i.style.fontSize && `fontSize: "${i.style.fontSize}", `;
-    ss += " },";
-    console.log(ss);
-  }
-}
