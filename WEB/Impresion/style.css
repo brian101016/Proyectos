@@ -85,26 +85,27 @@ input:focus-visible {
 
 /* ############################################# CONTENT ############################################# */
 #content {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  width: fit-content;
-  margin: 0 auto;
   position: relative;
+  width: 21.59cm;
+  height: 21.59cm;
+
+  margin: 0 auto;
+
+  display: flex;
+  justify-content: center;
 }
 
 /* ############################################# DOCUMENT IMAGE ############################################# */
 #image {
-  margin: 0 auto;
-
+  position: absolute;
   background-size: cover;
 }
 
 /* ############################################# DOCUMENT FORM ############################################# */
 #form {
-  position: absolute;
-  width: 100%;
-  height: 100%;
+  position: relative;
+  width: 21.59cm;
+  height: 27.94cm;
 }
 
 #form > input {
@@ -130,7 +131,7 @@ button:active {
 }
 
 @page {
-  margin: 3mm 1mm 0mm 0mm;
+  margin: 0mm 0mm 0mm 0mm;
 }
 
 .bg-grid {
@@ -201,5 +202,6 @@ button:active {
 
   body.landscape #content {
     transform: rotate(90deg);
+    justify-content: flex-start;
   }
 }
