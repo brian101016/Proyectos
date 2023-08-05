@@ -14,7 +14,7 @@ const months = [
 ];
 
 const db = {
-  "bautizo.jpg": {
+  "bautizos.jpg": {
     width: "136mm",
     height: "213mm",
     top: "0mm",
@@ -22,70 +22,120 @@ const db = {
     flip: false,
     inputs: [
       {
+        store: "nombre",
         top: "59mm",
         left: "65mm",
         width: "100mm",
         placeholder: "Nombre del bebé...",
         fontWeight: 700,
       },
-      { top: "66.5mm", left: "62mm", width: "7mm", placeholder: "O/A" },
-      { top: "66.5mm", left: "78mm", width: "87mm" },
-      { top: "74mm", left: "65mm", width: "100mm" },
       {
+        store: "sexo",
+        spec: "sexo",
+        top: "66.5mm",
+        left: "62mm",
+        width: "7mm",
+        placeholder: "O/A",
+      },
+      { store: "padre", top: "66.5mm", left: "78mm", width: "87mm" },
+      { store: "madre", top: "74mm", left: "65mm", width: "100mm" },
+      {
+        store: "ciudad_nacimiento",
         top: "82mm",
         left: "85mm",
         width: "80mm",
         placeholder: "Ciudad...",
       },
       {
+        store: "fecha_nacimiento",
+        spec: "day",
         top: "89.5mm",
         left: "67mm",
         width: "12mm",
         textAlign: "center",
       },
-      { top: "89.5mm", left: "103.5mm", width: "42mm", textAlign: "center" },
       {
+        store: "fecha_nacimiento",
+        spec: "month",
+        top: "89.5mm",
+        left: "103.5mm",
+        width: "42mm",
+        textAlign: "center",
+      },
+      {
+        store: "fecha_nacimiento",
+        spec: "year",
         top: "89.5mm",
         left: "152mm",
         width: "11mm",
         textAlign: "center",
       },
       {
+        store: "fecha_sacramento",
+        spec: "day",
         top: "105.25mm",
         left: "67mm",
         width: "13mm",
         textAlign: "center",
       },
-      { top: "105.25mm", left: "105mm", width: "36mm", textAlign: "center" },
       {
+        store: "fecha_sacramento",
+        spec: "month",
+        top: "105.25mm",
+        left: "105mm",
+        width: "36mm",
+        textAlign: "center",
+      },
+      {
+        store: "fecha_sacramento",
+        spec: "year",
         top: "105.25mm",
         left: "149mm",
         width: "14mm",
         textAlign: "center",
       },
-      { top: "125.5mm", left: "86mm", width: "80mm" },
-      { top: "133mm", left: "112mm", width: "54mm" },
-      { top: "141mm", left: "54mm", width: "23mm" },
-      { top: "141mm", left: "84mm", width: "82mm" },
       {
+        store: "presbitero",
+        top: "125.5mm",
+        left: "86mm",
+        width: "80mm",
+      },
+      {
+        store: "padrino",
+        top: "133mm",
+        left: "112mm",
+        width: "54mm",
+      },
+      { top: "141mm", left: "54mm", width: "23mm" },
+      {
+        store: "madrina",
+        top: "141mm",
+        left: "84mm",
+        width: "82mm",
+      },
+      {
+        store: "libro",
         top: "148.5mm",
         left: "121mm",
         width: "42mm",
         textAlign: "center",
       },
       {
+        store: "pagina",
         top: "156.25mm",
         left: "75mm",
         width: "27mm",
         textAlign: "center",
       },
       {
+        store: "partida",
         top: "156.25mm",
         left: "125mm",
         width: "38mm",
         textAlign: "center",
       },
       {
+        store: "notas_marginales",
         top: "163mm",
         left: "50mm",
         width: "117mm",
@@ -94,26 +144,29 @@ const db = {
         fontWeight: 700,
       },
       {
+        store: "today",
+        spec: "day",
         top: "172mm",
         left: "84.5mm",
         width: "9mm",
-        value: new Date().getDate(),
         placeholder: new Date().getDate(),
         textAlign: "center",
       },
       {
+        store: "today",
+        spec: "month",
         top: "172mm",
         left: "117mm",
         width: "24mm",
-        value: months[new Date().getMonth()],
         placeholder: months[new Date().getMonth()],
         textAlign: "center",
       },
       {
+        store: "today",
+        spec: "year",
         top: "172mm",
         left: "147.5mm",
         width: "15mm",
-        value: new Date().getFullYear(),
         placeholder: new Date().getFullYear(),
         textAlign: "center",
       },
@@ -128,27 +181,83 @@ const db = {
     ],
   },
 
-  "comunion.jpg": {
+  "comuniones.jpg": {
     width: "214mm",
     height: "138mm",
     left: "1.5mm",
     top: "38mm",
     flip: true,
     inputs: [
-      { top: "74mm", left: "56mm", width: "115mm", fontWeight: 700 },
-      { top: "88mm", left: "51mm", width: "22mm", textAlign: "center" },
-      { top: "88mm", left: "82mm", width: "63mm", textAlign: "center" },
-      { top: "88mm", left: "150mm", width: "21mm", textAlign: "center" },
-      { top: "95mm", left: "82mm", width: "116mm" },
-      { top: "102mm", left: "46mm", width: "152mm" },
-      { top: "109mm", left: "46mm", width: "152mm" },
-      { top: "116mm", left: "46mm", width: "152mm" },
-      { top: "123mm", left: "55mm", width: "143mm" },
-      { top: "130mm", left: "46mm", width: "152mm" },
-      { top: "137mm", left: "28mm", width: "170mm" },
-      { top: "144mm", left: "36mm", width: "27mm", textAlign: "center" },
-      { top: "151mm", left: "36mm", width: "27mm", textAlign: "center" },
-      { top: "158mm", left: "36mm", width: "27mm", textAlign: "center" },
+      {
+        store: "nombre",
+        top: "74mm",
+        left: "56mm",
+        width: "115mm",
+        fontWeight: 700,
+      },
+      {
+        store: "fecha_sacramento",
+        spec: "day",
+        top: "88mm",
+        left: "51mm",
+        width: "22mm",
+        textAlign: "center",
+      },
+      {
+        store: "fecha_sacramento",
+        spec: "month",
+        top: "88mm",
+        left: "82mm",
+        width: "63mm",
+        textAlign: "center",
+      },
+      {
+        store: "fecha_sacramento",
+        spec: "year",
+        top: "88mm",
+        left: "150mm",
+        width: "21mm",
+        textAlign: "center",
+      },
+      { store: "presbitero", top: "95mm", left: "82mm", width: "116mm" },
+      { store: "padrino_madrina", top: "102mm", left: "46mm", width: "152mm" },
+      { store: "padre", top: "109mm", left: "46mm", width: "152mm" },
+      { store: "madre", top: "116mm", left: "46mm", width: "152mm" },
+      { store: "ciudad_bautizo", top: "123mm", left: "55mm", width: "143mm" },
+      {
+        store: "parroquia_bautizo",
+        top: "130mm",
+        left: "46mm",
+        width: "152mm",
+      },
+      {
+        store: "fecha_bautizo",
+        spec: "date",
+        top: "137mm",
+        left: "28mm",
+        width: "170mm",
+      },
+      {
+        store: "libro",
+        top: "144mm",
+        left: "36mm",
+        width: "27mm",
+        textAlign: "center",
+      },
+      {
+        store: "partida",
+        top: "151mm",
+        left: "36mm",
+        width: "27mm",
+        textAlign: "center",
+      },
+      {
+        store: "pagina",
+        top: "158mm",
+        left: "36mm",
+        width: "27mm",
+        textAlign: "center",
+      },
       {
         top: "154.5mm",
         left: "122mm",
@@ -160,7 +269,119 @@ const db = {
     ],
   },
 
-  "matrimonio.jpg": {
+  "confirmaciones.jpg": {
+    width: "212.96mm",
+    height: "134.79mm",
+    left: "1.5mm",
+    top: "41mm",
+    flip: true,
+    inputs: [
+      {
+        store: "fecha_sacramento",
+        spec: "day",
+        top: "91mm",
+        left: "105mm",
+        width: "10mm",
+        textAlign: "center",
+      },
+      {
+        store: "fecha_sacramento",
+        spec: "month",
+        top: "91mm",
+        left: "123mm",
+        width: "42mm",
+        textAlign: "center",
+      },
+      {
+        store: "fecha_sacramento",
+        spec: "year",
+        top: "91mm",
+        left: "173mm",
+        width: "22mm",
+        textAlign: "center",
+      },
+      {
+        store: "nombre",
+        top: "98mm",
+        left: "40mm",
+        width: "155mm",
+        fontWeight: 700,
+      },
+      {
+        store: "sexo",
+        spec: "sexo",
+        top: "105mm",
+        left: "25mm",
+        width: "5mm",
+        textAlign: "center",
+      },
+      { store: "padre", top: "105mm", left: "35mm", width: "160mm" },
+      { store: "madre", top: "112mm", left: "30mm", width: "165mm" },
+      { store: "padrino_madrina", top: "119mm", left: "63mm", width: "132mm" },
+      {
+        store: "parroquia_bautizo",
+        top: "128mm",
+        left: "80mm",
+        width: "115mm",
+      },
+      { store: "ciudad_bautizo", top: "135mm", left: "35mm", width: "160mm" },
+      {
+        store: "libro",
+        top: "142mm",
+        left: "40mm",
+        width: "25mm",
+        textAlign: "center",
+      },
+      {
+        store: "partida",
+        top: "149mm",
+        left: "40mm",
+        width: "25mm",
+        textAlign: "center",
+      },
+      {
+        store: "pagina",
+        top: "156mm",
+        left: "40mm",
+        width: "25mm",
+        textAlign: "center",
+      },
+      {
+        store: "today",
+        spec: "day",
+        top: "141.5mm",
+        left: "105mm",
+        width: "10mm",
+        textAlign: "center",
+      },
+      {
+        store: "today",
+        spec: "month",
+        top: "141.5mm",
+        left: "123mm",
+        width: "42mm",
+        textAlign: "center",
+      },
+      {
+        store: "today",
+        spec: "year",
+        top: "141.5mm",
+        left: "173mm",
+        width: "22mm",
+        textAlign: "center",
+      },
+      {
+        top: "156mm",
+        left: "116mm",
+        width: "84mm",
+        placeholder: "RECTOR PBRO. LUIS ARMANDO GONZÁLEZ TORRES",
+        value: "RECTOR PBRO. LUIS ARMANDO GONZÁLEZ TORRES",
+        textAlign: "center",
+      },
+    ],
+  },
+
+  "matrimonios.jpg": {
     width: "248mm",
     height: "182mm",
     left: "0mm",
@@ -168,6 +389,8 @@ const db = {
     flip: true,
     inputs: [
       {
+        store: "novios",
+        spec: "novios",
         top: "70.5mm",
         left: "38mm",
         width: "165mm",
@@ -176,58 +399,87 @@ const db = {
         fontWeight: 700,
         fontSize: "16px",
       },
-      { top: "101mm", left: "36mm", width: "10mm", textAlign: "center" },
-      { top: "101mm", left: "58mm", width: "40mm", textAlign: "center" },
-      { top: "101mm", left: "121mm", width: "6mm", textAlign: "center" },
-      { top: "101mm", left: "168mm", width: "53mm" },
-      { top: "123mm", left: "30mm", width: "85mm" },
-      { top: "123mm", left: "130mm", width: "85mm" },
-      { top: "135mm", left: "30mm", width: "85mm" },
-      { top: "135mm", left: "130mm", width: "85mm" },
-      { top: "141.5mm", left: "54mm", width: "46mm", textAlign: "center" },
-      { top: "147mm", left: "54mm", width: "46mm", textAlign: "center" },
-      { top: "152.5mm", left: "54mm", width: "46mm", textAlign: "center" },
-      { top: "163.5mm", left: "30mm", width: "70mm" },
+      {
+        store: "fecha_sacramento",
+        spec: "day",
+        top: "101mm",
+        left: "36mm",
+        width: "10mm",
+        textAlign: "center",
+      },
+      {
+        store: "fecha_sacramento",
+        spec: "month",
+        top: "101mm",
+        left: "58mm",
+        width: "40mm",
+        textAlign: "center",
+      },
+      {
+        store: "fecha_sacramento",
+        spec: "year-crop",
+        top: "101mm",
+        left: "121mm",
+        width: "6mm",
+        textAlign: "center",
+      },
+      { store: "presbitero", top: "101mm", left: "168mm", width: "53mm" },
+      {
+        store: "testigos",
+        spec: "0",
+        top: "123mm",
+        left: "30mm",
+        width: "85mm",
+      },
+      {
+        store: "testigos",
+        spec: "1",
+        top: "123mm",
+        left: "130mm",
+        width: "85mm",
+      },
+      {
+        store: "testigos",
+        spec: "2",
+        top: "135mm",
+        left: "30mm",
+        width: "85mm",
+      },
+      {
+        store: "testigos",
+        spec: "3",
+        top: "135mm",
+        left: "130mm",
+        width: "85mm",
+      },
+      {
+        store: "libro",
+        top: "141.5mm",
+        left: "54mm",
+        width: "46mm",
+        textAlign: "center",
+      },
+      {
+        store: "pagina",
+        top: "147mm",
+        left: "54mm",
+        width: "46mm",
+        textAlign: "center",
+      },
+      {
+        store: "partida",
+        top: "152.5mm",
+        left: "54mm",
+        width: "46mm",
+        textAlign: "center",
+      },
+      { store: "presentacion", top: "163.5mm", left: "30mm", width: "70mm" },
       {
         top: "161mm",
         left: "130mm",
         width: "85mm",
         placeholder: "PBRO. LUIS ARMANDO GONZÁLEZ TORRES",
         value: "PBRO. LUIS ARMANDO GONZÁLEZ TORRES",
-        textAlign: "center",
-      },
-    ],
-  },
-
-  "confirmacion.jpg": {
-    width: "212.96mm",
-    height: "134.79mm",
-    left: "1.5mm",
-    top: "41mm",
-    flip: true,
-    inputs: [
-      { top: "91mm", left: "105mm", width: "10mm", textAlign: "center" },
-      { top: "91mm", left: "123mm", width: "42mm", textAlign: "center" },
-      { top: "91mm", left: "173mm", width: "22mm", textAlign: "center" },
-      { top: "98mm", left: "40mm", width: "155mm", fontWeight: 700 },
-      { top: "105mm", left: "25mm", width: "5mm", textAlign: "center" },
-      { top: "105mm", left: "35mm", width: "160mm" },
-      { top: "112mm", left: "30mm", width: "165mm" },
-      { top: "119mm", left: "63mm", width: "132mm" },
-      { top: "128mm", left: "80mm", width: "115mm" },
-      { top: "135mm", left: "35mm", width: "160mm" },
-      { top: "142mm", left: "40mm", width: "25mm", textAlign: "center" },
-      { top: "149mm", left: "40mm", width: "25mm", textAlign: "center" },
-      { top: "156mm", left: "40mm", width: "25mm", textAlign: "center" },
-      { top: "141.5mm", left: "105mm", width: "10mm", textAlign: "center" },
-      { top: "141.5mm", left: "123mm", width: "42mm", textAlign: "center" },
-      { top: "141.5mm", left: "173mm", width: "22mm", textAlign: "center" },
-      {
-        top: "156mm",
-        left: "116mm",
-        width: "84mm",
-        placeholder: "RECTOR PBRO. LUIS ARMANDO GONZÁLEZ TORRES",
-        value: "RECTOR PBRO. LUIS ARMANDO GONZÁLEZ TORRES",
         textAlign: "center",
       },
     ],
@@ -288,6 +540,39 @@ const db = {
   },
 };
 
+// ------------------------------------------------------------------------------------ GET FECHA STRING
+/**
+ * Regresa un formato de fecha correcto según el valor que le demos. Para el mes lo regresa con `m`.
+ * @param {Date | number} d Fecha de la cual sacar la info.
+ * @param {string} [s=""] Qué cosa de la fecha hay que sacar.
+ */
+function fecha(d, s = "") {
+  if (typeof d === "number") d = new Date(d);
+  let dd = d?.getDate?.();
+  if (!dd) return "";
+  if (s === "day") return dd.toString();
+  let mm = months[d.getMonth()];
+  if (s === "month") return mm;
+  let yy = d.getFullYear();
+  if (s === "year") return yy.toString();
+  if (s === "year-crop") return yy - 2000 + "";
+
+  return dd + " de " + mm + " del " + yy;
+}
+
+/**
+ * Normalizar para buscar por strings sin acentos ni mayusculas
+ * @param {*} str
+ * @returns
+ */
+function plain(str = "") {
+  return str
+    .toString()
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "");
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   // ################################################################ VARS
   // const controls = document.getElementById("controls");
@@ -300,16 +585,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const form = document.getElementById("form");
 
-  function input(data = {}) {
-    const i = document.createElement("input");
-    for (const prop in data) {
-      if (i.style[prop] === undefined) i[prop] = data[prop];
-      else i.style[prop] = data[prop];
-    }
-    return i;
-  }
-
   const docs = db;
+  const def = new URLSearchParams(location.search); // SEARCH DEFAULTS
 
   // ################################################################ SETUP
   for (const doc in docs) {
@@ -337,12 +614,42 @@ document.addEventListener("DOMContentLoaded", () => {
 
     form.replaceChildren();
     for (const data of doc.inputs) {
-      const io = input(data);
-      io.onchange = () => (data.value = io.value);
+      const i = document.createElement("input");
+      /** @type string | undefined */
+      const s = data.spec;
+      /** @type string | undefined */
+      const v = data.store;
+      let value = v ? JSON.parse(def.get(v)) : "";
 
-      form.appendChild(io);
+      // ------------------------------------------ SPECIAL DATA
+      if (v) {
+        if (v === "today") value = fecha(new Date(), s);
+        else if (v === "sexo") value = value ? "A" : "O";
+        else if (v === "testigos") value = value[s || 0];
+
+        if (s === "novios")
+          value =
+            JSON.parse(def.get("novio")) + " & " + JSON.parse(def.get("novia"));
+        else if (v.includes("fecha")) value = fecha(value, s);
+
+        value = value || "";
+      }
+
+      i.placeholder = data.placeholder || "";
+      i.value = value !== "" ? value : data.value || "";
+      i.style.top = data.top;
+      i.style.left = data.left;
+      i.style.width = data.width;
+      i.style.fontWeight = data.fontWeight;
+      i.style.textAlign = data.textAlign;
+
+      i.onchange = () => (data.value = io.value);
+      form.appendChild(i);
     }
   };
+
+  const t = def.get("tipo");
+  if (t) select.value = t + ".jpg";
 
   select.onchange();
 
@@ -354,14 +661,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     window.print();
   };
-
-  function plain(str = "") {
-    return str
-      .toString()
-      .toLowerCase()
-      .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "");
-  }
 
   // ################################################################ CLEAR CLICK
   clear.onclick = () => {
