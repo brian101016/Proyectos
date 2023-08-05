@@ -624,13 +624,14 @@ document.addEventListener("DOMContentLoaded", () => {
       // ------------------------------------------ SPECIAL DATA
       if (v) {
         if (v === "today") value = fecha(new Date(), s);
-        else if (v === "sexo") value = value ? "A" : "O";
-        else if (v === "testigos") value = value[s || 0];
+        else if (v === "sexo" && value !== null) value = value ? "A" : "O";
+        else if (v === "testigos" && value) value = value[s || 0];
 
-        if (s === "novios")
-          value =
-            JSON.parse(def.get("novio")) + " & " + JSON.parse(def.get("novia"));
-        else if (v.includes("fecha")) value = fecha(value, s);
+        if (s === "novios") {
+          const no = JSON.parse(def.get("novio"));
+          const na = JSON.parse(def.get("novia"));
+          if (no && na) value = no + " & " + na;
+        } else if (v.includes("fecha")) value = fecha(value, s);
 
         value = value || "";
       }
