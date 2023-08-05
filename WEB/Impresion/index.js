@@ -144,29 +144,32 @@ const db = {
         fontWeight: 700,
       },
       {
-        store: "today",
-        spec: "day",
+        // store: "today",
+        // spec: "day",
         top: "172mm",
         left: "84.5mm",
         width: "9mm",
+        value: new Date().getDate(),
         placeholder: new Date().getDate(),
         textAlign: "center",
       },
       {
-        store: "today",
-        spec: "month",
+        // store: "today",
+        // spec: "month",
         top: "172mm",
         left: "117mm",
         width: "24mm",
+        value: months[new Date().getMonth()],
         placeholder: months[new Date().getMonth()],
         textAlign: "center",
       },
       {
-        store: "today",
-        spec: "year",
+        // store: "today",
+        // spec: "year",
         top: "172mm",
         left: "147.5mm",
         width: "15mm",
+        value: new Date().getFullYear(),
         placeholder: new Date().getFullYear(),
         textAlign: "center",
       },
@@ -347,28 +350,34 @@ const db = {
         textAlign: "center",
       },
       {
-        store: "today",
-        spec: "day",
+        // store: "today",
+        // spec: "day",
         top: "141.5mm",
         left: "105mm",
         width: "10mm",
         textAlign: "center",
+        value: new Date().getDate(),
+        placeholder: new Date().getDate(),
       },
       {
-        store: "today",
-        spec: "month",
+        // store: "today",
+        // spec: "month",
         top: "141.5mm",
         left: "123mm",
         width: "42mm",
         textAlign: "center",
+        value: months[new Date().getMonth()],
+        placeholder: months[new Date().getMonth()],
       },
       {
-        store: "today",
-        spec: "year",
+        // store: "today",
+        // spec: "year",
         top: "141.5mm",
         left: "173mm",
         width: "22mm",
         textAlign: "center",
+        value: new Date().getFullYear(),
+        placeholder: new Date().getFullYear(),
       },
       {
         top: "156mm",
@@ -589,12 +598,40 @@ document.addEventListener("DOMContentLoaded", () => {
   const def = new URLSearchParams(location.search); // SEARCH DEFAULTS
 
   // ################################################################ SETUP
+  const t = def.get("tipo");
+
   for (const doc in docs) {
     const op = document.createElement("option");
     op.value = doc;
     op.text = doc.substring(0, doc.length - 4).toUpperCase();
     select.appendChild(op);
+
+    if (t && doc === t + ".jpg") {
+      for (const data of docs[doc].inputs) {
+        /** @type string | undefined */
+        const s = data.spec;
+        /** @type string | undefined */
+        const v = data.store;
+        let value = v ? JSON.parse(def.get(v)) : "";
+
+        // ------------------------------------------ SPECIAL DATA
+        if (v) {
+          if (v === "today") value = fecha(new Date(), s);
+          else if (v === "sexo" && value !== null) value = value ? "A" : "O";
+          else if (v === "testigos" && value) value = value[s || 0];
+
+          if (s === "novios") {
+            const no = JSON.parse(def.get("novio"));
+            const na = JSON.parse(def.get("novia"));
+            if (no && na) value = no + " & " + na;
+          } else if (v.includes("fecha")) value = fecha(value, s);
+
+          if (value) data.value = value;
+        }
+      }
+    }
   }
+  if (t) select.value = t + ".jpg";
 
   toggle.onchange = () => {
     if (toggle.checked) image.classList.remove("will-hide");
@@ -613,44 +650,22 @@ document.addEventListener("DOMContentLoaded", () => {
     image.style.top = doc.top;
 
     form.replaceChildren();
+
     for (const data of doc.inputs) {
       const i = document.createElement("input");
-      /** @type string | undefined */
-      const s = data.spec;
-      /** @type string | undefined */
-      const v = data.store;
-      let value = v ? JSON.parse(def.get(v)) : "";
-
-      // ------------------------------------------ SPECIAL DATA
-      if (v) {
-        if (v === "today") value = fecha(new Date(), s);
-        else if (v === "sexo" && value !== null) value = value ? "A" : "O";
-        else if (v === "testigos" && value) value = value[s || 0];
-
-        if (s === "novios") {
-          const no = JSON.parse(def.get("novio"));
-          const na = JSON.parse(def.get("novia"));
-          if (no && na) value = no + " & " + na;
-        } else if (v.includes("fecha")) value = fecha(value, s);
-
-        value = value || "";
-      }
 
       i.placeholder = data.placeholder || "";
-      i.value = value !== "" ? value : data.value || "";
+      i.value = data.value || "";
       i.style.top = data.top;
       i.style.left = data.left;
       i.style.width = data.width;
       i.style.fontWeight = data.fontWeight;
       i.style.textAlign = data.textAlign;
 
-      i.onchange = () => (data.value = io.value);
+      i.onchange = () => (data.value = i.value);
       form.appendChild(i);
     }
   };
-
-  const t = def.get("tipo");
-  if (t) select.value = t + ".jpg";
 
   select.onchange();
 
