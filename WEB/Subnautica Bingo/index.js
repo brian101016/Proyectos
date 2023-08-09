@@ -1,190 +1,187 @@
-let chart = [];
-chart = new Array( 5 ).fill(" ").map( () => new Array( 5 ).fill(" ") );
+import { Obj_Timer, random_range, boundaries } from "../Wold Global/scripts";
+import { bingo } from "./bingo";
 
+// #################################################################################################### MEMORY
 let bingo_cards = []; // Almacenara las probabilidades del bingo progresivamente
-
 let temporal = [];
-let prev_temporal = [" ", " "," "," "," "];
+let prev_temporal = [" ", " ", " ", " ", " "];
 
-// #######################################################################################################################################
-// #######################################################################################################################################
-document.addEventListener('DOMContentLoaded', () => { // INICIAR EL PROCESO
+// #################################################################################################### START APP
+document.addEventListener("DOMContentLoaded", () => {
+  // -------------------------------------------------- DOM ELEMENTS
+  const chart = document.getElementById("#chart");
+  const game_select = document.getElementById("#game-select");
+  const create_button = document.getElementById("#create");
 
-    const obj_chart = document.querySelector("#chart");
+  // ######################### SEED
+  const seed_button = document.getElementById("#read-seed");
+  const seed_input = document.getElementById("#seed");
 
-    const obj_new_chart = document.querySelector("#create")
-    const obj_read_seed = document.querySelector("#read-seed");
-    const obj_seed = document.querySelector("#seed");
-    const obj_timer_container = document.querySelector("#timer");
-    const obj_stop_timer = document.querySelector("#stop-timer");
+  // ######################### TIMER
+  const timer_span = document.getElementById("#timer");
+  const timer_button = document.getElementById("#stop-timer");
+  const timer = new Obj_Timer(timer_span, null, null);
 
-    const timer = new Obj_Timer(obj_timer_container, null, null);
+  // -------------------------------------------------- CLICK NEW CHART
+  function handleClick(read = false) {
+    if (!read || !seed_input.value) {
+      seed_input.value = "";
+      for (let i = 0; i < 16; i++) seed_input.value += random_range(0, 9);
+    }
 
-    // NEW CHART
-    obj_new_chart.addEventListener("click", (event) => {
-        event.preventDefault();
+    new_chart();
 
-        // Crear una semilla
-        let new_seed = "";
-        for (let i = 0; i < 16; i++) new_seed += "" + random_range(0, 9);
-        obj_seed.value = new_seed;
+    timer.restart();
+    timer_button.innerText = "Pausar";
+  }
 
-        console.log("Valor en obj: " + obj_seed.value);
-        new_chart(obj_chart, obj_seed.value);
+  create_button.onclick = () => handleClick(false);
+  seed_button.onclick = () => handleClick(true);
 
-        timer.restart();
-        obj_stop_timer.innerText = "Pausar";
-    });
+  // -------------------------------------------------- TIMER BUTTON
+  timer_button.onclick = () => {
+    timer.toggle();
+    timer_button.innerText = timer.is_timer_playing() ? "Pausar" : "Resumir";
+  };
 
-    // READ SEED
-    obj_read_seed.addEventListener("click", (event) => {
-        event.preventDefault();
+  // #################################################################################################### NEW CHART
+  function new_chart() {
+    const type = game_select.value || "subnautica";
 
-        // La semilla no es válida, crear una
-        if(obj_seed.value == null || obj_seed.value == "") {
-            let new_seed = "";
-            for (let i = 0; i < 16; i++) new_seed += "" + random_range(0, 9);
-            obj_seed.value = new_seed;
-        }
-
-        console.log("Valor en obj: " + obj_seed.value);
-        new_chart(obj_chart, obj_seed.value);
-
-        timer.restart();
-        obj_stop_timer.innerText = "Pausar";
-    });
-
-    // TIMER CONTAINER
-    obj_timer_container.innerText = "00:00.000";
-
-    //STOP TIMER
-    obj_stop_timer.addEventListener("click", (event) => {
-        event.preventDefault();
-        timer.toggle();
-        if(timer.is_timer_playing()) obj_stop_timer.innerText = "Pausar";
-        else obj_stop_timer.innerText = "Resumir";
-    });
-
-});
-
-// #######################################################################################################################################
-// #######################################################################################################################################
-
-function new_chart(obj_chart, seed) {
-
-    // VARIABLES
-    bingo_cards = [...bingo.subnautica]; // Construir por primera vez
+    bingo_cards = [...bingo[type]];
     prev_temporal = [...temporal];
     temporal = [];
-    
-    chart = [];
-    chart = new Array( 5 ).fill(" ").map( () => new Array( 5 ).fill(" ") );
 
-    const obj_chart_childs = document.querySelectorAll("div#chart > *");
-    for(let _item of obj_chart_childs) _item.remove();
-
-    const numlist = read_seed(seed);
+    chart.replaceChildren();
+    const numlist = read_seed(seed_input.value);
 
     // CREAR LA TABLA
-    for (let i = 0; i < 5; i++) for (let j = 0; j < 5; j++) {
-
+    for (let i = 0; i < 5; i++)
+      for (let j = 0; j < 5; j++) {
         const new_button = document.createElement("button");
         new_button.classList.add("chart-cell");
         new_button.classList.add("cell-color-blue");
-        new_button.classList.add("no-selectable");
-
-        if(i == 0) new_button.classList.add("border-top-on");
-        if(j == 0) new_button.classList.add("border-left-on");
 
         // ELEGIR UNA CARTA DE BINGO
-        let numindex = Math.floor((numlist.pop() / 100 * (bingo_cards.length -1)) % (bingo_cards.length-1));
+        let numindex = Math.floor(
+          ((numlist.pop() / 100) * (bingo_cards.length - 1)) %
+            (bingo_cards.length - 1)
+        );
         new_button.textContent = bingo_cards.splice(numindex, 1)[0];
         temporal.push(new_button.textContent);
 
-        if(prev_temporal.length > 1 && prev_temporal.includes(temporal[temporal.length - 1])) console.log("Repetido");
-        
-        obj_chart.appendChild( new_button );
-
-        new_button.onmousedown = function(event) {
-            let neutral = new_button.classList.contains("cell-color-blue");
-            let color_change = "cell-color-blue";
-
-            switch (event.button) {
-                case 0: color_change = "cell-color-yellow"; break;
-                case 1: color_change = "cell-color-green";  break;
-                case 2: color_change = "cell-color-red";    break;
-            }
-
-            // Si lleva algun color y queremos cambiar al color que ya tiene
-            if(!neutral && new_button.classList.contains(color_change)) color_change = "cell-color-blue";
-
-            new_button.classList.remove("cell-color-blue");
-            new_button.classList.remove("cell-color-red");
-            new_button.classList.remove("cell-color-yellow");
-            new_button.classList.remove("cell-color-green");
-
-            new_button.classList.add(color_change);
+        if (
+          prev_temporal.length > 1 &&
+          prev_temporal.includes(temporal[temporal.length - 1])
+        ) {
+          console.log("Repetido");
         }
 
-        new_button.oncontextmenu = function(event) {
-            event.preventDefault();
+        chart.appendChild(new_button);
+
+        new_button.onmousedown = (event) => {
+          let color_change = "cell-color-blue";
+
+          switch (event.button) {
+            case 0:
+              color_change = "cell-color-yellow";
+              break;
+            case 1:
+              color_change = "cell-color-green";
+              break;
+            case 2:
+              color_change = "cell-color-red";
+              break;
+          }
+
+          // Si lleva algun color y queremos cambiar al color que ya tiene
+          if (
+            !new_button.classList.contains("cell-color-blue") &&
+            new_button.classList.contains(color_change)
+          ) {
+            color_change = "cell-color-blue";
+          }
+
+          new_button.classList.remove("cell-color-blue");
+          new_button.classList.remove("cell-color-red");
+          new_button.classList.remove("cell-color-yellow");
+          new_button.classList.remove("cell-color-green");
+
+          new_button.classList.add(color_change);
         };
 
-        chart[i][j] = new_button;
-    }
-}
+        new_button.oncontextmenu = (event) => event.preventDefault();
+      }
+  }
+});
 
-// #######################################################################################################################################
-// #######################################################################################################################################
-
+// #################################################################################################### READ SEED
 function read_seed(seed) {
+  // La semilla no es válida, crear una
+  if (!seed) {
+    seed = "";
+    for (let i = 0; i < 16; i++) seed += "" + random_range(0, 9);
+  }
 
-    // La semilla no es válida, crear una
-    if(seed == null || seed == "") {
-        seed = "";
-        for (let i = 0; i < 16; i++) seed += "" + random_range(0, 9);
+  seed = seed.toString();
+
+  let seed_total_sum = 0;
+  for (let i = 0; i < seed.length; i++) seed_total_sum += seed.charCodeAt(i);
+
+  // BUSCAR FILA Y COLUMNA DE LOS NUMEROS DE PI
+  let sequence = seed.charCodeAt(boundaries(0, 0, seed.length - 1, false)) * 10; // 18 - 27 para numeros
+  sequence += seed.charCodeAt(boundaries(0, 1, seed.length - 1, false));
+  sequence = (sequence % seed_total_sum) % 30; // Fila
+  let section =
+    seed.charCodeAt(
+      boundaries(0, seed_total_sum % seed.length, seed.length - 1, false)
+    ) % 5; // Columna
+  let number =
+    seed.charCodeAt(
+      boundaries(
+        0,
+        seed_total_sum %
+          seed_total_sum
+            .toString()
+            .charCodeAt(seed_total_sum.toString().length),
+        seed.length - 1,
+        false
+      )
+    ) % 10; // Position
+
+  // console.log("Secuencia, seccion y numero: " + sequence, section, number);
+
+  let numlist = [];
+  let aux = 0;
+
+  while (numlist.length < 25) {
+    const num_from_pi = Number.parseInt(
+      number_chart[sequence][section][number]
+    ); // 0 - 9
+    const num_from_seed =
+      seed.charCodeAt(seed.length - 1 - (aux % seed.length)) % 10; // 0 - 9 / [0 - 15]
+
+    aux++;
+    number++;
+    if (number > 9) {
+      number = 0;
+      section++;
     }
-
-    seed = seed.toString();
-
-    let seed_total_sum = 0;
-    for (let i = 0; i < seed.length; i++) seed_total_sum += seed.charCodeAt(i);
-
-    // BUSCAR FILA Y COLUMNA DE LOS NUMEROS DE PI
-    let sequence = seed.charCodeAt( boundaries(0, 0, seed.length - 1, false)) * 10; // 18 - 27 para numeros
-    sequence += seed.charCodeAt( boundaries(0, 1, seed.length - 1, false));
-    sequence = (sequence % seed_total_sum) % 30; // Fila
-    let section  = seed.charCodeAt( boundaries(0, seed_total_sum % seed.length, seed.length - 1, false)) %  5; // Columna
-    let number   = seed.charCodeAt( boundaries(0, seed_total_sum % seed_total_sum.toString().charCodeAt(seed_total_sum.toString().length), seed.length - 1, false)) % 10; // Position
-
-    // console.log("Secuencia, seccion y numero: " + sequence, section, number);
-
-    let numlist = [];
-    let aux = 0;
-
-    while(numlist.length < 25) {
-
-        const num_from_pi = Number.parseInt(number_chart[sequence][section][number]); // 0 - 9
-        const num_from_seed = ( seed.charCodeAt((seed.length-1) - (aux % seed.length)) % 10 ); // 0 - 9 / [0 - 15]
-
-        aux++;
-        number++;
-        if(number > 9) {
-            number = 0;
-            section++;
-        }
-        if(section > 4) {
-            section = 0;
-            sequence++;
-        }
-        if(sequence > 29) sequence = 0;
-
-        let some_number = (num_from_pi * 100) + (num_from_seed * 10) + ((number + section + sequence) % 10);
-        some_number = (some_number / 1000) * (bingo_cards.length - aux);
-        some_number = Math.round(some_number);
-
-        numlist.push( num_from_pi*10 + num_from_seed );
+    if (section > 4) {
+      section = 0;
+      sequence++;
     }
+    if (sequence > 29) sequence = 0;
 
-    return numlist;
+    let some_number =
+      num_from_pi * 100 +
+      num_from_seed * 10 +
+      ((number + section + sequence) % 10);
+    some_number = (some_number / 1000) * (bingo_cards.length - aux);
+    some_number = Math.round(some_number);
+
+    numlist.push(num_from_pi * 10 + num_from_seed);
+  }
+
+  return numlist;
 }

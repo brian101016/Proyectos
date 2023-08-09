@@ -1,79 +1,257 @@
-html {
-    --chart-size: 100vh;
-    --chart-cell-size: calc((var(--chart-size) - 5px) / 5);
+@import url("https://fonts.googleapis.com/css2?family=Handjet:wght@100;200;300;400;500;600;700;800;900");
 
-    --color-blue: #3d6387;
-    --color-blue-hover: #3a7696;
-    --color-red: #b31d1d;
-    --color-red-hover: #c81313;
-    --color-yellow: #e5a722;
-    --color-yellow-hover: #e8cd0e;
-    --color-green: #3cb84d;
-    --color-green-hover: #34e94b;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  width: 100%;
+  height: 100%;
+
+  --color-blue: #3f7fbb;
+  --color-blue-hover: #5cc6ff;
+  --color-red: #ba4d4d;
+  --color-red-hover: #ff5454;
+  --color-yellow: #e5a722;
+  --color-yellow-hover: #ffeb61;
+  --color-green: #3cb84d;
+  --color-green-hover: #5cff70;
+}
+
+body {
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  background-color: darkslategray;
+  min-height: 100%;
+  position: relative;
+  display: flex;
+}
+
+#root {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 2rem;
+  width: 100%;
+  min-height: 100%;
+  gap: 2rem;
+  background-image: linear-gradient(0deg, #091267, #68677d);
 }
 
 #chart {
-    width: var(--chart-size);
-    height: var(--chart-size);
-    text-align: center;
-    vertical-align: middle;
-    background-color: coral;
+  background-color: coral;
+  display: grid;
+  grid-template-columns: 20% 20% 20% 20% 20%;
+  grid-template-rows: 20% 20% 20% 20% 20%;
+  max-height: 90vh;
+  width: max-content;
+  min-width: 20%;
+  max-width: 100%;
+  aspect-ratio: 1;
+  margin: 0.5rem;
 }
 
 .chart-cell {
-    width: var(--chart-cell-size);
-    height: var(--chart-cell-size);
-
-    border: 5px solid black;
-    border-top: 0px;
-    border-left: 0px;
-
-    color: black;
-    font-size: 2.7vh;
-    
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-
-.border-top-on {
-    border-top: 5px solid black;
-    height: calc(var(--chart-cell-size) + 5px);
-}
-
-.border-left-on {
-    border-left: 5px solid black;
-    width: calc(var(--chart-cell-size) + 5px);
+  color: black;
+  font-size: 1.4rem;
+  aspect-ratio: 1 / 1;
+  width: 100%;
+  border: 1px solid black;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: pre-line;
+  overflow-wrap: break-word;
+  padding: 0.35rem;
+  font-family: "Handjet", cursive;
+  font-weight: 500;
+  line-height: 1.2;
 }
 
 /* CELL COLORS */
-.cell-color-blue { background-color: var(--color-blue); }
-.cell-color-blue:hover{ background-color: var(--color-blue-hover); }
+.cell-color-blue {
+  background-color: var(--color-blue);
+}
+.cell-color-blue:hover {
+  background-color: var(--color-blue-hover);
+}
 
-.cell-color-red { background-color: var(--color-red); }
-.cell-color-red:hover{ background-color: var(--color-red-hover); }
+.cell-color-red {
+  background-color: var(--color-red);
+}
+.cell-color-red:hover {
+  background-color: var(--color-red-hover);
+}
 
-.cell-color-yellow { background-color: var(--color-yellow); }
-.cell-color-yellow:hover{ background-color: var(--color-yellow-hover); }
+.cell-color-yellow {
+  background-color: var(--color-yellow);
+}
+.cell-color-yellow:hover {
+  background-color: var(--color-yellow-hover);
+}
 
-.cell-color-green { background-color: var(--color-green); }
-.cell-color-green:hover{ background-color: var(--color-green-hover); }
+.cell-color-green {
+  background-color: var(--color-green);
+}
+.cell-color-green:hover {
+  background-color: var(--color-green-hover);
+}
 
 .cell-color-blue:hover,
 .cell-color-red:hover,
 .cell-color-yellow:hover,
 .cell-color-green:hover {
-    color: rgb(44, 43, 43);
+  color: rgb(44, 43, 43);
 }
 
 #menu {
-    width: fit-content;
-    /* height: 50vh; */
-    font-size: 26px;
-    font-weight: 600;
+  display: flex;
+  flex-direction: column;
+  margin: 1rem 0;
+  row-gap: 2rem;
+}
+
+.ppal-menu * {
+  font-size: 1rem;
+  font-family: Verdana;
+  text-align: center;
+  padding: 0.3em;
+}
+
+#menu button:active {
+  transform: scale(0.95);
+  opacity: 0.75;
+}
+
+#create {
+  border-radius: 1rem;
+  background-color: #ffe14f;
+  border: 2px solid #ff8a00;
+  color: #874a03;
+  font-size: 1.5rem;
+}
+
+#create:hover {
+  background-color: #fff0a7;
+  color: #ff8a00;
+}
+
+#game-select {
+  border-radius: 1rem;
+  background-color: #b15cff;
+  border: 2px solid #ba00ff;
+  color: #490387;
+  font-size: 1.5rem;
+}
+
+#game-select:hover {
+  background-color: #c68ff8;
+  color: #2f083d;
+}
+
+#game-select:active,
+#game-select:focus {
+  border-radius: 1rem 1rem 0 0;
+}
+
+#read-seed {
+  border-radius: 1rem;
+  background-color: #66c264;
+  border: 2px solid #165b00;
+  color: #00610c;
+}
+
+#read-seed:hover {
+  background-color: #89f387;
+  color: #0e811c;
+}
+
+.menu-seed {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 1rem;
+  padding: 0;
+}
+
+.menu-timer {
+  display: flex;
+  align-items: baseline;
+  width: 100%;
+  padding: 0;
+}
+
+.menu-timer span {
+  font-size: 1.25rem;
+}
+
+#timer {
+  font-family: monospace;
 }
 
 #stop-timer {
-    background-color: #7a7c75;
+  background-color: #e8c3c35e;
+  margin: 0 auto;
+  border: 2px solid;
+  border-radius: 1rem;
+  padding: 0.3em 1.35em;
+}
+
+#stop-timer:hover {
+  color: #333333;
+  background-color: #e8c3c32b;
+}
+
+button,
+select {
+  cursor: pointer;
+}
+
+input {
+  cursor: text;
+  border-radius: 1rem;
+  border: 2px solid black;
+  width: 100%;
+}
+
+.msg {
+  padding: 1rem;
+  grid-column: 1 / -1;
+  grid-row: 1 / -1;
+  align-self: center;
+  white-space: pre-wrap;
+  width: 100%;
+  max-height: 100%;
+  overflow: auto;
+  text-align: justify;
+  text-overflow: ellipsis;
+  font-family: inherit;
+}
+
+@media screen and (min-width: 801px) {
+  body,
+  #root {
+    height: 100%;
+  }
+}
+
+@media screen and (max-width: 800px) {
+  #root {
+    flex-direction: column-reverse;
+    padding: 0 1rem;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .chart-cell {
+    font-family: system-ui;
+    font-size: 0.8rem;
+    font-weight: 600;
+    overflow: auto;
+  }
+}
+
+@media screen and (max-width: 350px) {
+  html {
+    font-size: 12px;
+  }
 }

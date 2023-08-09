@@ -1,37 +1,59 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Subnautica Bingo</title>
-    <link href="../Wold Global/rem_def.css" rel="stylesheet" />
-    <link href="./index.css"                rel="stylesheet" />
-</head>
-<body class="flex flex-align-center flex-justify-around width-100vw height-100vh" style="background-color: darkslategrey;">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Games Bingo</title>
+    <link href="./index.css" rel="stylesheet" />
+  </head>
 
-    <!-- CHART TABLE -->
-    <div id="chart" class="flex-row margin-h-20px"> </div>
+  <body>
+    <div id="root">
+      <!-- CHART TABLE -->
+      <div id="chart">
+        <pre class="msg">
+  <strong>1.-</strong> Seleccione un juego con el <strong>botón rosa</strong>.<br />
+  <strong>2.-</strong> Para comenzar...<br />
+      a) Pulse '<strong>Generar nueva carta</strong>' para generar aleatoriamente.<br />
+      b) Ingrese una semilla y pulse '<strong>Usar semilla</strong>'.<br />
+  <strong>3.-</strong> Haga clic sobre una casilla de bingo según...<br />
+      <strong>Clic izquierdo</strong>: marcar como 'pendiente'.
+      <strong>Clic medio</strong>: marcar como 'completado'.
+      <strong>Clic derecho</strong>: marcar como 'descartado'.
+      <strong>Doble clic</strong>: desmarcar casilla.<br />
+  <strong>4.-</strong> Al haber completado una línea horizontal, vertical o diagonal, pulse el botón '<strong>Pausar</strong>' del cronómetro para ver su tiempo final.
+        </pre>
+      </div>
 
-    <form id="menu" class="flex-column flex-justify-around" style="margin-right: 20vw;">
-        
-        <button id="create" class="font-size-24px margin-v-10px padding-v-6px padding-h-3px">Generar nueva carta</button>
+      <div id="menu" class="ppal-menu">
+        <select id="game-select">
+          <option value="subnautica">Subnautica</option>
+          <option value="minecraft">Minecraft</option>
+        </select>
 
-        <div class="flex-row flex-align-stretch margin-v-20px">
-            <button id="read-seed" class="font-size-24px">Semilla:&nbsp;</button>
-            <input id="seed" type="text" maxlength="16" class="text-center font-size-16px"/>
+        <button id="create" type="button">Generar nueva carta</button>
+
+        <div class="menu-seed">
+          <button id="read-seed" type="button">Usar semilla:&nbsp;</button>
+          <input
+            id="seed"
+            type="text"
+            maxlength="16"
+            placeholder="Ingrese una semilla..."
+          />
         </div>
-        
-        <div class="flex-column flex-justify-around flex-align-center margin-v-20px">
-            <span>Tiempo:</span>
-            <span id="timer" class="margin-v-12px">00:00.000</span>
-            <button id="stop-timer" class="font-size-20px padding-h-24px padding-v-3px">Iniciar</button>
-        </div>
-       
-    </form>
 
-    <script src="./index.js" > </script>
-    <script src="./bingo.js"></script>
-    <script src="../Wold Global/scripts.js"></script>
-</body>
+        <div class="menu-timer">
+          <span>Tiempo:</span>
+          <span id="timer">00:00.000</span>
+          <button id="stop-timer" type="button">Iniciar</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="./index.js" type="module"></script>
+    <!-- <script src="./bingo.js" type="module"></script>
+    <script src="../Wold Global/scripts.js" type="module"></script> -->
+  </body>
 </html>
