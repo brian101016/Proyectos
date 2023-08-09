@@ -47,6 +47,7 @@ body {
   max-height: 90vh;
   width: max-content;
   min-width: 20%;
+  width: min(100%, 90vh);
   max-width: 100%;
   aspect-ratio: 1;
   margin: 0.5rem;
@@ -211,6 +212,11 @@ input {
   border-radius: 1rem;
   border: 2px solid black;
   width: 100%;
+}
+
+select,
+option {
+  text-transform: capitalize;
 }
 
 .msg {
