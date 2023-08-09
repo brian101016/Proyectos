@@ -394,6 +394,58 @@ const bingo = {
     "5 bloques de magma",
     "5 bloques de nieve",
   ],
+  minecraft_facil: [
+    "Huevo",
+    "Ojo de araña fermentado",
+    "Cohete con carga",
+    "Ballesta",
+    "Libro y pluma",
+    "TNT",
+    "Manzana",
+    "Estofado de conejo",
+    "Pez tropical",
+    "Bloque de magma",
+    "Arbusto seco",
+    "Tinte cian",
+    "Tinte magenta",
+    "Tinte gris oscuro",
+    "Flor alta",
+    "Zanahoria o papa",
+    "Estofado sospechoso",
+    "Linterna de calabaza",
+    "Estandarte con diseño",
+    "Repetidor de redstone",
+    "Catalejo",
+    "Botella de miel",
+    "Atril",
+    "Linterna",
+    "Piedra de afilar",
+    "Soporte para armaduras",
+    "Piel de conejo",
+    "Concha de Nautilus",
+    "Terracota vidrada",
+    "Pincel",
+    "Bloque de algas secas",
+    "Bloque de lapislázuli",
+    "Bloque de slime",
+    "Bloque de heno",
+    "Bloque de hueso",
+    "Concreto naranja",
+    "Terracota vidriada",
+    "Ladrillo de barro",
+    "Cama rosa",
+    "Pza de armadura de cuero",
+    "Pza de armadura de malla",
+    "Pza de armadura de oro",
+    "Armadura para caballo",
+    "Correa",
+    "Reloj",
+    "Mapa localizador",
+    "Piedra musgosa",
+    "Saco de tinta brillante",
+    "Encantamiento",
+    "Dispensador",
+  ],
 };
 
 // #################################################################################################### Numbers of PI
@@ -437,6 +489,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const chart = document.getElementById("chart");
   const game_select = document.getElementById("game-select");
   const create_button = document.getElementById("create");
+  const tactil = document.getElementById("tactil");
 
   // ######################### SEED
   const seed_button = document.getElementById("read-seed");
@@ -486,13 +539,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
     chart.replaceChildren();
     const numlist = read_seed(seed_input.value);
+    const styles = ["yellow", "green", "red", ""];
 
     // CREAR LA TABLA
-    for (let i = 0; i < 5; i++)
+    for (let i = 0; i < 5; i++) {
       for (let j = 0; j < 5; j++) {
         const new_button = document.createElement("button");
-        new_button.classList.add("chart-cell");
-        new_button.classList.add("cell-color-blue");
 
         // ELEGIR UNA CARTA DE BINGO
         let numindex = Math.floor(
@@ -502,47 +554,23 @@ document.addEventListener("DOMContentLoaded", () => {
         new_button.textContent = bingo_cards.splice(numindex, 1)[0];
         temporal.push(new_button.textContent);
 
-        if (
-          prev_temporal.length > 1 &&
-          prev_temporal.includes(temporal[temporal.length - 1])
-        ) {
-          console.log("Repetido");
-        }
-
         chart.appendChild(new_button);
 
         new_button.onmousedown = (event) => {
-          let color_change = "cell-color-blue";
-
-          switch (event.button) {
-            case 0:
-              color_change = "cell-color-yellow";
-              break;
-            case 1:
-              color_change = "cell-color-green";
-              break;
-            case 2:
-              color_change = "cell-color-red";
-              break;
+          // USAR MODO TACTIL PARA ROTAR ENTRE COLORES
+          if (tactil.checked) {
+            new_button.className =
+              styles[styles.indexOf(new_button.className) + 1] ?? "yellow";
+          } else {
+            const color_change = styles[event.button] || "";
+            if (new_button.className === color_change)
+              new_button.className = "";
+            else new_button.className = color_change;
           }
-
-          // Si lleva algun color y queremos cambiar al color que ya tiene
-          if (
-            !new_button.classList.contains("cell-color-blue") &&
-            new_button.classList.contains(color_change)
-          ) {
-            color_change = "cell-color-blue";
-          }
-
-          new_button.classList.remove("cell-color-blue");
-          new_button.classList.remove("cell-color-red");
-          new_button.classList.remove("cell-color-yellow");
-          new_button.classList.remove("cell-color-green");
-
-          new_button.classList.add(color_change);
         };
 
         new_button.oncontextmenu = (event) => event.preventDefault();
       }
+    }
   }
 });

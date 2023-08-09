@@ -53,7 +53,7 @@ body {
   margin: 0.5rem;
 }
 
-.chart-cell {
+#chart > button {
   color: black;
   font-size: 1.4rem;
   aspect-ratio: 1 / 1;
@@ -67,41 +67,39 @@ body {
   font-family: "Handjet", cursive;
   font-weight: 500;
   line-height: 1.2;
-}
 
-/* CELL COLORS */
-.cell-color-blue {
   background-color: var(--color-blue);
 }
-.cell-color-blue:hover {
+#chart > button:hover {
   background-color: var(--color-blue-hover);
 }
 
-.cell-color-red {
+/* CELL COLORS */
+#chart > button.red {
   background-color: var(--color-red);
 }
-.cell-color-red:hover {
+#chart > button.red:hover {
   background-color: var(--color-red-hover);
 }
 
-.cell-color-yellow {
+#chart > button.yellow {
   background-color: var(--color-yellow);
 }
-.cell-color-yellow:hover {
+#chart > button.yellow:hover {
   background-color: var(--color-yellow-hover);
 }
 
-.cell-color-green {
+#chart > button.green {
   background-color: var(--color-green);
 }
-.cell-color-green:hover {
+#chart > button.green:hover {
   background-color: var(--color-green-hover);
 }
 
-.cell-color-blue:hover,
-.cell-color-red:hover,
-.cell-color-yellow:hover,
-.cell-color-green:hover {
+#chart > button:hover,
+#chart > button.red:hover,
+#chart > button.yellow:hover,
+#chart > button.green:hover {
   color: rgb(44, 43, 43);
 }
 
@@ -212,6 +210,10 @@ input {
   border-radius: 1rem;
   border: 2px solid black;
   width: 100%;
+}
+
+#tactil {
+  width: auto;
 }
 
 select,
