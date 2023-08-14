@@ -1,0 +1,43 @@
+/* #################################################################################################### RESET */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* #################################################################################################### VARIABLES */
+html {
+  /* -------------------------------------------------- COLORS */
+  --color-white: #e1e1e1;
+  --color-background: #d3d3d3;
+  --color-header: #7d7d7d;
+  --color-border: #747474;
+}
+
+/* #################################################################################################### HTML & BODY */
+body,
+html {
+  font-size: 1rem;
+  font-family: sans-serif;
+  color: black;
+  height: 100%;
+  display: flex;
+  background-color: var(--color-background);
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+/* #################################################################################################### ROOT ELEMENT */
+#root {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+}
+
+/* -------------------------------------------------- INPUTS */
+select,
+button {
+  font-size: 2rem;
+}
