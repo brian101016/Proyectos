@@ -48,7 +48,7 @@ const db = {
   },
   Eléctrico: {
     efectivo: ["Volador", "Agua"],
-    no_efectivo: ["Planta", "Eléctrico", "Volador"],
+    no_efectivo: ["Planta", "Eléctrico", "Dragón"],
     inmune: [],
   },
   Normal: {
@@ -112,26 +112,66 @@ const db = {
 document.addEventListener("DOMContentLoaded", () => {
   // ################################################## VARIABLES
   const sel = document.getElementById("tipos");
-  const ef_list = document.getElementById("ef");
-  const noef_list = document.getElementById("noef");
+  const these_beat_me = document.getElementById("these-beat-me");
+  const i_beat_these = document.getElementById("i-beat-these");
+  const these_endure_me = document.getElementById("these-endure-me");
+  const i_endure_these = document.getElementById("i-endure-these");
 
-  ef_list.replaceChildren();
-  noef_list.replaceChildren();
+  /**
+   * @type CanvasRenderingContext2D
+   */
+  const ctx = document.getElementById("canvas")?.getContext?.("2d");
+
+  these_beat_me.replaceChildren();
+  i_beat_these.replaceChildren();
+  these_endure_me.replaceChildren();
+  i_endure_these.replaceChildren();
   sel.replaceChildren();
 
+  // ################################################## DRAW FUNCTION
+  function draw() {
+    ctx.reset();
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = "#8c8c8c";
+
+    const arr = document.querySelectorAll("button");
+    arr.forEach((el) => {
+      let cx = sel.offsetLeft + sel.offsetWidth / 2;
+      let cy = sel.offsetTop + sel.offsetHeight / 2;
+      let rx = el.offsetLeft + el.offsetWidth / 2;
+      let ry = el.offsetTop + el.offsetHeight / 2;
+
+      if (rx > cx) {
+        cx += sel.offsetWidth / 2;
+        rx -= el.offsetWidth / 2;
+      } else {
+        cx -= sel.offsetWidth / 2;
+        rx += el.offsetWidth / 2;
+      }
+
+      if (ry > cy) cy += sel.offsetHeight / 4;
+      else cy -= sel.offsetHeight / 4;
+
+      ctx.beginPath();
+      ctx.moveTo(cx, cy);
+      ctx.lineTo(rx, ry);
+      ctx.stroke();
+    });
+  }
+
   // ################################################## CREATE ITEM
-  function createItem(value = "Fuego") {
-    const li = document.createElement("li");
+  function createItem(value = "Fuego", inmune = false) {
+    const it = document.createElement("p");
     const btn = document.createElement("button");
     btn.textContent = value;
-    btn.className = value;
+    btn.className = inmune ? value + " inmune" : value;
     btn.onclick = () => {
       sel.value = value;
       sel.onchange();
     };
-    li.appendChild(btn);
+    it.appendChild(btn);
 
-    return li;
+    return it;
   }
 
   // ################################################## START SELECT OPTIONS
@@ -139,30 +179,74 @@ document.addEventListener("DOMContentLoaded", () => {
     const op = document.createElement("option");
     op.value = type;
     op.text = type;
+    op.className = type;
     sel.appendChild(op);
   }
 
   // ################################################## SELECT ON-CHANGE
   sel.onchange = () => {
-    ef_list.replaceChildren();
-    noef_list.replaceChildren();
+    these_beat_me.replaceChildren();
+    i_beat_these.replaceChildren();
+    these_endure_me.replaceChildren();
+    i_endure_these.replaceChildren();
     /**
      * @type { {efectivo: string[], no_efectivo: string[], inmune: string[]} }
      */
     const subdb = db[sel.value];
+    sel.className = sel.value;
 
-    // FUERTE CONTRA...
+    // ------------------------- FUERZA (ARRIBA)
+    // ITEMS DONDE YO GANO...
     for (const item of subdb.efectivo) {
-      noef_list.appendChild(createItem(item));
+      i_beat_these.appendChild(createItem(item));
     }
 
-    // DEBIL CONTRA...
+    // PARA TODOS LOS TIPOS...
     for (const type in db) {
       /**
        * @type {string[]}
        */
       const arr = db[type].efectivo;
-      if (arr.includes(sel.value)) ef_list.appendChild(createItem(type));
+      // SI ESE TIPO ME GANA...
+      if (arr.includes(sel.value)) these_beat_me.appendChild(createItem(type));
     }
+
+    // ------------------------- RESISTENCIA (ABAJO)
+    // ITEMS DONDE NO LES HAGO DAÑO...
+    for (const item of subdb.no_efectivo) {
+      these_endure_me.appendChild(createItem(item));
+    }
+
+    // PARA TODOS LOS TIPOS...
+    for (const type in db) {
+      /**
+       * @type {string[]}
+       */
+      const arr = db[type].no_efectivo;
+      // SI ESE TIPO NO ME HACE DAÑO...
+      if (arr.includes(sel.value)) i_endure_these.appendChild(createItem(type));
+    }
+
+    // ------------------------- INMUNIDADES
+    // ITEMS A LOS QUE SOY INMUNE
+    for (const item of subdb.inmune) {
+      i_endure_these.appendChild(createItem(item, true));
+    }
+
+    // PARA TODOS LOS TIPOS...
+    for (const type in db) {
+      /**
+       * @type {string[]}
+       */
+      const arr = db[type].inmune;
+      // QUE SEAN INMUNES A MI...
+      if (arr.includes(sel.value))
+        these_endure_me.appendChild(createItem(type, true));
+    }
+
+    draw();
   };
+
+  // START
+  sel.onchange();
 });

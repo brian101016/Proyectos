@@ -26,18 +26,231 @@ html {
   width: 100%;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
 }
 
 /* #################################################################################################### ROOT ELEMENT */
 #root {
-  display: flex;
+  display: grid;
   align-items: center;
   justify-content: center;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  text-align: center;
   gap: 2rem;
+
+  width: 100%;
+  height: 100%;
 }
 
-/* -------------------------------------------------- INPUTS */
+/* #################################################################################################### CANVAS */
+canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+}
+
+/* #################################################################################################### INPUTS */
+/* -------------------------------------------------- BASE */
 select,
 button {
-  font-size: 2rem;
+  padding: 0.2em 0.5em;
+
+  color: black;
+  background-color: transparent;
+  border: 3px solid currentColor;
+  border-radius: 1rem;
+
+  font-family: monospace;
+  font-size: 1.5rem;
+  font-weight: 600;
+  line-height: 1;
+  box-shadow: 0px 0px 15px 0px black;
+}
+
+/* ######################### INPUTS - HOVER */
+select:hover,
+button:hover {
+  opacity: 0.4;
+  cursor: pointer;
+}
+
+/* ######################### INPUTS - ACTIVE */
+button:active {
+  opacity: 0.4;
+  transform: scale(0.9);
+}
+
+/* ######################### INPUTS - FOCUS */
+button:focus,
+select:focus {
+  outline: 2px solid currentColor;
+  outline-offset: 5px;
+}
+
+/* #################################################################################################### CELLS */
+/* -------------------------------------------------- PRINCIPAL CELL */
+.sel-cont {
+  grid-row: 1 / -1;
+  grid-column: 2 / 3;
+}
+
+/* -------------------------------------------------- OTHER CELLS */
+.div-item {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  z-index: 1;
+}
+
+/* ######################### BEFORE CELLS (TITLES) */
+.div-item::before {
+  color: black;
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+/* #################################################################################################### TYPE COLORS */
+
+.Acero {
+  color: #323232;
+  background-color: #7c7c7c;
+}
+
+.Volador {
+  color: #a4a4a4;
+  background-color: #f6f6f6;
+}
+
+.Agua {
+  color: #0409b0;
+  background-color: #3d6eec;
+}
+
+.Hielo {
+  color: #6e71d4;
+  background-color: #c1c3ed;
+}
+
+.Planta {
+  color: #20742c;
+  background-color: #46b97e;
+}
+
+.Bicho {
+  color: #699137;
+  background-color: #8ef963;
+}
+
+.Eléctrico {
+  color: #8f9300;
+  background-color: #f5fe58;
+}
+
+.Normal {
+  color: #826868;
+  background-color: #ceb6b6;
+}
+
+.Roca {
+  color: #462d0c;
+  background-color: #8c6b4c;
+}
+
+.Tierra {
+  color: #9c5820;
+  background-color: #d1a27d;
+}
+
+.Fuego {
+  color: #b00e0e;
+  background-color: #f65656;
+}
+
+.Lucha {
+  color: #db6400;
+  background-color: #ffa038;
+}
+
+.Hada {
+  color: #d846ea;
+  background-color: #ffbfe8;
+}
+
+.Psíquico {
+  color: #db087a;
+  background-color: #fa6def;
+}
+
+.Veneno {
+  color: #9603a9;
+  background-color: #de79ed;
+}
+
+.Dragón {
+  color: #3d3441;
+  background-color: #964cca;
+}
+
+.Fantasma {
+  color: #bc83ea;
+  background-color: #875e9b;
+}
+
+.Siniestro {
+  color: #c3c3c3;
+  background-color: #383838;
+}
+
+/* -------------------------------------------------- INMUNE */
+.inmune {
+  position: relative;
+}
+
+.inmune::after {
+  width: 100%;
+  height: 100%;
+  top: 0%;
+  left: 0%;
+  content: "";
+  position: absolute;
+  border-radius: inherit;
+  background-image: linear-gradient(
+      to top left,
+      transparent calc(50% - 3px),
+      currentColor calc(50% - 3px),
+      currentColor calc(50% + 3px),
+      transparent calc(50% + 3px)
+    ),
+    linear-gradient(
+      to top right,
+      transparent calc(50% - 3px),
+      currentColor calc(50% - 3px),
+      currentColor calc(50% + 3px),
+      transparent calc(50% + 3px)
+    );
+}
+
+/* -------------------------------------------------- SPECIFIC ID'S */
+
+#these-beat-me::before {
+  content: "Estos me ganan";
+}
+#i-beat-these::before {
+  content: "Yo les gano";
+}
+#these-endure-me::before {
+  content: "Estos me resisten";
+}
+#i-endure-these::before {
+  content: "Yo los resisto";
 }
