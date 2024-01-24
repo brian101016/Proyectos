@@ -1,4 +1,4 @@
-export function position_meeting(_x, _y, _obj, _ignore) {
+function position_meeting(_x, _y, _obj, _ignore) {
   if (typeof _obj === "object") {
     const _obj_coords = _obj.getBoundingClientRect();
 
@@ -31,7 +31,7 @@ export function position_meeting(_x, _y, _obj, _ignore) {
 //###############################################################################################################
 //###############################################################################################################
 
-export function place_meeting(_x, _y, _obj, _ignore) {
+function place_meeting(_x, _y, _obj, _ignore) {
   const _prev_left = _ignore.style.left;
   const _prev_top = _ignore.style.top;
 
@@ -51,7 +51,7 @@ export function place_meeting(_x, _y, _obj, _ignore) {
 //###############################################################################################################
 //###############################################################################################################
 
-export function check_colision(_obj1, _obj2) {
+function check_colision(_obj1, _obj2) {
   const _obj_coords2 = _obj2.getBoundingClientRect();
   const _obj_list = document.querySelectorAll(_obj1);
 
@@ -90,7 +90,7 @@ export function check_colision(_obj1, _obj2) {
 //###############################################################################################################
 //###############################################################################################################
 
-export function random_range(_min, _max) {
+function random_range(_min, _max) {
   let _diff = _max - _min;
   return Math.round(_min + _diff * Math.random());
 }
@@ -98,7 +98,7 @@ export function random_range(_min, _max) {
 //###############################################################################################################
 //###############################################################################################################
 
-export function boundaries(_min, _value, _max, _wrap) {
+function boundaries(_min, _value, _max, _wrap) {
   if (!_wrap) {
     if (_value < _min) return _min;
     if (_value > _max) return _max;
@@ -113,7 +113,7 @@ export function boundaries(_min, _value, _max, _wrap) {
 //###############################################################################################################
 //###############################################################################################################
 
-export function approach(_start, _end, _amount) {
+function approach(_start, _end, _amount) {
   if (_start < _end) return Math.min(_start + _amount, _end);
   else return Math.max(_start - _amount, _end);
 }
@@ -121,7 +121,7 @@ export function approach(_start, _end, _amount) {
 //###############################################################################################################
 //###############################################################################################################
 
-export function music_scheme(_action, _value) {
+function music_scheme(_action, _value) {
   if (_action == "change") {
     music_queue[current_music].pause();
 
@@ -148,7 +148,7 @@ export function music_scheme(_action, _value) {
 //###############################################################################################################
 //###############################################################################################################
 
-export class Obj_Timer {
+class Obj_Timer {
   constructor(display, countdown, ejfunction) {
     this.starting_time = 0;
     this.diff_time = 0;
