@@ -1,4 +1,4 @@
-let chartSize = 5;
+let chartSize = 4;
 const prevCoords = { x: 0, y: 0 };
 const exterior = { x: 0, y: 0 };
 
@@ -7,6 +7,7 @@ const cont = document.getElementById("container");
 const gen = document.getElementById("gen");
 const inp = document.getElementById("size");
 const stat = document.getElementById("status");
+const photo = document.getElementById("photo");
 gen.onclick = (e) => {
   reset();
   genStart();
@@ -25,7 +26,12 @@ function reset() {
  * @param {number} size
  */
 function genStart() {
-  const url = "https://picsum.photos/id/36/" + chartSize * 100;
+  let url = "";
+  if (photo.files.length) {
+    url = URL.createObjectURL(photo.files[0]);
+    setTimeout(() => URL.revokeObjectURL(url), 10000);
+  } else url = "https://picsum.photos/id/88/1280/1707";
+
   cont.replaceChildren();
 
   /** @type {{ x: number, y: number }[]} */
@@ -36,6 +42,7 @@ function genStart() {
   for (let y = 0; y < chartSize; y++) {
     for (let x = 0; x < chartSize; x++) {
       const n = coords.length > 1 ? random_range(0, coords.length - 2) : 0;
+      // const n = 0;
       const coord = coords.splice(n, 1)[0];
       const img = document.createElement("div");
       img.src = url;
@@ -45,6 +52,7 @@ function genStart() {
       img.style.backgroundImage = `url(${url})`;
       img.style.backgroundPositionX = `-${coord.x * 100}px`;
       img.style.backgroundPositionY = `-${coord.y * 100}px`;
+      img.style.backgroundSize = chartSize * 100 + "px";
       cont.appendChild(img);
     }
   }

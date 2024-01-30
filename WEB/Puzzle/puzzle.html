@@ -8,17 +8,20 @@
   </head>
   <body>
     <h2 id="status">Select chart size</h2>
-
-    <button id="gen">Generar</button>
-    <input
-      id="size"
-      type="number"
-      min="2"
-      max="8"
-      step="1"
-      value="5"
-      placeholder="2-8"
-    />
+    <div>
+      <button id="gen">Start</button>
+      <input
+        id="size"
+        type="number"
+        min="2"
+        max="8"
+        step="1"
+        value="4"
+        placeholder="2-8"
+      />
+      <label for="photo">Use custom photo:</label>
+      <input type="file" id="photo" accept="image/*" />
+    </div>
 
     <div id="container" class="bg-filler">En espera...</div>
 
