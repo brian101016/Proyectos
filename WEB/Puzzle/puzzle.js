@@ -3,14 +3,31 @@ const prevCoords = { x: 0, y: 0 };
 const exterior = { x: 0, y: 0 };
 
 document.onkeydown = handleKeyDown;
-const cont = document.getElementById("container");
+const cont = document.getElementById("chart");
 const gen = document.getElementById("gen");
 const inp = document.getElementById("size");
 const stat = document.getElementById("status");
 const photo = document.getElementById("photo");
+const preview = document.getElementById("preview");
+const previewStyle = document.getElementById("preview-style");
+const previewBtn = document.getElementById("preview-btn");
+const invert = document.getElementById("invert");
+
 gen.onclick = (e) => {
   reset();
   genStart();
+};
+
+previewStyle.onchange = () => {
+  preview.className = previewStyle.value;
+  if (previewStyle.value === "hover") {
+    previewBtn.classList.remove("hidden");
+    preview.classList.add("hover-hide");
+  } else previewBtn.classList.add("hidden");
+};
+
+previewBtn.onclick = () => {
+  if (previewStyle.value === "hover") preview.classList.toggle("hover-hide");
 };
 
 function reset() {
@@ -32,6 +49,8 @@ function genStart() {
     setTimeout(() => URL.revokeObjectURL(url), 10000);
   } else url = "https://picsum.photos/id/88/1280/1707";
 
+  preview.style.backgroundImage = `url(${url})`;
+  preview.style.width = preview.style.backgroundSize = chartSize * 100 + "px";
   cont.replaceChildren();
 
   /** @type {{ x: number, y: number }[]} */
@@ -59,12 +78,13 @@ function genStart() {
 }
 
 function handleKeyDown(e) {
+  const value = invert.checked ? -100 : 100;
   let ntt = prevCoords.y;
   let nll = prevCoords.x;
-  if (e.code === "ArrowUp" || e.code === "KeyW") ntt += 100;
-  else if (e.code === "ArrowDown" || e.code === "KeyS") ntt -= 100;
-  else if (e.code === "ArrowRight" || e.code === "KeyD") nll -= 100;
-  else if (e.code === "ArrowLeft" || e.code === "KeyA") nll += 100;
+  if (e.code === "ArrowUp" || e.code === "KeyW") ntt += value;
+  else if (e.code === "ArrowDown" || e.code === "KeyS") ntt -= value;
+  else if (e.code === "ArrowRight" || e.code === "KeyD") nll -= value;
+  else if (e.code === "ArrowLeft" || e.code === "KeyA") nll += value;
   else return;
 
   let check = false;
@@ -99,3 +119,53 @@ function handleKeyDown(e) {
 function showWin() {
   stat.textContent = "WIN!";
 }
+
+/*
+
+document.addEventListener('touchstart', handleTouchStart, false);        
+document.addEventListener('touchmove', handleTouchMove, false);
+
+var xDown = null;                                                        
+var yDown = null;
+
+function getTouches(evt) {
+  return evt.touches ||             // browser API
+         evt.originalEvent.touches; // jQuery
+}                                                     
+                                                                         
+function handleTouchStart(evt) {
+    const firstTouch = getTouches(evt)[0];                                      
+    xDown = firstTouch.clientX;                                      
+    yDown = firstTouch.clientY;                                      
+};                                                
+                                                                         
+function handleTouchMove(evt) {
+    if ( ! xDown || ! yDown ) {
+        return;
+    }
+
+    var xUp = evt.touches[0].clientX;                                    
+    var yUp = evt.touches[0].clientY;
+
+    var xDiff = xDown - xUp;
+    var yDiff = yDown - yUp;
+                                                                         
+    if ( Math.abs( xDiff ) > Math.abs( yDiff ) ) {
+        if ( xDiff > 0 ) {
+            // right
+        } else {
+            // left
+        }                       
+    } else {
+        if ( yDiff > 0 ) {
+            // down
+        } else { 
+            // up
+        }                                                                 
+    }
+    // reset
+    xDown = null;
+    yDown = null;                                             
+};
+
+*/

@@ -8,22 +8,37 @@
   </head>
   <body>
     <h2 id="status">Select chart size</h2>
-    <div>
+    <div class="controls-container">
       <button id="gen">Start</button>
       <input
         id="size"
         type="number"
-        min="2"
+        min="3"
         max="8"
         step="1"
         value="4"
-        placeholder="2-8"
+        placeholder="3-8"
       />
       <label for="photo">Use custom photo:</label>
       <input type="file" id="photo" accept="image/*" />
+      <label for="preview-style">Preview style</label>
+      <select id="preview-style">
+        <option value="hidden">Hidden</option>
+        <option value="side">Side by side</option>
+        <option value="onion">Onion skin</option>
+        <option value="hover">On hover</option>
+      </select>
+      <label for="invert">Invert controls?</label>
+      <input type="checkbox" id="invert" />
     </div>
 
-    <div id="container" class="bg-filler">En espera...</div>
+    <div class="main">
+      <div id="preview" class="hidden">
+        <button id="preview-btn">?</button>
+      </div>
+
+      <div id="chart" class="bg-filler">En espera...</div>
+    </div>
 
     <script src="./puzzle.js"></script>
     <script src="../Wold Global/scripts.js"></script>
