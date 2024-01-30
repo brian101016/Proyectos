@@ -87,6 +87,10 @@ function handleKeyDown(e) {
   else if (e.code === "ArrowLeft" || e.code === "KeyA") nll += value;
   else return;
 
+  movePiece(ntt, nll);
+}
+
+function movePiece(ntt, nll) {
   let check = false;
   if (0 <= ntt && ntt < chartSize * 100 && 0 <= nll && nll < chartSize * 100) {
   } else if (ntt === exterior.y && nll === exterior.x) check = true;
@@ -120,52 +124,38 @@ function showWin() {
   stat.textContent = "WIN!";
 }
 
-/*
+document.addEventListener("touchstart", handleTouchStart, false);
+document.addEventListener("touchmove", handleTouchMove, false);
 
-document.addEventListener('touchstart', handleTouchStart, false);        
-document.addEventListener('touchmove', handleTouchMove, false);
+const touchCoords = { x: null, y: null };
 
-var xDown = null;                                                        
-var yDown = null;
-
-function getTouches(evt) {
-  return evt.touches ||             // browser API
-         evt.originalEvent.touches; // jQuery
-}                                                     
-                                                                         
 function handleTouchStart(evt) {
-    const firstTouch = getTouches(evt)[0];                                      
-    xDown = firstTouch.clientX;                                      
-    yDown = firstTouch.clientY;                                      
-};                                                
-                                                                         
+  const firstTouch = evt.touches[0];
+  touchCoords.x = firstTouch.clientX;
+  touchCoords.y = firstTouch.clientY;
+}
+
 function handleTouchMove(evt) {
-    if ( ! xDown || ! yDown ) {
-        return;
-    }
+  if (touchCoords.x === null || touchCoords.y === null) return;
 
-    var xUp = evt.touches[0].clientX;                                    
-    var yUp = evt.touches[0].clientY;
+  const xUp = evt.touches[0].clientX;
+  const yUp = evt.touches[0].clientY;
 
-    var xDiff = xDown - xUp;
-    var yDiff = yDown - yUp;
-                                                                         
-    if ( Math.abs( xDiff ) > Math.abs( yDiff ) ) {
-        if ( xDiff > 0 ) {
-            // right
-        } else {
-            // left
-        }                       
-    } else {
-        if ( yDiff > 0 ) {
-            // down
-        } else { 
-            // up
-        }                                                                 
-    }
-    // reset
-    xDown = null;
-    yDown = null;                                             
-};
+  const xDiff = touchCoords.x - xUp;
+  const yDiff = touchCoords.y - yUp;
 
-*/
+  const value = invert.checked ? 100 : -100;
+  let ntt = prevCoords.y;
+  let nll = prevCoords.x;
+
+  if (Math.abs(xDiff) > Math.abs(yDiff)) {
+    if (xDiff > 0) nll -= value;
+    else nll += value;
+  } else {
+    if (yDiff > 0) ntt -= value;
+    else ntt += value;
+  }
+
+  movePiece(ntt, nll);
+  touchCoords.y = touchCoords.x = null;
+}
