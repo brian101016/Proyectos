@@ -55,26 +55,66 @@ function genStart() {
 
   /** @type {{ x: number, y: number }[]} */
   const coords = [];
-  for (let y = 0; y < chartSize; y++)
-    for (let x = 0; x < chartSize; x++) coords.push({ x, y });
+  coords.length = chartSize * chartSize;
 
-  for (let y = 0; y < chartSize; y++) {
-    for (let x = 0; x < chartSize; x++) {
-      const n = coords.length > 1 ? random_range(0, coords.length - 2) : 0;
-      // const n = 0;
-      const coord = coords.splice(n, 1)[0];
-      const img = document.createElement("div");
-      img.src = url;
-      img.className = "piece";
-      img.style.top = y * 100 + "px";
-      img.style.left = x * 100 + "px";
-      img.style.backgroundImage = `url(${url})`;
-      img.style.backgroundPositionX = `-${coord.x * 100}px`;
-      img.style.backgroundPositionY = `-${coord.y * 100}px`;
-      img.style.backgroundSize = chartSize * 100 + "px";
-      cont.appendChild(img);
+  for (let i = 0; i < coords.length; i++) {
+    const currentCoords = coords[i] || parseCoords(i);
+
+    if (i === coords.length - 1) {
+      coords[i] = currentCoords;
+      break;
     }
+
+    let n = random_range(0, coords.length - 2);
+    if (n === i) n += n === 0 ? 1 : -1;
+    const otherCoords1 = coords[n] || parseCoords(n);
+
+    coords[i] = otherCoords1;
+    coords[n] = currentCoords;
+
+    n = random_range(0, coords.length - 2);
+    if (n === i) n += n === 0 ? 1 : -1;
+    const otherCoords2 = coords[n] || parseCoords(n);
+
+    coords[i] = otherCoords2;
+    coords[n] = otherCoords1;
   }
+
+  for (let i = 0; i < coords.length; i++) {
+    const coord = coords[i];
+    const actualCoords = parseCoords(i);
+    const img = document.createElement("div");
+    img.src = url;
+    img.className = "piece";
+    img.style.top = actualCoords.y * 100 + "px";
+    img.style.left = actualCoords.x * 100 + "px";
+    img.style.backgroundImage = `url(${url})`;
+    img.style.backgroundPositionX = `-${coord.x * 100}px`;
+    img.style.backgroundPositionY = `-${coord.y * 100}px`;
+    img.style.backgroundSize = chartSize * 100 + "px";
+    cont.appendChild(img);
+  }
+}
+
+/**
+ * @param {number} index Index from which calculate the respective coords.
+ * @returns {{ x: number, y: number }} Pair of coords
+ */
+function parseCoords(index) {
+  return { x: index % chartSize, y: Math.floor(index / chartSize) };
+}
+
+/**
+ * Swaps to indexes inside an array
+ * @param {any[]} arr Array to mutate
+ * @param {number} index1 First index to swap
+ * @param {number} index2 Second index to swap
+ */
+function swap(arr, index1, index2) {
+  if (index1 === index2) index2 += index2 === 0 ? 1 : -1;
+  const aux = arr[index1];
+  arr[index1] = arr[index2];
+  arr[index2] = aux;
 }
 
 function handleKeyDown(e) {
@@ -124,18 +164,20 @@ function showWin() {
   stat.textContent = "WIN!";
 }
 
-document.addEventListener("touchstart", handleTouchStart, false);
-document.addEventListener("touchmove", handleTouchMove, false);
+cont.addEventListener("touchstart", handleTouchStart, false);
+cont.addEventListener("touchmove", handleTouchMove, false);
 
 const touchCoords = { x: null, y: null };
 
 function handleTouchStart(evt) {
+  evt.preventDefault();
   const firstTouch = evt.touches[0];
   touchCoords.x = firstTouch.clientX;
   touchCoords.y = firstTouch.clientY;
 }
 
 function handleTouchMove(evt) {
+  evt.preventDefault();
   if (touchCoords.x === null || touchCoords.y === null) return;
 
   const xUp = evt.touches[0].clientX;
