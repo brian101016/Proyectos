@@ -13,9 +13,9 @@ const previewStyle = document.getElementById("preview-style");
 const previewBtn = document.getElementById("preview-btn");
 const invert = document.getElementById("invert");
 
-gen.onclick = (e) => {
+gen.onclick = async (e) => {
   reset();
-  genStart();
+  await genStart();
 };
 
 previewStyle.onchange = () => {
@@ -42,12 +42,15 @@ function reset() {
  *
  * @param {number} size
  */
-function genStart() {
+async function genStart() {
   let url = "";
   if (photo.files.length) {
     url = URL.createObjectURL(photo.files[0]);
     setTimeout(() => URL.revokeObjectURL(url), 10000);
-  } else url = "https://picsum.photos/id/88/1280/1707";
+  } else {
+    const res = await fetch("https://picsum.photos/" + chartSize * 100);
+    url = res.url;
+  }
 
   preview.style.backgroundImage = `url(${url})`;
   preview.style.width = preview.style.backgroundSize = chartSize * 100 + "px";
