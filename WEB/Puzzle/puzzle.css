@@ -93,7 +93,7 @@ body {
   top: -2px;
   right: 100%;
   margin: 25px;
-  border: 2px solid red;
+  /* border: 2px solid red; */
   opacity: 0.75;
   border-radius: 50%;
   justify-content: center;
