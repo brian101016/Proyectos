@@ -1,3 +1,7 @@
+let playing = false;
+let auto = false;
+let generating = false;
+let consecutive_num = null;
 let chartSize = 4;
 const prevCoords = { x: 0, y: 0 };
 const exterior = { x: 0, y: 0 };
@@ -12,11 +16,10 @@ const preview = document.getElementById("preview");
 const previewStyle = document.getElementById("preview-style");
 const previewBtn = document.getElementById("preview-btn");
 const invert = document.getElementById("invert");
+const auto_el = document.getElementById("auto");
+const consecutive_el = document.getElementById("consecutive");
 
-gen.onclick = async (e) => {
-  reset();
-  await genStart();
-};
+gen.onclick = genStart;
 
 previewStyle.onchange = () => {
   preview.className = previewStyle.value;
@@ -30,12 +33,54 @@ previewBtn.onclick = () => {
   if (previewStyle.value === "hover") preview.classList.toggle("hover-hide");
 };
 
+consecutive_el.onchange = (e) => setConsecutive(e.target.checked);
+
+function setConsecutive(value) {
+  consecutive_el.checked = !!value;
+
+  clearTimeout(consecutive_num);
+  consecutive_num = null;
+
+  if (playing) return;
+  if (!value) return (stat.textContent = "WIN!");
+
+  stat.textContent = "WIN! New one will start soon...";
+  consecutive_num = setTimeout(genStart, 3000);
+}
+
+auto_el.onchange = (e) => setAuto(e.target.checked);
+
+function setAuto(value) {
+  auto = auto_el.checked = value;
+
+  if (auto) console.log("START AUTO");
+  else console.log("END AUTO");
+}
+
 function reset() {
   chartSize = inp.value ? parseInt(inp.value) : chartSize;
   cont.style.height = cont.style.width = chartSize * 100 + "px";
   prevCoords.x = exterior.x = chartSize * 100;
   prevCoords.y = exterior.y = (chartSize - 1) * 100;
-  stat.textContent = "...";
+  playing = auto = false;
+  consecutive_num = null;
+}
+
+function block(disabled) {
+  if (disabled === undefined) disabled = generating;
+  gen.disabled = disabled;
+  inp.disabled = disabled;
+  photo.disabled = disabled;
+  previewStyle.disabled = disabled;
+  invert.disabled = disabled;
+  auto_el.disabled = disabled;
+  consecutive_el.disabled = disabled;
+  previewBtn.disabled = disabled;
+  stat.textContent = generating ? "Loading..." : "Playing...";
+  if (disabled) return reset();
+  playing = true;
+  setAuto(auto_el.checked);
+  setConsecutive(consecutive_el.checked);
 }
 
 /**
@@ -43,6 +88,8 @@ function reset() {
  * @param {number} size
  */
 async function genStart() {
+  if (generating) return;
+  block((generating = true));
   let url = "";
   if (photo.files.length) {
     url = URL.createObjectURL(photo.files[0]);
@@ -97,6 +144,8 @@ async function genStart() {
     img.style.backgroundSize = chartSize * 100 + "px";
     cont.appendChild(img);
   }
+
+  block((generating = false));
 }
 
 /**
@@ -134,6 +183,8 @@ function handleKeyDown(e) {
 }
 
 function movePiece(ntt, nll) {
+  if (auto || !playing) return console.log("CANT MOVE IN AUTO");
+
   let check = false;
   if (0 <= ntt && ntt < chartSize * 100 && 0 <= nll && nll < chartSize * 100) {
   } else if (ntt === exterior.y && nll === exterior.x) check = true;
@@ -160,11 +211,12 @@ function movePiece(ntt, nll) {
       parseInt(el.style.left) + parseInt(el.style.backgroundPositionX) === 0;
   }
 
-  if (win) showWin();
+  if (win) won();
 }
 
-function showWin() {
-  stat.textContent = "WIN!";
+function won() {
+  playing = false;
+  setConsecutive(consecutive_el.checked);
 }
 
 cont.addEventListener("touchstart", handleTouchStart, false);
