@@ -292,3 +292,16 @@ function shuffle(array) {
   }
   return array;
 }
+
+// ---------------------------------------------------------------------- STALL
+/**
+ * Función para simular un tiempo de espera, se utiliza con `async/await`.
+ *
+ * @param stallTime Tiempo de espera en milisegundos, `default = 3000ms (3s)`.
+ * @example console.log("Tiempo inicial");
+ * await stall(); // Espera 3s
+ * console.log("Después de 3s");
+ */
+async function stall(stallTime = 3000) {
+  return new Promise((r) => setTimeout(() => r(true), stallTime));
+}

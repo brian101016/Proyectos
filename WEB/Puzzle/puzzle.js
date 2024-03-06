@@ -3,8 +3,13 @@ let auto = false;
 let generating = false;
 let consecutive_num = null;
 let chartSize = 4;
+let url = "";
 const prevCoords = { x: 0, y: 0 };
 const exterior = { x: 0, y: 0 };
+/** @type { (HTMLDivElement | null)[] } */
+const pieces = [];
+/** @type {{ x: number, y: number }[]} */
+const coords = [];
 
 document.onkeydown = handleKeyDown;
 const cont = document.getElementById("chart");
@@ -90,7 +95,7 @@ function block(disabled) {
 async function genStart() {
   if (generating) return;
   block((generating = true));
-  let url = "";
+  url = "";
   if (photo.files.length) {
     url = URL.createObjectURL(photo.files[0]);
     setTimeout(() => URL.revokeObjectURL(url), 10000);
@@ -102,50 +107,72 @@ async function genStart() {
   preview.style.backgroundImage = `url(${url})`;
   preview.style.width = preview.style.backgroundSize = chartSize * 100 + "px";
   cont.replaceChildren();
+  pieces.length = coords.length = 0;
+  pieces.length = coords.length = chartSize * chartSize;
 
-  /** @type {{ x: number, y: number }[]} */
-  const coords = [];
-  coords.length = chartSize * chartSize;
+  // ESTE CICLO ES ESTÉTICO PARA QUE SE VEAN LAS PIEZAS ANTES DE REVOLVERLAS
+  for (let i = 0; i < coords.length; i++) updatePiece(i);
+  await stall(500); // MEDIO SEGUNDO PARA VER EL PUZZLE COMPLETO
 
-  for (let i = 0; i < coords.length; i++) {
-    const currentCoords = coords[i] || parseCoords(i);
-
-    if (i === coords.length - 1) {
-      coords[i] = currentCoords;
-      break;
-    }
-
-    let n = random_range(0, coords.length - 2);
-    if (n === i) n += n === 0 ? 1 : -1;
-    const otherCoords1 = coords[n] || parseCoords(n);
-
-    coords[i] = otherCoords1;
-    coords[n] = currentCoords;
-
-    n = random_range(0, coords.length - 2);
-    if (n === i) n += n === 0 ? 1 : -1;
-    const otherCoords2 = coords[n] || parseCoords(n);
-
-    coords[i] = otherCoords2;
-    coords[n] = otherCoords1;
+  for (let i = 0; i < coords.length - 1; i++) {
+    shufflePieces(i, coords.length - 2);
+    await stall(150);
   }
 
-  for (let i = 0; i < coords.length; i++) {
-    const coord = coords[i];
-    const actualCoords = parseCoords(i);
-    const img = document.createElement("div");
-    img.src = url;
-    img.className = "piece";
-    img.style.top = actualCoords.y * 100 + "px";
-    img.style.left = actualCoords.x * 100 + "px";
-    img.style.backgroundImage = `url(${url})`;
-    img.style.backgroundPositionX = `-${coord.x * 100}px`;
-    img.style.backgroundPositionY = `-${coord.y * 100}px`;
-    img.style.backgroundSize = chartSize * 100 + "px";
-    cont.appendChild(img);
-  }
+  // updatePiece(i); // ESTE NO ES NECESARIO SI SE ACTIVA EL CICLO ESTÉTICO
 
   block((generating = false));
+}
+
+/**
+ * @param {number} curri Current Index
+ * @param {number} max Max Index Aviable (inclusive)
+ * @returns {[number, number]} Two numbers who also have been shuffled
+ */
+function shufflePieces(curri, max) {
+  let n1 = random_range(0, max);
+  let n2 = random_range(0, max);
+
+  if (n1 === curri) n1 += curri === 0 ? 1 : -1;
+  while (n2 === curri || n2 === n1) n2 = boundaries(0, n2 + 1, max, true);
+
+  const currentCoords = coords[curri] || parseCoords(curri);
+  const otherCoords1 = coords[n1] || parseCoords(n1);
+  const otherCoords2 = coords[n2] || parseCoords(n2);
+
+  coords[curri] = otherCoords2;
+  coords[n1] = currentCoords;
+  coords[n2] = otherCoords1;
+
+  updatePiece(curri);
+  updatePiece(n1);
+  updatePiece(n2);
+
+  return [n1, n2];
+}
+
+/**
+ * @param {number} index
+ */
+function updatePiece(index) {
+  const piece = pieces[index] || document.createElement("div");
+  const actualCoords = parseCoords(index);
+  const coord = coords[index] || actualCoords;
+
+  piece.src = url;
+  piece.className = "piece";
+  piece.style.top = coord.y * 100 + "px";
+  piece.style.left = coord.x * 100 + "px";
+  piece.style.backgroundImage = `url(${url})`;
+  piece.style.backgroundPositionX = `-${actualCoords.x * 100}px`;
+  piece.style.backgroundPositionY = `-${actualCoords.y * 100}px`;
+  piece.style.backgroundSize = chartSize * 100 + "px";
+
+  if (!pieces[index]) {
+    pieces[index] = piece;
+    coords[index] = coord;
+    cont.appendChild(piece);
+  }
 }
 
 /**
@@ -255,4 +282,31 @@ function handleTouchMove(evt) {
 
   movePiece(ntt, nll);
   touchCoords.y = touchCoords.x = null;
+}
+
+// ########################################################################### AUTO FUNCTIONS
+function findNextWrong() {
+  console.log("Finding...");
+
+  const els = document.querySelectorAll(".piece");
+  let index = 0;
+  for (const el of els) {
+    const im_in = {
+      x: parseInt(el.style.left),
+      y: parseInt(el.style.top),
+    };
+    const need_to_be = {
+      x: parseInt(el.style.backgroundPositionX),
+      y: parseInt(el.style.backgroundPositionY),
+    };
+
+    index++;
+
+    console.log(index + ".- ", im_in, need_to_be);
+    if (im_in.x + need_to_be.x !== 0) {
+      console.log("   Wrong X coord");
+    } else if (im_in.y + need_to_be.y !== 0) console.log("   Wrong Y coord");
+  }
+
+  console.log("Found: ");
 }
