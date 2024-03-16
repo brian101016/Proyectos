@@ -9,16 +9,23 @@
 let playing = false;
 let auto = false;
 let generating = false;
+/** @type {number | null} Guarda el valor del intervalo de espera del consecutive */
 let consecutive_num = null;
 let url = "";
 
 // ---------------------------------------------------------------------- STRUCTURES
+/** @typedef {{x: number, y: number}} Coords */
+/** @typedef { (HTMLDivElement | null)[] } Pieces */
+
+/** @type {Coords} */
 const chartSize = { x: 4, y: 4 };
+/** @type {Coords} */
 const emptyCoords = { x: 0, y: 0 };
+/** @type {Coords} */
 const exterior = { x: 0, y: 0 };
-/** @type { (HTMLDivElement | null)[] } */
+/** @type { Pieces } */
 const pieces = [];
-/** @type {{ x: number, y: number }[]} */
+/** @type {Coords[]} */
 const coords = [];
 /**
  * Guarda el index según la posición en el chart, de los elementos de coords y pieces.
@@ -32,6 +39,7 @@ const coords = [];
  * positions[parseIndex(emptyCoords)] === -1; // Siempre
  */
 const positions = [];
+/** @type {Coords} */
 const touchCoords = { x: 0, y: 0 };
 
 // ---------------------------------------------------------------------- CONSTANTS
@@ -96,14 +104,22 @@ function handlePreviewToggle() {
  */
 function handleKeyDown(e) {
   let direction = "up";
+  let dirx = ["left", "right"];
+  let diry = ["up", "down"];
 
-  if (e.code === "ArrowUp" || e.code === "KeyW") direction = "up";
-  else if (e.code === "ArrowDown" || e.code === "KeyS") direction = "down";
-  else if (e.code === "ArrowRight" || e.code === "KeyD") direction = "right";
-  else if (e.code === "ArrowLeft" || e.code === "KeyA") direction = "left";
+  if (invert.checked) {
+    dirx = ["right", "left"];
+    diry = ["down", "up"];
+  }
+
+  if (e.code === "ArrowUp" || e.code === "KeyW") direction = diry[1];
+  else if (e.code === "ArrowDown" || e.code === "KeyS") direction = diry[0];
+  else if (e.code === "ArrowLeft" || e.code === "KeyA") direction = dirx[1];
+  else if (e.code === "ArrowRight" || e.code === "KeyD") direction = dirx[0];
   else return;
 
-  movePiece(direction);
+  if (auto) console.log("CANT MOVE IN AUTO");
+  else movePiece(direction);
 }
 
 // -------------------------------------------------- HANDLE TOUCH START
@@ -135,13 +151,19 @@ function handleTouchMove(evt) {
   const yDiff = touchCoords.y - yUp;
 
   let direction = "up";
+  let dirx = ["left", "right"];
+  let diry = ["up", "down"];
 
-  if (Math.abs(xDiff) > Math.abs(yDiff)) {
-    if (xDiff > 0) direction = "right";
-    else direction = "left";
-  } else if (yDiff > 0) direction = "down";
+  if (invert.checked) {
+    dirx = ["right", "left"];
+    diry = ["down", "up"];
+  }
 
-  movePiece(direction);
+  if (Math.abs(xDiff) > Math.abs(yDiff)) direction = dirx[xDiff > 0 ? 0 : 1];
+  else direction = diry[yDiff > 0 ? 0 : 1];
+
+  if (auto) console.log("CANT MOVE IN AUTO");
+  else movePiece(direction);
   touchCoords.y = touchCoords.x = null;
 }
 // #endregion
@@ -172,6 +194,148 @@ function setAuto(activate) {
 
   if (auto) console.log("START AUTO");
   else console.log("END AUTO");
+}
+
+// ---------------------------------------------------------------------- GOTO
+/**
+ * Mueve las piezas hasta que el emptyCoords sea igual al goal.
+ * Sin restricciones de piezas bloqueadas ni nada.
+ * Con un delay de 150 ms
+ * @param {Coords} goal Coordenadas destino
+ * @returns {boolean} indicando si llegó al destino o no
+ */
+async function goto(goal) {
+  if (!checkValidity(goal) || !auto) {
+    console.log("INVALID GOAL AND/OR IS NOT AUTO");
+    return false;
+  }
+
+  let cantMoveY = false;
+  let cantMoveX = false;
+  let movingOnX = goal.x !== emptyCoords.x;
+  let prevCoords = { ...emptyCoords };
+
+  while (!equalCoords(goal, emptyCoords)) {
+    // MOVERSE
+    if (movingOnX) {
+      if (goal.x > emptyCoords.x) movePiece("left");
+      else movePiece("right");
+    } else {
+      if (goal.y > emptyCoords.y) movePiece("up");
+      else movePiece("down");
+    }
+
+    // NO SE MOVIÓ
+    if (equalCoords(prevCoords, emptyCoords)) {
+      if (movingOnX) cantMoveX = true;
+      else cantMoveY = true;
+      movingOnX = !movingOnX;
+
+      // ESTÁ ATASCADO
+      if (cantMoveX && cantMoveY) {
+        console.log("STUCK MOVEMENT", cantMoveX, cantMoveY, movingOnX);
+        return false;
+      } else continue;
+    } else {
+      // SI SE MUEVE
+      cantMoveX = false;
+      cantMoveY = false;
+
+      // CAMBIAR DIRECCIÓN
+      if (emptyCoords.x === goal.x) movingOnX = false;
+      if (emptyCoords.y === goal.y) movingOnX = true;
+    }
+
+    // CONTINUAR
+    prevCoords = { ...emptyCoords };
+    await stall(150); // DELAY
+    if (!auto) {
+      console.log("UNEXPECTED AUTO END");
+      return false;
+    }
+  }
+
+  console.log("GOAL REACHED");
+  return true;
+}
+
+// ---------------------------------------------------------------------- STEPS TO
+/**
+ * Regresa los pasos a seguir desde un punto para llegar a otro punto.
+ * @param {Coords} from Punto de origen
+ * @param {Coords} to Punto de destino
+ * @param {number[] | undefined} blocked Puntos en la tabla a omitir, en index
+ * @return {Promise<string | null>} string con los indexes para moverse.
+ */
+async function stepsTo(from, to, blocked) {
+  if (!checkValidity(from) || blocked?.includes(parseIndex(to))) return null;
+
+  /** @type {{ cor: Coords, path: string }[]} */
+  const next = [{ cor: from, path: "" }];
+  if (!blocked) blocked = [];
+  blocked.push(parseIndex(from));
+
+  do {
+    const { cor, path } = next.shift();
+    if (!cor) return null;
+
+    if (equalCoords(cor, to)) return path;
+
+    const { x, y } = cor;
+    const closeCoords = [
+      [{ x: x + 1, y }, "right"],
+      [{ x: x - 1, y }, "left"],
+      [{ x, y: y + 1 }, "down"],
+      [{ x, y: y - 1 }, "up"],
+    ];
+
+    for (const c of closeCoords) {
+      if (checkValidity(c[0]) && !blocked.includes(parseIndex(c[0]))) {
+        blocked.push(parseIndex(c[0]));
+        next.push({ cor: c[0], path: path + "," + c[1] });
+      }
+    }
+
+    if (!auto) {
+      console.log("UNEXPECTED AUTO END");
+      return null;
+    }
+  } while (next.length);
+
+  return null;
+}
+
+// ---------------------------------------------------------------------- GOTOv2
+/**
+ * Mueve las piezas hasta que el emptyCoords sea igual al goal.
+ * Teniendo restricciones de piezas bloqueadas, rodeando otras piezas
+ * Con un delay de 150 ms
+ * @param {Coords} goal Coordenadas destino
+ * @param {number[] | undefined} blocked Puntos en la tabla a omitir, en index
+ * @returns {boolean} indicando si llegó al destino o no
+ */
+async function gotov2(goal, blocked) {
+  if (!checkValidity(goal) || !auto) {
+    console.log("INVALID GOAL AND/OR IS NOT AUTO");
+    return false;
+  }
+
+  const str = await stepsTo(emptyCoords, goal, blocked);
+  if (!str) return false;
+
+  const steps = str.substring(1).split(",");
+
+  for (const step of steps) {
+    movePiece(step);
+    await stall(150); // DELAY
+    if (!auto) {
+      console.log("UNEXPECTED AUTO END");
+      return false;
+    }
+  }
+
+  console.log("GOAL REACHED");
+  return true;
 }
 // #endregion
 
@@ -212,39 +376,6 @@ function block(disabled) {
   playing = true;
   setAuto(auto_el.checked);
   setConsecutive(consecutive_el.checked);
-}
-
-// ---------------------------------------------------------------------- PARSE COORDS
-/**
- * Genera un par de coordenadas según el índice que le pongamos.
- * @param {number} index Index from which calculate the respective coords.
- * @returns {{ x: number, y: number }} Pair of coords
- */
-function parseCoords(index) {
-  return { x: index % chartSize.x, y: Math.floor(index / chartSize.x) };
-}
-
-// ---------------------------------------------------------------------- PARSE INDEX
-/**
- * Convierte unas coordenadas en un índice para buscar dentro del arreglo pieces.
- * @param {{x: number, y: number}} cor Coordenadas
- * @returns {number} regresa un número con el posible índice
- */
-function parseIndex(cor) {
-  return cor.y * chartSize.x + cor.x;
-}
-
-// ---------------------------------------------------------------------- CHECK VALIDITY
-/**
- * Revisa si un par de coordenadas son válidas
- * @param {number} indexx la coordenada x o el índice
- * @param {number | undefined} yy la coordenada y, si no existe, entonces se considera al indexx como índice
- * @returns {boolean} dependiendo de si las coords o index son válidas o no
- */
-function checkValidity(indexx, yy) {
-  if (indexx < 0 || yy < 0) return false;
-  if (yy === undefined) return indexx < pieces.length;
-  return 0 <= yy && yy < chartSize.y && 0 <= indexx && indexx < chartSize.x;
 }
 
 // ---------------------------------------------------------------------- GEN START
@@ -378,22 +509,21 @@ function updatePiece(index) {
  * @param {"up" | "down" | "left" | "right"} direction Dirección a la que moverse
  */
 function movePiece(direction) {
-  if (auto || !playing) return console.log("CANT MOVE IN AUTO");
+  if (!playing) return console.log("CANT MOVE IN AUTO");
 
-  const value = invert.checked ? -1 : 1;
-  let { x, y } = emptyCoords;
+  const nCor = { ...emptyCoords };
 
-  if (direction === "up") y += value;
-  else if (direction === "down") y -= value;
-  else if (direction === "right") x -= value;
-  else x += value;
-
-  let check = false;
-  if (checkValidity(x, y)) check = false;
-  else if (y === exterior.y && x === exterior.x) check = true;
+  if (direction === "down") nCor.y += 1;
+  else if (direction === "up") nCor.y -= 1;
+  else if (direction === "left") nCor.x -= 1;
+  else if (direction === "right") nCor.x += 1;
   else return;
 
-  const magicIndex = positions[parseIndex({ x, y })];
+  let check = false;
+  if (!checkValidity(nCor)) return;
+  if (equalCoords(nCor, exterior)) check = true;
+
+  const magicIndex = positions[parseIndex(nCor)];
   const piece = pieces[magicIndex];
   if (!piece) return;
 
@@ -407,11 +537,11 @@ function movePiece(direction) {
 
   // ACTUALIZAR LAS POSICIONES
   positions[parseIndex(emptyCoords)] = magicIndex;
-  positions[parseIndex({ x, y })] = -1;
+  positions[parseIndex(nCor)] = -1;
 
   // MOVER EL ESPACIO VACÍO
-  emptyCoords.x = x;
-  emptyCoords.y = y;
+  emptyCoords.x = nCor.x;
+  emptyCoords.y = nCor.y;
 
   if (check) findNextWrong();
 }
@@ -429,5 +559,78 @@ function findNextWrong(index) {
   if (wrongPlace === pieces.length) won();
 
   return wrongPlace;
+}
+// #endregion
+
+// #region ##################################################################################### MISC FUNCTIONS
+// ---------------------------------------------------------------------- PARSE COORDS
+/**
+ * Genera un par de coordenadas según el índice que le pongamos.
+ * @param {number} index Index from which calculate the respective coords.
+ * @returns {{ x: number, y: number }} Pair of coords
+ */
+function parseCoords(index) {
+  return { x: index % chartSize.x, y: Math.floor(index / chartSize.x) };
+}
+
+// ---------------------------------------------------------------------- PARSE INDEX
+/**
+ * Convierte unas coordenadas en un índice para buscar dentro del arreglo pieces.
+ * @param {Coords} cor Coordenadas
+ * @returns {number} regresa un número con el posible índice
+ */
+function parseIndex(cor) {
+  return cor.y * chartSize.x + cor.x;
+}
+
+// ---------------------------------------------------------------------- CHECK VALIDITY
+/**
+ * Revisa si un par de coordenadas son válidas, o son el exterior
+ * @param {number | Coords} iCors las coordenadas o el índice
+ * @returns {boolean} dependiendo de si iCors es válido o no
+ */
+function checkValidity(iCors) {
+  if (typeof iCors === "number") return iCors >= 0 && iCors < pieces.length;
+
+  return (
+    (0 <= iCors.y &&
+      iCors.y < chartSize.y &&
+      0 <= iCors.x &&
+      iCors.x < chartSize.x) ||
+    equalCoords(iCors, exterior)
+  );
+}
+
+// ---------------------------------------------------------------------- EQUAL COORDS
+/**
+ * Verifica si dos coordenadas son iguales o no.
+ * @param {Coords} cor1 Coord1
+ * @param {Coords} cor2 Coord2
+ * @returns {boolean} Si son o no iguales
+ */
+function equalCoords(cor1, cor2) {
+  return cor1.x === cor2.x && cor1.y === cor2.y;
+}
+
+// ---------------------------------------------------------------------- PROXIMITY COORDS
+/**
+ * Indica si las coordenadas son adyacentes o no, si en que direccion en caso de que si.
+ * @param {Coords | number} cor1 Coord1
+ * @param {Coords | number} cor2 Coord2
+ * @returns {"up" | "left" | "down" | "right" | null} Direccion de donde las coordenadas
+ */
+function proximity(cor1, cor2) {
+  if (typeof cor1 === "number") cor1 = parseCoords(cor1);
+  if (typeof cor2 === "number") cor2 = parseCoords(cor2);
+
+  if (cor1.x === cor2.x) {
+    if (cor1.y + 1 === cor2.y) return "up";
+    if (cor1.y - 1 === cor2.y) return "down";
+  } else {
+    if (cor1.x + 1 === cor2.x) return "right";
+    if (cor1.x - 1 === cor2.x) return "left";
+  }
+
+  return null;
 }
 // #endregion
