@@ -12,10 +12,12 @@ let generating = false;
 /** @type {number | null} Guarda el valor del intervalo de espera del consecutive */
 let consecutive_num = null;
 let url = "";
+let delay = 150;
 
 // ---------------------------------------------------------------------- STRUCTURES
 /** @typedef {{x: number, y: number}} Coords */
 /** @typedef { (HTMLDivElement | null)[] } Pieces */
+/** @typedef {"up" | "left" | "down" | "right"} Dir */
 
 /** @type {Coords} */
 const chartSize = { x: 4, y: 4 };
@@ -41,6 +43,8 @@ const coords = [];
 const positions = [];
 /** @type {Coords} */
 const touchCoords = { x: 0, y: 0 };
+/** @type {Coords[]} */
+let prevlog = [];
 
 // ---------------------------------------------------------------------- CONSTANTS
 const cont = document.getElementById("chart");
@@ -192,8 +196,10 @@ function setConsecutive(value) {
 function setAuto(activate) {
   auto = auto_el.checked = activate;
 
-  if (auto) console.log("START AUTO");
-  else console.log("END AUTO");
+  if (auto) {
+    console.log("START AUTO");
+    autoSolve();
+  } else console.log("END AUTO");
 }
 
 // ---------------------------------------------------------------------- GOTO
@@ -203,6 +209,7 @@ function setAuto(activate) {
  * Con un delay de 150 ms
  * @param {Coords} goal Coordenadas destino
  * @returns {boolean} indicando si llegó al destino o no
+ * @deprecated
  */
 async function goto(goal) {
   if (!checkValidity(goal) || !auto) {
@@ -248,7 +255,7 @@ async function goto(goal) {
 
     // CONTINUAR
     prevCoords = { ...emptyCoords };
-    await stall(150); // DELAY
+    await stall(delay); // DELAY
     if (!auto) {
       console.log("UNEXPECTED AUTO END");
       return false;
@@ -268,16 +275,24 @@ async function goto(goal) {
  * @return {Promise<string | null>} string con los indexes para moverse.
  */
 async function stepsTo(from, to, blocked) {
-  if (!checkValidity(from) || blocked?.includes(parseIndex(to))) return null;
+  if (
+    !auto ||
+    !checkValidity(from) ||
+    !checkValidity(to) ||
+    blocked?.includes(parseIndex(to))
+  ) {
+    console.log("INVALID GOAL AND/OR IS NOT AUTO");
+    return null;
+  }
 
   /** @type {{ cor: Coords, path: string }[]} */
   const next = [{ cor: from, path: "" }];
-  if (!blocked) blocked = [];
+  blocked = blocked ? [...blocked] : [];
   blocked.push(parseIndex(from));
 
   do {
     const { cor, path } = next.shift();
-    if (!cor) return null;
+    if (!cor) return console.log("Err!", next) || null;
 
     if (equalCoords(cor, to)) return path;
 
@@ -296,12 +311,10 @@ async function stepsTo(from, to, blocked) {
       }
     }
 
-    if (!auto) {
-      console.log("UNEXPECTED AUTO END");
-      return null;
-    }
+    if (!auto) return console.log("UNEXPECTED AUTO END") || null;
   } while (next.length);
 
+  console.log("COULDNT REACH DESTINATION");
   return null;
 }
 
@@ -312,30 +325,211 @@ async function stepsTo(from, to, blocked) {
  * Con un delay de 150 ms
  * @param {Coords} goal Coordenadas destino
  * @param {number[] | undefined} blocked Puntos en la tabla a omitir, en index
- * @returns {boolean} indicando si llegó al destino o no
+ * @returns {Promise<boolean>} indicando si llegó al destino o no
  */
 async function gotov2(goal, blocked) {
-  if (!checkValidity(goal) || !auto) {
-    console.log("INVALID GOAL AND/OR IS NOT AUTO");
-    return false;
-  }
-
   const str = await stepsTo(emptyCoords, goal, blocked);
+  if (str === "") return true;
   if (!str) return false;
 
   const steps = str.substring(1).split(",");
 
   for (const step of steps) {
     movePiece(step);
-    await stall(150); // DELAY
-    if (!auto) {
-      console.log("UNEXPECTED AUTO END");
-      return false;
-    }
+    await stall(delay); // DELAY
+    if (!auto) return console.log("UNEXPECTED AUTO END") || false;
   }
 
-  console.log("GOAL REACHED");
   return true;
+}
+
+// ---------------------------------------------------------------------- PIECE PATH
+/**
+ * Muestra las coordenadas a las que moverse para mover una pieza de lugar
+ * @param {Coords} from Origen
+ * @param {Coords} to Destino
+ * @param {number[]} blocked Piezas bloqueadas
+ */
+async function piecePath(from, to, blocked) {
+  const str = await stepsTo(from, to, blocked);
+  if (str === "") return true;
+  if (!str) return false;
+
+  blocked = blocked ? [...blocked] : [];
+  const steps = str.substring(1).split(",");
+  let prevCoords = from;
+
+  console.log(
+    "FROM",
+    parseIndex(from),
+    "TO",
+    parseIndex(to),
+    "WITHOUT",
+    ...blocked
+  );
+  for (const step of steps) {
+    // BUSCAMOS LA COORDENADA QUE ESTE AL LADO SEGUN EL PROXIMITY
+    const cor = proximity(prevCoords, undefined, step);
+    if (!cor) return console.log("Error!", prevCoords, step, cor) || false;
+
+    // NOS MOVEMOS A ESA COORDENADA DE AL LADO SIN TOCAR LA ORIGINAL
+    const res = await gotov2(cor, [...blocked, parseIndex(prevCoords)]);
+    if (!res) return console.log("Error! couldnt reach dest") || false;
+
+    // NOS MOVEMOS A LA DIRECCION OPUESTA QUE NOS RECOMENDO steps
+    movePiece(invertDir(step));
+
+    // ACTUALIZAMOS LAS COORDENADAS PARA SEGUIRLE
+    prevCoords = cor;
+
+    // REPETIMOS
+    await stall(delay); // DELAY
+    if (!auto) return console.log("UNEXPECTED AUTO END") || false;
+  }
+
+  console.log("...DONE!");
+  return true;
+}
+
+// ---------------------------------------------------------------------- AUTO SOLVE
+/**
+ * Auto-completa el puzzle
+ */
+async function autoSolve() {
+  /** @type {number[]} */
+  const blocked = [];
+  prevlog = structuredClone(coords);
+  console.warn(JSON.stringify(prevlog, null, 2));
+
+  for (let curri = 0; findNextWrong() !== -1 && auto; curri++) {
+    // GUARDAR VARIABLES RAPIDAS
+    const currentCoords = parseCoords(curri);
+    const penul_x = chartSize.x - 2 === currentCoords.x; // PENULTIMA EN X
+    const penul_y = chartSize.y - 2 === currentCoords.y; // PENULTIMA EN Y
+
+    // ESTAMOS EN LA RECTA FINAL
+    if (penul_x && penul_y) {
+      // MOVERSE HACIA LA ULTIMA COORDENADA
+      const res = await gotov2(parseCoords(coords.length - 1), blocked);
+      if (!res) return console.log("NO SE PUDO :(", curri, blocked) || false;
+
+      // GIRAR HASTA QUE FUNCIONE
+      while (!findNextWrong(curri) && auto) await spin("top-l", true, 4);
+
+      movePiece("right"); // FIN DEL JUEGO
+      return true; // :D
+    } else if (penul_x || penul_y) {
+      // SI ESTOY EN LA PENULTIMA COORD, de algun lado
+      const res = await solveCorner(curri, penul_y, blocked);
+      if (!res) return console.log("NO SE PUDO :(", curri, blocked) || false;
+      blocked.push(res); // GUARDAMOS LA CURRI_1
+    } else if (!findNextWrong(curri)) {
+      // SI SOY UNA PIEZA NORMAL, PERO ESTOY MAL
+      // MOVER DE curri, hacia donde deberia de estar
+      const res = await piecePath(coords[curri], currentCoords, blocked);
+      if (!res) return console.log("NO SE PUDO :(", curri, blocked) || false;
+    }
+
+    // SE SUPONE QUE AHORA LA CURRI ESTA BIEN PUESTA, ENTONCES LA BLOQUEAMOS
+    blocked.push(curri); // NO IMPORTA SI SE REPITE LA CURRI
+  }
+
+  return true;
+}
+
+// ---------------------------------------------------------------------- SOLVE CORNER
+/**
+ * Resuelve el problema de las esquinas
+ * @param {number} curri Index que queremos resolver
+ * @param {boolean | undefined} is_x Indica si es en horizontal
+ * @param {number[] | undefined} blocked Bloqueados
+ * @returns {Promise<false | number>} Regresa el curri_1 para bloquearlo, o false si falla
+ */
+async function solveCorner(curri, is_x, blocked) {
+  blocked = [...blocked] || [];
+
+  // CREAR VARIABLES MÁS FÁCILES
+  let curri_1 = curri + 1;
+  let curri_a = curri + chartSize.x;
+  let curri_2a = curri + chartSize.x * 2;
+
+  if (is_x) {
+    curri_1 = curri + chartSize.x;
+    curri_a = curri + 1;
+    curri_2a = curri + 2;
+  }
+
+  console.log("CORNER", curri, curri_1, curri_a, curri_2a);
+
+  /*
+    ANTIGUO v1:
+    1. MOVER LA ULTIMA PIEZA EN DIAGONAL
+    2. MOVER LA CURRI AL LADO, SIN DIAGONAL
+    3. MOVER LA ULTIMA DEBAJO DE DONDE DEBERIA, SIN ARRIBA
+    4. MOVER LA CURRI AHORA SI BIEN, SIN ABAJO
+    5. MOVER ABAJO
+
+    ALGORITMO v2: 
+    1. MOVER LA CURRI EN DIAGONAL
+    2. MOVER LA ULTIMA EN DIAGONAL + 1, SIN RESTRINGIR
+    3. MOVER LA CURRI EN DIAGONAL POR SI ACASO, SIN LA DIAGON + 1
+    4. ALGORITMO CHEVERE:
+      A. GOTOV2 HACIA ABAJO DE CURRI, SIN DIAGON & DIAGON +1
+      B. SPIN BOTTOM RIGHT HORARIO
+      C. SPIN TOP RIGHT HORARIO
+      D. SPIN BOTTOM RIGHT ANTI-HORARIO
+      E. SPIN TOP RIGHT HORARIO
+    
+    ALGORITMO v3: 100%
+    1. MOVER CURRI + 1 A DIAGONAL
+    2. MOVER CURRI A CURRI + 1
+    3. GOTOV2 A CURRI + ABAJO
+    4. MOVER CURRI + 1 A CURRI, SIN RESTRINGIR
+    5. SPIN TOP R ANTI 4
+     o SPIN BOT L HOR 4
+
+    curri = curri
+    curri + 1 = curri + 1
+    curri + abajo = curri + chartSize.x
+    diagonal = curri + (chartSize.x * 2)
+  */
+
+  // prettier-ignore
+  let res = await piecePath(
+        coords[curri_1], // MOVEMOS LA CURRI + 1
+        parseCoords(curri_2a), // EN DIAGONAL PARA QUE NO ESTORBE
+        blocked
+      );
+  if (!res) return console.log("NO SE PUDO :(", curri, blocked) || false;
+
+  // prettier-ignore
+  res = await piecePath(
+        coords[curri], // MOVEMOS LA CURRI
+        parseCoords(curri_1), // A CURRI + 1
+        blocked
+      );
+  if (!res) return console.log("NO SE PUDO :(", curri, blocked) || false;
+
+  // prettier-ignore
+  res = await gotov2(
+    parseCoords(curri_a), // GOTO HACIA ABAJO DE CURRI
+    blocked
+  );
+  if (!res) return console.log("NO SE PUDO :(", curri, blocked) || false;
+
+  // prettier-ignore
+  res = await piecePath(
+        coords[curri_1], // MOVEMOS CURRI + 1
+        parseCoords(curri), // A CURRI
+        blocked
+      );
+  if (!res) return console.log("NO SE PUDO :(", curri, blocked) || false;
+
+  // AJUSTAR LAS PIEZAS
+  if (is_x) await spin("bot-l", true, 4);
+  else await spin("top-r", false, 4);
+
+  return curri_1; // 100% DE PROBABILIDAD
 }
 // #endregion
 
@@ -419,11 +613,11 @@ async function genStart() {
 
   // ESTE CICLO ES ESTÉTICO PARA QUE SE VEAN LAS PIEZAS ANTES DE REVOLVERLAS
   for (let i = 0; i < max; i++) updatePiece(i);
-  await stall(500); // MEDIO SEGUNDO PARA VER EL PUZZLE COMPLETO
+  await stall(delay * 5); // PARA VER EL PUZZLE COMPLETO
 
   for (let i = 0; i < max - 1; i++) {
     shufflePieces(i, max - 2);
-    await stall(150);
+    await stall(delay);
   }
 
   // updatePiece(i); // ESTE NO ES NECESARIO SI SE ACTIVA EL CICLO ESTÉTICO
@@ -560,6 +754,39 @@ function findNextWrong(index) {
 
   return wrongPlace;
 }
+
+// ---------------------------------------------------------------------- SPIN
+/**
+ * Mueve las piezas dependiendo del emptyCoords, girando en la direccion que indiquemos
+ * @param {"top-l" | "top-r" | "bot-l" | "bot-r"} center Posicion del centro, para saber el primer paso
+ * @param {boolean} clockwise Si giramos en sentido horario o no
+ * @param {number} times Cuantos movimientos hacemos, si es 0 no hace nada, si es 4 da una vuelta entera
+ */
+async function spin(center, clockwise, times) {
+  const startIndex = {
+    "bot-r": 0,
+    "bot-l": 1,
+    "top-l": 2,
+    "top-r": 3,
+  };
+  /** @type {Dir[]} */
+  let moves = ["right", "down", "left", "up"];
+  let index = startIndex[center];
+  let step = clockwise ? 1 : -1;
+  if (index === undefined) return false;
+  if (!clockwise) {
+    index += step;
+    moves = ["left", "up", "right", "down"];
+  }
+
+  while (times > 0) {
+    movePiece(moves[index]);
+    await stall(delay);
+    index = boundaries(0, index + step, 3, true);
+    times--;
+  }
+  return true;
+}
 // #endregion
 
 // #region ##################################################################################### MISC FUNCTIONS
@@ -615,22 +842,118 @@ function equalCoords(cor1, cor2) {
 // ---------------------------------------------------------------------- PROXIMITY COORDS
 /**
  * Indica si las coordenadas son adyacentes o no, si en que direccion en caso de que si.
- * @param {Coords | number} cor1 Coord1
- * @param {Coords | number} cor2 Coord2
- * @returns {"up" | "left" | "down" | "right" | null} Direccion de donde las coordenadas
+ * Tambien busca aquella coordenada que sea adyacente si le colocamos una direccion
+ * @param {Coords} cor1 Coord1
+ * @param {Coords | undefined} cor2 Coord2
+ * @param {Dir | undefined} dir Direccion
+ * @returns {Dir | Coords | boolean} Direccion de donde las coordenadas
  */
-function proximity(cor1, cor2) {
-  if (typeof cor1 === "number") cor1 = parseCoords(cor1);
-  if (typeof cor2 === "number") cor2 = parseCoords(cor2);
+function proximity(cor1, cor2, dir) {
+  if (cor2 && dir) return proximity(cor1, cor2, undefined) === dir;
 
-  if (cor1.x === cor2.x) {
-    if (cor1.y + 1 === cor2.y) return "up";
-    if (cor1.y - 1 === cor2.y) return "down";
-  } else {
-    if (cor1.x + 1 === cor2.x) return "right";
-    if (cor1.x - 1 === cor2.x) return "left";
+  if (cor2) {
+    if (cor1.x === cor2.x) {
+      if (cor1.y - 1 === cor2.y) return "up";
+      if (cor1.y + 1 === cor2.y) return "down";
+    } else {
+      if (cor1.x - 1 === cor2.x) return "left";
+      if (cor1.x + 1 === cor2.x) return "right";
+    }
+    return false;
   }
 
-  return null;
+  const nCor = { ...cor1 };
+
+  if (dir === "down") nCor.y += 1;
+  else if (dir === "up") nCor.y -= 1;
+  else if (dir === "left") nCor.x -= 1;
+  else if (dir === "right") nCor.x += 1;
+  else return false;
+
+  return nCor;
+}
+
+// ---------------------------------------------------------------------- INVERT DIRECTION
+/**
+ * Invierte la direccion, si pone left, dice right; si pone up, dice down
+ * @param {Dir} dir Direccion
+ * @returns {Dir} la direccion opuesta
+ */
+function invertDir(dir) {
+  if (dir === "up") return "down";
+  if (dir === "down") return "up";
+  if (dir === "left") return "right";
+  return "left";
 }
 // #endregion
+
+/*
+PARECE QUE NO FUNCIONA
+[
+  {
+    "x": 0,
+    "y": 3
+  },
+  {
+    "x": 2,
+    "y": 1
+  },
+  {
+    "x": 2,
+    "y": 0
+  },
+  {
+    "x": 3,
+    "y": 2
+  },
+  {
+    "x": 0,
+    "y": 1
+  },
+  {
+    "x": 0,
+    "y": 0
+  },
+  {
+    "x": 1,
+    "y": 3
+  },
+  {
+    "x": 0,
+    "y": 2
+  },
+  {
+    "x": 2,
+    "y": 3
+  },
+  {
+    "x": 2,
+    "y": 2
+  },
+  {
+    "x": 1,
+    "y": 2
+  },
+  {
+    "x": 1,
+    "y": 0
+  },
+  {
+    "x": 1,
+    "y": 1
+  },
+  {
+    "x": 3,
+    "y": 1
+  },
+  {
+    "x": 3,
+    "y": 0
+  },
+  {
+    "x": 3,
+    "y": 3
+  }
+]
+
+ */
