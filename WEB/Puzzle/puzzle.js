@@ -198,7 +198,14 @@ function setAuto(activate) {
 
   if (auto) {
     console.log("START AUTO");
-    autoSolve();
+    (async function () {
+      let no_error = true;
+      // INTENTAMOS RESOLVER HASTA QUE FUNCIONE,
+      while (playing && auto) {
+        no_error = await autoSolve();
+        console.log("Finished, no_error? ", no_error);
+      }
+    })();
   } else console.log("END AUTO");
 }
 
@@ -459,6 +466,8 @@ async function solveCorner(curri, is_x, blocked) {
   }
 
   console.log("CORNER", curri, curri_1, curri_a, curri_2a);
+  // SI CASUALMENTE AMBOS CURRI-S ESTAN BIEN COLOCADOS, SALIMOS
+  if (findNextWrong(curri) && findNextWrong(curri_1)) return curri_1;
 
   /*
     ANTIGUO v1:
