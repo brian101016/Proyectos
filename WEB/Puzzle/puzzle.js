@@ -399,7 +399,6 @@ async function autoSolve() {
   /** @type {number[]} */
   const blocked = [];
   prevlog = structuredClone(coords);
-  console.warn(JSON.stringify(prevlog, null, 2));
 
   for (let curri = 0; findNextWrong() !== -1 && auto; curri++) {
     // GUARDAR VARIABLES RAPIDAS
@@ -547,6 +546,7 @@ function reset() {
   emptyCoords.y = exterior.y = chartSize.y - 1;
   playing = auto = false;
   consecutive_num = null;
+  prevlog = [];
 }
 
 // ---------------------------------------------------------------------- BLOCK
@@ -570,6 +570,7 @@ function block(disabled) {
   playing = true;
   setAuto(auto_el.checked);
   setConsecutive(consecutive_el.checked);
+  prevlog = structuredClone(coords);
 }
 
 // ---------------------------------------------------------------------- GEN START
@@ -884,6 +885,21 @@ function invertDir(dir) {
   if (dir === "down") return "up";
   if (dir === "left") return "right";
   return "left";
+}
+
+// ---------------------------------------------------------------------- RESTORE PREVLOG
+/**
+ * Restaura la partida a su forma original, según el prevlog
+ * @deprecated
+ */
+function restorePrevlog() {
+  for (let i = 0; i < prevlog.length; i++) {
+    const originalCoords = prevlog[i];
+    coords[i] = { ...originalCoords };
+    updatePiece(i);
+  }
+  emptyCoords.x = exterior.x;
+  emptyCoords.y = exterior.y;
 }
 // #endregion
 
