@@ -203,9 +203,9 @@ function setAuto(activate) {
       // INTENTAMOS RESOLVER HASTA QUE FUNCIONE,
       while (playing && auto) {
         no_error = await autoSolve();
-        console.log("Finished, no_error? ", no_error);
+        if (!no_error) console.log("Auto failed! Trying again...");
       }
-    })();
+    })().then((r) => console.log("Auto finished"));
   } else console.log("END AUTO");
 }
 
@@ -269,7 +269,7 @@ async function goto(goal) {
     }
   }
 
-  console.log("GOAL REACHED");
+  // console.log("GOAL REACHED"); // DEBUG
   return true;
 }
 
@@ -366,14 +366,7 @@ async function piecePath(from, to, blocked) {
   const steps = str.substring(1).split(",");
   let prevCoords = from;
 
-  console.log(
-    "FROM",
-    parseIndex(from),
-    "TO",
-    parseIndex(to),
-    "WITHOUT",
-    ...blocked
-  );
+  // console.log("FROM", parseIndex(from), "TO", parseIndex(to), "WITHOUT", ...blocked); // DEBUG
   for (const step of steps) {
     // BUSCAMOS LA COORDENADA QUE ESTE AL LADO SEGUN EL PROXIMITY
     const cor = proximity(prevCoords, undefined, step);
@@ -394,7 +387,7 @@ async function piecePath(from, to, blocked) {
     if (!auto) return console.log("UNEXPECTED AUTO END") || false;
   }
 
-  console.log("...DONE!");
+  // console.log("...DONE!"); // DEBUG
   return true;
 }
 
@@ -417,23 +410,28 @@ async function autoSolve() {
     if (penul_x && penul_y) {
       // MOVERSE HACIA LA ULTIMA COORDENADA
       const res = await gotov2(parseCoords(coords.length - 1), blocked);
-      if (!res) return console.log("NO SE PUDO :(", curri, blocked) || false;
+      if (!res) return false;
 
       // GIRAR HASTA QUE FUNCIONE
-      while (!findNextWrong(curri) && auto) await spin("top-l", true, 4);
+      let evitar_infinito = 0; // No ha ocurrido, pero puede ser...
+      while (!findNextWrong(curri) && auto) {
+        await spin("top-l", true, 4);
+        evitar_infinito += 1;
+        if (evitar_infinito >= 5) return false;
+      }
 
       movePiece("right"); // FIN DEL JUEGO
       return true; // :D
     } else if (penul_x || penul_y) {
       // SI ESTOY EN LA PENULTIMA COORD, de algun lado
       const res = await solveCorner(curri, penul_y, blocked);
-      if (!res) return console.log("NO SE PUDO :(", curri, blocked) || false;
+      if (!res) return false;
       blocked.push(res); // GUARDAMOS LA CURRI_1
     } else if (!findNextWrong(curri)) {
       // SI SOY UNA PIEZA NORMAL, PERO ESTOY MAL
       // MOVER DE curri, hacia donde deberia de estar
       const res = await piecePath(coords[curri], currentCoords, blocked);
-      if (!res) return console.log("NO SE PUDO :(", curri, blocked) || false;
+      if (!res) return false;
     }
 
     // SE SUPONE QUE AHORA LA CURRI ESTA BIEN PUESTA, ENTONCES LA BLOQUEAMOS
@@ -465,7 +463,7 @@ async function solveCorner(curri, is_x, blocked) {
     curri_2a = curri + 2;
   }
 
-  console.log("CORNER", curri, curri_1, curri_a, curri_2a);
+  // console.log("CORNER", curri, curri_1, curri_a, curri_2a); // DEBUG
   // SI CASUALMENTE AMBOS CURRI-S ESTAN BIEN COLOCADOS, SALIMOS
   if (findNextWrong(curri) && findNextWrong(curri_1)) return curri_1;
 
@@ -508,7 +506,7 @@ async function solveCorner(curri, is_x, blocked) {
         parseCoords(curri_2a), // EN DIAGONAL PARA QUE NO ESTORBE
         blocked
       );
-  if (!res) return console.log("NO SE PUDO :(", curri, blocked) || false;
+  if (!res) return false;
 
   // prettier-ignore
   res = await piecePath(
@@ -516,14 +514,14 @@ async function solveCorner(curri, is_x, blocked) {
         parseCoords(curri_1), // A CURRI + 1
         blocked
       );
-  if (!res) return console.log("NO SE PUDO :(", curri, blocked) || false;
+  if (!res) return false;
 
   // prettier-ignore
   res = await gotov2(
     parseCoords(curri_a), // GOTO HACIA ABAJO DE CURRI
     blocked
   );
-  if (!res) return console.log("NO SE PUDO :(", curri, blocked) || false;
+  if (!res) return false;
 
   // prettier-ignore
   res = await piecePath(
@@ -531,7 +529,7 @@ async function solveCorner(curri, is_x, blocked) {
         parseCoords(curri), // A CURRI
         blocked
       );
-  if (!res) return console.log("NO SE PUDO :(", curri, blocked) || false;
+  if (!res) return false;
 
   // AJUSTAR LAS PIEZAS
   if (is_x) await spin("bot-l", true, 4);
