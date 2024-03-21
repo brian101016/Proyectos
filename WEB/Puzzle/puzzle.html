@@ -10,8 +10,19 @@
     <h2 id="status">Select chart size</h2>
     <div class="controls-container">
       <button id="gen">Start</button>
+      <label for="size-x">Change chart size: x:</label>
       <input
-        id="size"
+        id="size-x"
+        type="number"
+        min="3"
+        max="8"
+        step="1"
+        value="4"
+        placeholder="3-8"
+      />
+      <label for="size-y">y:</label>
+      <input
+        id="size-y"
         type="number"
         min="3"
         max="8"
@@ -38,6 +49,8 @@
         id="consecutive"
         title="Starts a new game after winning (3s)"
       />
+      <label>Timer:</label>
+      <span id="timer" class="timer"> 00:00:00.000 </span>
     </div>
 
     <div class="main">
@@ -48,7 +61,7 @@
       <div id="chart" class="bg-filler">En espera...</div>
     </div>
 
-    <script src="./puzzle.js"></script>
     <script src="../Wold Global/scripts.js"></script>
+    <script src="./puzzle.js"></script>
   </body>
 </html>

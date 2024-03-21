@@ -45,11 +45,14 @@ const positions = [];
 const touchCoords = { x: 0, y: 0 };
 /** @type {Coords[]} */
 let prevlog = [];
+/** @type {Obj_Timer} Cronometro para el puzzle */
+const timer = new Obj_Timer(document.getElementById("timer"), null, null);
 
 // ---------------------------------------------------------------------- CONSTANTS
 const cont = document.getElementById("chart");
 const gen = document.getElementById("gen");
-const inp = document.getElementById("size");
+const inp_x = document.getElementById("size-x");
+const inp_y = document.getElementById("size-y");
 const stat = document.getElementById("status");
 const photo = document.getElementById("photo");
 const preview = document.getElementById("preview");
@@ -545,8 +548,8 @@ async function solveCorner(curri, is_x, blocked) {
  * Reinicia todas las variables a su valor por defecto, se usa dentro de `block`.
  */
 function reset() {
-  chartSize.x = parseInt(inp.value) || 4;
-  chartSize.y = parseInt(inp.value) || 4;
+  chartSize.x = parseInt(inp_x.value) || 4;
+  chartSize.y = parseInt(inp_y.value) || 4;
   cont.style.width = chartSize.x * 100 + "px";
   cont.style.height = chartSize.y * 100 + "px";
   emptyCoords.x = exterior.x = chartSize.x;
@@ -554,6 +557,8 @@ function reset() {
   playing = auto = false;
   consecutive_num = null;
   prevlog = [];
+  timer.stop();
+  timer.display.textContent = "Waiting...";
 }
 
 // ---------------------------------------------------------------------- BLOCK
@@ -565,7 +570,7 @@ function reset() {
 function block(disabled) {
   if (disabled === undefined) disabled = generating;
   gen.disabled = disabled;
-  inp.disabled = disabled;
+  inp_x.disabled = inp_y.disabled = disabled;
   photo.disabled = disabled;
   previewStyle.disabled = disabled;
   invert.disabled = disabled;
@@ -574,10 +579,12 @@ function block(disabled) {
   previewBtn.disabled = disabled;
   stat.textContent = generating ? "Loading..." : "Playing...";
   if (disabled) return reset();
+  // UN-BLOCK, volver a activar todo por primera vez
   playing = true;
   setAuto(auto_el.checked);
   setConsecutive(consecutive_el.checked);
   prevlog = structuredClone(coords);
+  timer.restart();
 }
 
 // ---------------------------------------------------------------------- GEN START
@@ -642,6 +649,7 @@ async function genStart() {
  */
 function won() {
   playing = false;
+  timer.stop();
   setConsecutive(consecutive_el.checked);
 }
 // #endregion

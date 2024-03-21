@@ -102,3 +102,8 @@ body {
   background: none;
   visibility: visible;
 }
+
+#timer {
+  font-family: monospace;
+  font-size: 1.2rem;
+}

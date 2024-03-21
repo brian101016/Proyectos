@@ -165,7 +165,7 @@ class Obj_Timer {
     this.ejfunction = ejfunction;
   }
 
-  // INICIAR A CONTAR
+  /** INICIAR A CONTAR */
   start() {
     if (this.is_playing) return; // Ya está corriendo, entonces salir
 
@@ -173,7 +173,7 @@ class Obj_Timer {
     this.resume();
   }
 
-  // CONTINUAR EL TIEMPO DESDE DONDE SE QUEDÓ
+  /** CONTINUAR EL TIEMPO DESDE DONDE SE QUEDÓ */
   resume() {
     if (this.is_playing) return;
 
@@ -184,7 +184,7 @@ class Obj_Timer {
       this.interval_id = window.setInterval(this.update_display, 10);
   }
 
-  // DEJAR DE CONTAR
+  /** DEJAR DE CONTAR */
   stop() {
     if (!this.is_playing) return; // No estaba corriendo, entonces salir
 
@@ -192,7 +192,7 @@ class Obj_Timer {
     this.diff_time = 0;
   }
 
-  // PAUSAR TEMPORIZADOR
+  /** PAUSAR TEMPORIZADOR */
   pause() {
     if (!this.is_playing) return;
 
@@ -204,24 +204,24 @@ class Obj_Timer {
     this.interval_id = null;
   }
 
-  // STOP Y START
+  /** STOP Y START */
   restart() {
     this.stop();
     this.start();
   }
 
-  // TOGGLE
+  /** TOGGLE */
   toggle() {
     if (this.is_playing) this.pause();
     else this.resume();
   }
 
-  // IS PLAYING
+  /** IS PLAYING */
   is_timer_playing() {
     return this.is_playing;
   }
 
-  // MOSTRAR EL TIEMPO
+  /** MOSTRAR EL TIEMPO */
   say_time() {
     if (!this.is_playing) return this.stopping_time; // SI YA SE DETUVO, REGRESA SU ÚLTIMO TIEMPO
 
@@ -264,7 +264,7 @@ class Obj_Timer {
     return [_min, _seg, _mil, _time_string]; // MIN, SEG, MIL, "00:00.000"
   }
 
-  // ACTUALIZAR ALGÚN DISPLAY
+  /** ACTUALIZAR ALGÚN DISPLAY */
   update_display() {
     if (this.display === null) return;
 
