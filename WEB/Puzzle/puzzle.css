@@ -5,6 +5,96 @@
   font-family: sans-serif;
 }
 
+html {
+  --w: 50px;
+  --h: calc(var(--w) * 1 / 2);
+  --c: #faebb2;
+  --p: #e9b0b9;
+  --c1: color-mix(in srgb, var(--c) 66%, var(--p));
+  --c2: color-mix(in srgb, var(--c) 33%, var(--p));
+
+  background-image:
+    /* Outline red circle */ radial-gradient(
+      100% 100% at 50% 100%,
+      transparent calc(var(--w) / 2),
+      var(--c) 0px
+    ),
+    /* Inner blue circle */
+      radial-gradient(
+        50% 100% at 25% 50%,
+        var(--c) calc(var(--w) / 2),
+        transparent 0px
+      ),
+    /* Upper band */ linear-gradient(var(--c) var(--h), transparent 0px),
+    /* ########################################################## */
+      /* Outline red circle */
+      radial-gradient(
+        100% 100% at 50% 100%,
+        transparent calc(var(--w) / 2),
+        var(--c1) 0px
+      ),
+    /* Inner blue circle */
+      radial-gradient(
+        50% 100% at 25% 50%,
+        var(--c1) calc(var(--w) / 2),
+        transparent 0px
+      ),
+    /* Upper band */ linear-gradient(var(--c1) var(--h), transparent 0px),
+    /* ########################################################## */
+      /* Outline red circle */
+      radial-gradient(
+        100% 100% at 50% 100%,
+        transparent calc(var(--w) / 2),
+        var(--c2) 0px
+      ),
+    /* Inner blue circle */
+      radial-gradient(
+        50% 100% at 25% 50%,
+        var(--c2) calc(var(--w) / 2),
+        transparent 0px
+      ),
+    /* Upper band */ linear-gradient(var(--c2) var(--h), transparent 0px);
+
+  background-size:
+    /* Outline red circle */ var(--w) var(--h),
+    /* Inner blue circle */ calc(var(--w) * 2) var(--h),
+    /* Upper band */ 100% calc(var(--h) + 4px);
+
+  background-position-y:
+    /* Outline red circle */ var(--h),
+    /* Inner blue circle */ calc(var(--h) * 1.5 - 2px), /* Upper band */ 0px,
+    /* ################################## */ /* Outline red circle */
+      calc(var(--h) + 16px),
+    /* Inner blue circle */ calc(var(--h) * 1.5 - 2px + 16px),
+    /* Upper band */ calc(0px + 16px),
+    /* ################################## */ /* Outline red circle */
+      calc(var(--h) + 32px),
+    /* Inner blue circle */ calc(var(--h) * 1.5 - 2px + 32px),
+    /* Upper band */ calc(0px + 32px);
+
+  /*   background-repeat: no-repeat; */
+  background-repeat: repeat-x;
+  background-position-x: 0%;
+  background-color: var(--p);
+
+  animation: 4s linear 0s infinite forwards walk;
+}
+
+@keyframes walk {
+  from {
+    background-position-x: 0%;
+  }
+
+  to {
+    background-position-x: calc(0% + var(--w) * 8), calc(0% + var(--w) * 8),
+      calc(0% + var(--w) * 8),
+      /* ##################################### */ calc(0% + var(--w) * 4),
+      calc(0% + var(--w) * 4), calc(0% + var(--w) * 4),
+      /* ##################################### */ calc(0% + var(--w) * 2),
+      calc(0% + var(--w) * 2), calc(0% + var(--w) * 2);
+  }
+}
+
 body {
   min-height: 100dvh;
 }
