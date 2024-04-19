@@ -5,29 +5,48 @@
   font-family: sans-serif;
 }
 
+@property --offset {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
+}
+
+@property --h {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
+}
+
 html {
-  --w: 50px;
-  --h: calc(var(--w) * 1 / 2);
+  --w: 64px;
+  --offset: calc(var(--w) * 0.6666);
+  --h: calc(var(--w) * 0.75);
   --c: #faebb2;
   --p: #e9b0b9;
   --c1: color-mix(in srgb, var(--c) 66%, var(--p));
   --c2: color-mix(in srgb, var(--c) 33%, var(--p));
 
   background-image:
-    /* Outline red circle */ radial-gradient(
-      100% 100% at 50% 100%,
-      transparent calc(var(--w) / 2),
-      var(--c) 0px
+    /* Upper band */ linear-gradient(
+      color-mix(in srgb, var(--c) 100%, black),
+      var(--c)
     ),
+    /* Outline red circle */
+      radial-gradient(
+        100% 100% at 50% 100%,
+        transparent calc(var(--w) / 2),
+        var(--c) 0px
+      ),
     /* Inner blue circle */
       radial-gradient(
         50% 100% at 25% 50%,
         var(--c) calc(var(--w) / 2),
         transparent 0px
       ),
-    /* Upper band */ linear-gradient(var(--c) var(--h), transparent 0px),
     /* ########################################################## */
-      /* Outline red circle */
+      /* Upper band */
+      linear-gradient(color-mix(in srgb, var(--c1) 90%, var(--c)), var(--c1)),
+    /* Outline red circle */
       radial-gradient(
         100% 100% at 50% 100%,
         transparent calc(var(--w) / 2),
@@ -39,9 +58,10 @@ html {
         var(--c1) calc(var(--w) / 2),
         transparent 0px
       ),
-    /* Upper band */ linear-gradient(var(--c1) var(--h), transparent 0px),
     /* ########################################################## */
-      /* Outline red circle */
+      /* Upper band */
+      linear-gradient(color-mix(in srgb, var(--c2) 90%, var(--c1)), var(--c2)),
+    /* Outline red circle */
       radial-gradient(
         100% 100% at 50% 100%,
         transparent calc(var(--w) / 2),
@@ -52,32 +72,45 @@ html {
         50% 100% at 25% 50%,
         var(--c2) calc(var(--w) / 2),
         transparent 0px
-      ),
-    /* Upper band */ linear-gradient(var(--c2) var(--h), transparent 0px);
+      );
 
   background-size:
+    /* Upper band */ 100% calc(var(--h) * 1.5),
     /* Outline red circle */ var(--w) var(--h),
-    /* Inner blue circle */ calc(var(--w) * 2) var(--h),
-    /* Upper band */ 100% calc(var(--h) + 4px);
+    /* Inner blue circle */ calc(var(--w) * 2) var(--h);
 
   background-position-y:
-    /* Outline red circle */ var(--h),
-    /* Inner blue circle */ calc(var(--h) * 1.5 - 2px), /* Upper band */ 0px,
-    /* ################################## */ /* Outline red circle */
-      calc(var(--h) + 16px),
-    /* Inner blue circle */ calc(var(--h) * 1.5 - 2px + 16px),
-    /* Upper band */ calc(0px + 16px),
-    /* ################################## */ /* Outline red circle */
-      calc(var(--h) + 32px),
-    /* Inner blue circle */ calc(var(--h) * 1.5 - 2px + 32px),
-    /* Upper band */ calc(0px + 32px);
+    /* Upper band */ calc(0px + var(--offset) * 0),
+    /* Outline red circle */ calc(var(--h) + var(--offset) * 0),
+    /* Inner blue circle */ calc(var(--h) * 1.5 - 2px + var(--offset) * 0),
+    /* ################################## */ /* Upper band */
+      calc(0px + var(--offset) * 1),
+    /* Outline red circle */ calc(var(--h) + var(--offset) * 1),
+    /* Inner blue circle */ calc(var(--h) * 1.5 - 2px + var(--offset) * 1),
+    /* ################################## */ /* Upper band */
+      calc(0px + var(--offset) * 2),
+    /* Outline red circle */ calc(var(--h) + var(--offset) * 2),
+    /* Inner blue circle */ calc(var(--h) * 1.5 - 2px + var(--offset) * 2);
 
   /*   background-repeat: no-repeat; */
   background-repeat: repeat-x;
   background-position-x: 0%;
   background-color: var(--p);
 
-  animation: 4s linear 0s infinite forwards walk;
+  animation: 4s linear 0s infinite forwards walk,
+    3s ease-in-out 0s infinite alternate gobble;
+}
+
+@keyframes gobble {
+  from {
+    --offset: calc(var(--w) * 0.6666);
+    --h: calc(var(--w) * 0.65);
+  }
+
+  to {
+    --offset: calc(var(--w) * 0.3333);
+    --h: calc(var(--w) * 0.45);
+  }
 }
 
 @keyframes walk {
@@ -86,12 +119,12 @@ html {
   }
 
   to {
-    background-position-x: calc(0% + var(--w) * 8), calc(0% + var(--w) * 8),
-      calc(0% + var(--w) * 8),
-      /* ##################################### */ calc(0% + var(--w) * 4),
-      calc(0% + var(--w) * 4), calc(0% + var(--w) * 4),
-      /* ##################################### */ calc(0% + var(--w) * 2),
-      calc(0% + var(--w) * 2), calc(0% + var(--w) * 2);
+    background-position-x: calc(var(--w) * 8), calc(var(--w) * 8),
+      calc(var(--w) * 8),
+      /* ##################################### */ calc(var(--w) * 4),
+      calc(var(--w) * 4), calc(var(--w) * 4),
+      /* ##################################### */ calc(var(--w) * 2),
+      calc(var(--w) * 2), calc(var(--w) * 2);
   }
 }
 
