@@ -58,7 +58,11 @@ const colors = {
   Panda: { c1: "#fafafa", bg: "#aaaaaa", c2: "#0c0c0c" },
   Afternoon: { c1: "#cb7939", bg: "#b6342a", c2: "#0d202a" },
   Portal: { c1: "#0065ff", bg: "#1f1f1f", c2: "#ff5d00" },
+  Fairly: { c1: "#4EFF4A", bg: "#9D27CC", c2: "#FD8AFF" },
+  Pulparindo: { c1: "#594192", bg: "#ebebeb", c2: "#5fbbe7" },
+  Clouds: { c1: "#fafafa", bg: "#1ec4d1", c2: "#fafafa" },
 };
+// Nombre: { c1: "white", bg: "gray", c2: "black" },
 
 // ---------------------------------------------------------------------- CONSTANTS
 const cont = document.getElementById("chart");
