@@ -180,11 +180,40 @@ html {
 
 body {
   min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.controls-container {
+  margin: 0.75rem 1.25rem;
+  position: absolute;
+  padding: 0.65rem;
+  /* backdrop-filter: invert(0.2) opacity(0.2); */
+  /* box-shadow: inset 0px -15px 20px -20px #00000094; */
+  backdrop-filter: invert(0.2) opacity(0.5);
+  /* background-clip: text; */
+  /* color: var(--color); */
+  /* background-color: var(--color); */
+  /* mix-blend-mode: difference; */
+  /* mix-blend-mode: screen; */
+  font-size: 18px;
+  font-family: system-ui;
+  /* font-weight: 600; */
+  /* filter: invert(0); */
+
+  &input,
+  &select,
+  &button {
+    background-color: transparent;
+    border: 2px solid currentColor;
+  }
 }
 
 .main {
   display: flex;
   flex-wrap: wrap;
+  margin: auto;
   padding: 0 100px;
   justify-content: space-evenly;
 }
@@ -200,6 +229,7 @@ body {
   margin: auto;
   box-sizing: content-box;
   aspect-ratio: 1/1;
+  box-shadow: -6px 6px black;
 }
 
 #chart::after {
@@ -208,12 +238,25 @@ body {
   position: absolute;
   width: 100px;
   height: 100px;
-  bottom: -2px;
+  bottom: -1.5px;
   left: 100%;
   border: 2px solid black;
   box-sizing: content-box;
   border-left: 0;
   z-index: -1;
+}
+
+#chart > span {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 25px;
+  font-family: system-ui;
+  font-weight: 500;
+  filter: drop-shadow(-4px 4px 1px #49494968);
 }
 
 .piece {
@@ -235,7 +278,7 @@ body {
     #c0d6df 10px,
     #c0d6df 20px
   );
-  box-shadow: inset 0 0 15px -3px #227c9d;
+  box-shadow: inset 0 0 15px -3px #227c9d, -6px 6px black;
 }
 
 .hidden {
