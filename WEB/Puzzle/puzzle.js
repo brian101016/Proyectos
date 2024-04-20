@@ -48,6 +48,18 @@ let prevlog = [];
 /** @type {Obj_Timer} Cronometro para el puzzle */
 const timer = new Obj_Timer(document.getElementById("timer"), null, null);
 
+// ---------------------------------------------------------------------- COLOR SCHEME
+const colors = {
+  Cake: { c1: "#faebb2", bg: "#e9b0b9", c2: "#faebb2" },
+  Ocean: { c1: "#677ae0", bg: "#84cde7", c2: "#677ae0" },
+  Acid: { c1: "#1c9b2b", bg: "#2f2f2f", c2: "#1c9b2b" },
+  Dracula: { c1: "#470000", bg: "#080101", c2: "#940e0e" },
+  Yeti: { c1: "#b4b4b4", bg: "#d5d5d5", c2: "#b4b4b4" },
+  Panda: { c1: "#fafafa", bg: "#aaaaaa", c2: "#0c0c0c" },
+  Afternoon: { c1: "#cb7939", bg: "#b6342a", c2: "#0d202a" },
+  Portal: { c1: "#0065ff", bg: "#1f1f1f", c2: "#ff5d00" },
+};
+
 // ---------------------------------------------------------------------- CONSTANTS
 const cont = document.getElementById("chart");
 const gen = document.getElementById("gen");
@@ -61,6 +73,7 @@ const previewBtn = document.getElementById("preview-btn");
 const invert = document.getElementById("invert");
 const auto_el = document.getElementById("auto");
 const consecutive_el = document.getElementById("consecutive");
+const color_theme = document.getElementById("color-theme");
 // #endregion
 
 // #region ##################################################################################### OBJECT LISTENERS
@@ -79,6 +92,25 @@ previewBtn.onclick = handlePreviewToggle;
 // ---------------------------------------------------------------------- ADITIONAL MODES
 auto_el.onchange = (e) => setAuto(e.target.checked);
 consecutive_el.onchange = (e) => setConsecutive(e.target.checked);
+
+// ---------------------------------------------------------------------- COLOR THEME
+color_theme.onchange = (e) => {
+  /** @type {{ c1: string; c2: string; bg: string; }} */
+  const col = colors[e.target.value];
+  document.documentElement.style.setProperty("--col-up", col.c1);
+  document.documentElement.style.setProperty("--col-down", col.c2);
+  document.documentElement.style.setProperty("--bg", col.bg);
+};
+
+// ---------------------------------------------------------------------- DOCUMENT CONTENT LOADED
+document.addEventListener("DOMContentLoaded", () => {
+  for (const color in colors) {
+    const op = document.createElement("option");
+    op.text = op.value = color;
+    if (color === "Cake") op.selected = true;
+    color_theme.appendChild(op);
+  }
+});
 // #endregion
 
 // #region ##################################################################################### FUNCTIONS HANDLERS
@@ -917,74 +949,3 @@ function restorePrevlog() {
   emptyCoords.y = exterior.y;
 }
 // #endregion
-
-/*
-PARECE QUE NO FUNCIONA
-[
-  {
-    "x": 0,
-    "y": 3
-  },
-  {
-    "x": 2,
-    "y": 1
-  },
-  {
-    "x": 2,
-    "y": 0
-  },
-  {
-    "x": 3,
-    "y": 2
-  },
-  {
-    "x": 0,
-    "y": 1
-  },
-  {
-    "x": 0,
-    "y": 0
-  },
-  {
-    "x": 1,
-    "y": 3
-  },
-  {
-    "x": 0,
-    "y": 2
-  },
-  {
-    "x": 2,
-    "y": 3
-  },
-  {
-    "x": 2,
-    "y": 2
-  },
-  {
-    "x": 1,
-    "y": 2
-  },
-  {
-    "x": 1,
-    "y": 0
-  },
-  {
-    "x": 1,
-    "y": 1
-  },
-  {
-    "x": 3,
-    "y": 1
-  },
-  {
-    "x": 3,
-    "y": 0
-  },
-  {
-    "x": 3,
-    "y": 3
-  }
-]
-
- */

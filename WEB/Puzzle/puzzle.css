@@ -23,43 +23,66 @@
   initial-value: 0px;
 }
 
+@property --col-up {
+  syntax: "<color>";
+  inherits: false;
+  initial-value: #faebb2;
+}
+
+@property --col-down {
+  syntax: "<color>";
+  inherits: false;
+  initial-value: #faebb2;
+}
+
+@property --bg {
+  syntax: "<color>";
+  inherits: false;
+  initial-value: #e9b0b9;
+}
+
 html {
   --w: 64px;
   --top: 8vh;
   --h: calc(var(--w) * 0.75);
   --offset: calc(var(--w) * 0.75);
-  --c: #faebb2; /* #677ae0 */
-  --p: #e9b0b9; /* #84cde7 */
-  --c1: color-mix(in srgb, var(--c) 66%, var(--p));
-  --c2: color-mix(in srgb, var(--c) 33%, var(--p));
+  --col-up: #faebb2;
+  --col-down: #faebb2;
+  --bg: #e9b0b9;
+
+  --col-up-1: color-mix(in srgb, var(--col-up) 66%, var(--bg));
+  --col-up-2: color-mix(in srgb, var(--col-up) 33%, var(--bg));
+  --col-down-1: color-mix(in srgb, var(--col-down) 66%, var(--bg));
+  --col-down-2: color-mix(in srgb, var(--col-down) 33%, var(--bg));
 
   min-height: 100dvh;
+  transition: --col-up 1s ease-in, --col-down 1s ease-in, --bg 1s ease-in;
 
   /* prettier-ignore */
   background-image:
-    linear-gradient(var(--c), var(--c)),
-    radial-gradient(100% 100% at 50% 100%, transparent  calc(var(--w) / 2), var(--c)    0px),
-    radial-gradient(50%  100% at 25%  50%, var(--c)     calc(var(--w) / 2), transparent 0px),
+    linear-gradient(var(--col-up), var(--col-up)),
+    radial-gradient(100% 100% at 50% 100%, transparent  calc(var(--w) / 2), var(--col-up)    0px),
+    radial-gradient(50%  100% at 25%  50%, var(--col-up)     calc(var(--w) / 2), transparent 0px),
     /* ############################################################ */
-    linear-gradient(color-mix(in srgb, var(--c1) 90%, var(--c)), var(--c1)),
-    radial-gradient(100% 100% at 50% 100%, transparent  calc(var(--w) / 2), var(--c1)   0px),
-    radial-gradient(50%  100% at 25%  50%, var(--c1)    calc(var(--w) / 2), transparent 0px),
+    linear-gradient(color-mix(in srgb, var(--col-up-1) 90%, var(--col-up)), var(--col-up-1)),
+    radial-gradient(100% 100% at 50% 100%, transparent  calc(var(--w) / 2), var(--col-up-1)   0px),
+    radial-gradient(50%  100% at 25%  50%, var(--col-up-1)    calc(var(--w) / 2), transparent 0px),
     /* ############################################################ */
-    linear-gradient(color-mix(in srgb, var(--c2) 90%, var(--c1)), var(--c2)),
-    radial-gradient(100% 100% at 50% 100%, transparent  calc(var(--w) / 2), var(--c2)   0px),
-    radial-gradient(50%  100% at 25%  50%, var(--c2)    calc(var(--w) / 2), transparent 0px),
+    linear-gradient(color-mix(in srgb, var(--col-up-2) 90%, var(--col-up-1)), var(--col-up-2)),
+    radial-gradient(100% 100% at 50% 100%, transparent  calc(var(--w) / 2), var(--col-up-2)   0px),
+    radial-gradient(50%  100% at 25%  50%, var(--col-up-2)    calc(var(--w) / 2), transparent 0px),
     /* ============================================================ */
-    linear-gradient(0deg, var(--c), var(--c)),
-    radial-gradient(100% 100% at 50% 0%, transparent calc(var(--w) / 2), var(--c) 0px),
-    radial-gradient(50% 100% at 25% 50%, var(--c) calc(var(--w) / 2), transparent 0px),
+    linear-gradient(0deg, var(--col-down), var(--col-down)),
+    radial-gradient(100% 100% at 50% 0%, transparent calc(var(--w) / 2), var(--col-down) 0px),
+    radial-gradient(50% 100% at 25% 50%, var(--col-down) calc(var(--w) / 2), transparent 0px),
     /* ############################################################ */
-    linear-gradient(0deg, color-mix(in srgb, var(--c1) 90%, var(--c)), var(--c1)),
-    radial-gradient(100% 100% at 50% 0%, transparent calc(var(--w) / 2), var(--c1) 0px),
-    radial-gradient(50% 100% at 25% 50%, var(--c1) calc(var(--w) / 2), transparent 0px),
+    linear-gradient(0deg, color-mix(in srgb, var(--col-down-1) 90%, var(--col-down)), var(--col-down-1)),
+    radial-gradient(100% 100% at 50% 0%, transparent calc(var(--w) / 2), var(--col-down-1) 0px),
+    radial-gradient(50% 100% at 25% 50%, var(--col-down-1) calc(var(--w) / 2), transparent 0px),
     /* ############################################################ */
-    linear-gradient(0deg, color-mix(in srgb, var(--c2) 90%, var(--c1)), var(--c2)),
-    radial-gradient(100% 100% at 50% 0%, transparent calc(var(--w) / 2), var(--c2) 0px),
-    radial-gradient(50% 100% at 25% 50%, var(--c2) calc(var(--w) / 2), transparent 0px)
+    linear-gradient(0deg, color-mix(in srgb, var(--col-down-2) 90%, var(--col-down-1)), var(--col-down-2)),
+    radial-gradient(100% 100% at 50% 0%, transparent calc(var(--w) / 2), var(--col-down-2) 0px),
+    radial-gradient(50% 100% at 25% 50%, var(--col-down-2) calc(var(--w) / 2), transparent 0px)
   ;
 
   /* prettier-ignore */
@@ -96,7 +119,7 @@ html {
     calc(100% - var(--h) * 1.5 - var(--offset) * 2 - var(--top) + 2px)
   ;
 
-  background-color: var(--p);
+  background-color: var(--bg);
   background-repeat: repeat-x;
   background-position-x: 0%;
 
