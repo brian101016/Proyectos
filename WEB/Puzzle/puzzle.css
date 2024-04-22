@@ -1,47 +1,66 @@
+/* #region ##################################################################################### (85) SECCIÓN PRINCIPAL */
+/* ---------------------------------------------------------------------- (70) SECCIÓN SECUNDARIA */
+/* -------------------------------------------------- (50) SECCIÓN TERCIARIA */
+/* ============================== (30) MINI-SECCIÓN */
+/* #endregion */
+
+/* #region ##################################################################################### RESET ALL */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   font-family: sans-serif;
+  color: black;
 }
+/* #endregion */
 
+/* #region ##################################################################################### PROPERTIES */
+/* ---------------------------------------------------------------------- OFFSET */
 @property --offset {
   syntax: "<length>";
   inherits: false;
   initial-value: 0px;
 }
 
+/* ---------------------------------------------------------------------- HEIGHT (H) */
 @property --h {
   syntax: "<length>";
   inherits: false;
   initial-value: 0px;
 }
 
+/* ---------------------------------------------------------------------- TOP */
 @property --top {
   syntax: "<length>";
   inherits: false;
   initial-value: 0px;
 }
 
+/* ---------------------------------------------------------------------- COLOR UP */
 @property --col-up {
   syntax: "<color>";
   inherits: false;
   initial-value: #faebb2;
 }
 
+/* ---------------------------------------------------------------------- COLOR DOWN */
 @property --col-down {
   syntax: "<color>";
   inherits: false;
   initial-value: #faebb2;
 }
 
+/* ---------------------------------------------------------------------- COLOR BACKGROUND */
 @property --bg {
   syntax: "<color>";
   inherits: false;
   initial-value: #e9b0b9;
 }
+/* #endregion */
 
+/* #region ##################################################################################### ROOT ELEMENT */
 html {
+  /* ---------------------------------------------------------------------- INIT VARIABLES */
   --w: 64px;
   --top: 8vh;
   --h: calc(var(--w) * 0.75);
@@ -50,6 +69,7 @@ html {
   --col-down: #faebb2;
   --bg: #e9b0b9;
 
+  /* ---------------------------------------------------------------------- COMPLEMENTARY VARIABLES */
   --col-up-1: color-mix(in srgb, var(--col-up) 66%, var(--bg));
   --col-up-2: color-mix(in srgb, var(--col-up) 33%, var(--bg));
   --col-down-1: color-mix(in srgb, var(--col-down) 66%, var(--bg));
@@ -58,6 +78,7 @@ html {
   min-height: 100dvh;
   transition: --col-up 1s ease-in, --col-down 1s ease-in, --bg 1s ease-in;
 
+  /* ---------------------------------------------------------------------- BACKGROUND IMAGE */
   /* prettier-ignore */
   background-image:
     linear-gradient(var(--col-up), var(--col-up)),
@@ -123,27 +144,291 @@ html {
   background-repeat: repeat-x;
   background-position-x: 0%;
 
+  /* ---------------------------------------------------------------------- BACKGROUND ANIMATIONS */
   /* prettier-ignore */
   animation:
     4s linear 0s infinite forwards walk,
     3s ease-in-out 0s infinite alternate gobble
   ;
 }
+/* #endregion */
 
-@keyframes gobble {
-  from {
-    --offset: calc(var(--w) * 1.05);
-    /* --h: calc(var(--w) * 0.5); */
-    --top: 10vh;
+/* #region ##################################################################################### MAIN CONTAINERS */
+/* ---------------------------------------------------------------------- BODY */
+body {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+/* ---------------------------------------------------------------------- CLASS MAIN */
+.main {
+  margin: auto;
+  padding: 0 100px;
+
+  display: flex;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+}
+/* #endregion */
+
+/* #region ##################################################################################### GENERAL STYLES */
+/* ---------------------------------------------------------------------- BUTTONS */
+button {
+  font-family: sans-serif;
+  font-size: 1.25rem;
+  font-weight: 800;
+  text-transform: uppercase;
+
+  padding: 0.25em 0.75em;
+
+  border: 4px solid black;
+  border-radius: 0.5em;
+
+  background-color: transparent;
+}
+/* #endregion */
+
+/* #region ##################################################################################### CONTROLS CONTAINER */
+.controls-container {
+  margin: 0.75rem 1.25rem;
+  position: absolute;
+  padding: 0.65rem;
+  /* backdrop-filter: invert(0.2) opacity(0.2); */
+  /* box-shadow: inset 0px -15px 20px -20px #00000094; */
+  backdrop-filter: invert(0.2) opacity(0.5);
+  /* background-clip: text; */
+  /* color: var(--color); */
+  /* background-color: var(--color); */
+  /* mix-blend-mode: difference; */
+  /* mix-blend-mode: screen; */
+  font-size: 18px;
+  font-family: system-ui;
+  /* font-weight: 600; */
+  /* filter: invert(0); */
+
+  &input,
+  &select,
+  &button {
+    background-color: transparent;
+    border: 2px solid currentColor;
   }
+}
+/* #endregion */
 
-  to {
-    --offset: calc(var(--w) * 0.3333);
-    /* --h: calc(var(--w) * 0.5); */
-    --top: 8vh;
+/* #region ##################################################################################### CHART & PREVIEW */
+/* ---------------------------------------------------------------------- GENERAL STYLES */
+#chart,
+#preview {
+  border: 2px solid black;
+  position: relative;
+  min-height: 200px;
+  min-width: 200px;
+  max-height: 800px;
+  max-width: 800px;
+  margin: auto;
+  box-sizing: content-box;
+  aspect-ratio: 1/1;
+  box-shadow: -6px 6px black;
+}
+
+/* ---------------------------------------------------------------------- CHART::AFTER */
+#chart::after {
+  content: "";
+  display: block;
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  bottom: -1.5px;
+  left: 100%;
+  border: 2px solid black;
+  box-sizing: content-box;
+  border-left: 0;
+  z-index: -1;
+}
+
+/* ---------------------------------------------------------------------- CHART > SPAN */
+#chart > span {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 25px;
+  font-family: system-ui;
+  font-weight: 500;
+  filter: drop-shadow(-4px 4px 1px #49494968);
+}
+/* #endregion */
+
+/* #region ##################################################################################### OTHER ELEMENTS */
+/* ---------------------------------------------------------------------- PIECE */
+.piece {
+  display: inline;
+  width: 100px;
+  height: 100px;
+  position: absolute;
+  aspect-ratio: 1/1;
+  transition: top 0.1s ease-in, left 0.1s ease-in;
+}
+
+/* ---------------------------------------------------------------------- START BUTTON */
+#gen {
+  --color: #ffe200;
+  position: absolute;
+  top: 20%;
+
+  font-size: 2rem;
+
+  background-image: linear-gradient(315deg, #e1be02, #ffe200);
+  text-shadow: 2px 2px 0px #959000;
+
+  &:active {
+    box-shadow: 1px 1px black, 5px 5px #959000 inset;
+    text-shadow: none;
+    animation: 1s pulse 0s 1 paused ease-out,
+      2s levitate 0s infinite alternate ease-in-out,
+      1s pulse -1s 2 running ease-out;
+    --color: #b9b200;
   }
 }
 
+/* ---------------------------------------------------------------------- PREVIEW BUTTON */
+#preview-btn {
+  display: flex;
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  top: -2px;
+  right: 100%;
+  margin: 25px;
+  /* border: 2px solid red; */
+  opacity: 0.75;
+  border-radius: 50%;
+  justify-content: center;
+  align-items: center;
+  font-size: 3rem;
+  background: none;
+  visibility: visible;
+}
+
+/* ---------------------------------------------------------------------- TIMER */
+#timer {
+  font-family: monospace;
+  font-size: 1.2rem;
+}
+/* #endregion */
+
+/* #region ##################################################################################### OTHER EFFECTS */
+/* ---------------------------------------------------------------------- BACKGROUND FILLER */
+.bg-filler,
+#chart::after {
+  background-image: repeating-linear-gradient(
+    45deg,
+    #98c1d9,
+    #98c1d9 10px,
+    #c0d6df 10px,
+    #c0d6df 20px
+  );
+  box-shadow: inset 0 0 15px -3px #227c9d, -6px 6px black;
+}
+
+/* ---------------------------------------------------------------------- REFLECTIVE */
+.reflective {
+  overflow: hidden;
+  position: relative;
+
+  &::after {
+    content: "";
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0%;
+    left: 0%;
+    display: block;
+    box-sizing: border-box;
+    --cc: #ffffff40;
+    --tt: #ffffff00;
+    background-image: linear-gradient(
+      67deg,
+      var(--tt) 0%,
+      var(--tt) calc(50% - 45px),
+      var(--cc) calc(50% - 40px),
+      var(--cc) calc(50% - 30px),
+      var(--tt) calc(50% - 25px),
+      var(--tt) calc(50% - 20px),
+      var(--cc) calc(50% - 15px),
+      var(--cc) calc(50% + 15px),
+      var(--tt) calc(50% + 20px),
+      var(--tt) calc(50% + 45px),
+      var(--cc) calc(50% + 50px),
+      var(--cc) calc(50% + 75px),
+      var(--tt) calc(50% + 80px)
+    );
+    background-position-x: 0%;
+    background-repeat: no-repeat;
+    background-size: 200%;
+
+    animation: 3s reflective 0s infinite ease-in;
+  }
+}
+
+/* ---------------------------------------------------------------------- LEVITATE */
+.levitate {
+  animation: 2s levitate 0s infinite alternate ease-in-out;
+}
+
+/* ---------------------------------------------------------------------- LEVITATE */
+.pulse {
+  animation: 1s pulse 0s infinite ease-out;
+
+  &.levitate {
+    animation: 1s pulse 0s infinite ease-out,
+      2s levitate 0s infinite alternate ease-in-out;
+  }
+}
+
+/* ---------------------------------------------------------------------- IN 3D */
+.in3d {
+  translate: -4px -4px;
+  box-shadow: 5px 5px black;
+
+  &:active {
+    translate: 0px 0px;
+    box-shadow: 1px 1px black;
+  }
+}
+
+/* ---------------------------------------------------------------------- PREVIEW UTILITY CLASSES */
+/* -------------------------------------------------- HIDDEN */
+.hidden {
+  display: none;
+  visibility: hidden;
+}
+
+/* -------------------------------------------------- HOVER HIDE */
+.hover-hide {
+  visibility: hidden;
+}
+
+/* -------------------------------------------------- ONION */
+.onion {
+  opacity: 0.5;
+  z-index: 1;
+  position: absolute !important;
+}
+
+/* -------------------------------------------------- HOVER */
+.hover {
+  z-index: 1;
+  position: absolute !important;
+}
+/* #endregion */
+
+/* #region ##################################################################################### ANIMATIONS */
+/* ---------------------------------------------------------------------- WALK */
 @keyframes walk {
   from {
     background-position-x: 0%;
@@ -178,148 +463,70 @@ html {
   }
 }
 
-body {
-  min-height: 100dvh;
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-}
+/* ---------------------------------------------------------------------- GOBBLE */
+@keyframes gobble {
+  from {
+    --offset: calc(var(--w) * 1.05);
+    /* --h: calc(var(--w) * 0.5); */
+    --top: 10vh;
+  }
 
-.controls-container {
-  margin: 0.75rem 1.25rem;
-  position: absolute;
-  padding: 0.65rem;
-  /* backdrop-filter: invert(0.2) opacity(0.2); */
-  /* box-shadow: inset 0px -15px 20px -20px #00000094; */
-  backdrop-filter: invert(0.2) opacity(0.5);
-  /* background-clip: text; */
-  /* color: var(--color); */
-  /* background-color: var(--color); */
-  /* mix-blend-mode: difference; */
-  /* mix-blend-mode: screen; */
-  font-size: 18px;
-  font-family: system-ui;
-  /* font-weight: 600; */
-  /* filter: invert(0); */
-
-  &input,
-  &select,
-  &button {
-    background-color: transparent;
-    border: 2px solid currentColor;
+  to {
+    --offset: calc(var(--w) * 0.3333);
+    /* --h: calc(var(--w) * 0.5); */
+    --top: 8vh;
   }
 }
 
-.main {
-  display: flex;
-  flex-wrap: wrap;
-  margin: auto;
-  padding: 0 100px;
-  justify-content: space-evenly;
+/* ---------------------------------------------------------------------- LEVITATE */
+@keyframes levitate {
+  from {
+    transform: translateY(-5px);
+  }
+  to {
+    transform: translateY(5px);
+  }
 }
 
-#chart,
-#preview {
-  border: 2px solid black;
-  position: relative;
-  min-height: 200px;
-  min-width: 200px;
-  max-height: 800px;
-  max-width: 800px;
-  margin: auto;
-  box-sizing: content-box;
-  aspect-ratio: 1/1;
-  box-shadow: -6px 6px black;
+/* ---------------------------------------------------------------------- REFLECTIVE */
+@keyframes reflective {
+  0% {
+    background-position-x: calc(-50% - 40px);
+  }
+
+  33%,
+  100% {
+    background-position-x: calc(150% - 40px);
+  }
 }
 
-#chart::after {
-  content: "";
-  display: block;
-  position: absolute;
-  width: 100px;
-  height: 100px;
-  bottom: -1.5px;
-  left: 100%;
-  border: 2px solid black;
-  box-sizing: content-box;
-  border-left: 0;
-  z-index: -1;
+/* ---------------------------------------------------------------------- PULSE */
+@keyframes pulse {
+  0% {
+    /* box-shadow: 0px 0px 0 0 #31f3fa; */
+    outline: 0em solid rgb(from #31f3fa r g b);
+    outline: 0em solid rgb(from var(--color) r g b);
+    /* color(from black srgb r g b / 0.5); */
+    outline-offset: 0px;
+  }
+  15% {
+    /* box-shadow: 0px 0px 2px 4px #31f3fa; */
+    outline: 0.25em solid rgb(from #31f3fa r g b);
+    outline: 0.25em solid rgb(from var(--color) r g b);
+    outline-offset: 2px;
+  }
+  80% {
+    /* box-shadow: 0px 0px 20px 5px #31f3faa0; */
+    outline: 0.15em solid rgb(from #31f3fa r g b / 0.65);
+    outline: 0.15em solid rgb(from var(--color) r g b / 0.65);
+    outline-offset: 20px;
+  }
+  80%,
+  100% {
+    /* box-shadow: 0px 0px 25px 0px #31f3fa00; */
+    outline: 0em solid rgb(from #31f3fa r g b / 0);
+    outline: 0em solid rgb(from var(--color) r g b / 0);
+    outline-offset: 25px;
+  }
 }
-
-#chart > span {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 25px;
-  font-family: system-ui;
-  font-weight: 500;
-  filter: drop-shadow(-4px 4px 1px #49494968);
-}
-
-.piece {
-  display: inline;
-  width: 100px;
-  height: 100px;
-  position: absolute;
-  /* border: 1px solid red; */
-  aspect-ratio: 1/1;
-  transition: top 0.1s ease-in, left 0.1s ease-in;
-}
-
-.bg-filler,
-#chart::after {
-  background-image: repeating-linear-gradient(
-    45deg,
-    #98c1d9,
-    #98c1d9 10px,
-    #c0d6df 10px,
-    #c0d6df 20px
-  );
-  box-shadow: inset 0 0 15px -3px #227c9d, -6px 6px black;
-}
-
-.hidden {
-  display: none;
-  visibility: hidden;
-}
-
-.hover-hide {
-  visibility: hidden;
-}
-
-.onion {
-  opacity: 0.5;
-  z-index: 1;
-  position: absolute !important;
-}
-
-.hover {
-  z-index: 1;
-  position: absolute !important;
-}
-
-#preview-btn {
-  display: flex;
-  position: absolute;
-  width: 50px;
-  height: 50px;
-  top: -2px;
-  right: 100%;
-  margin: 25px;
-  /* border: 2px solid red; */
-  opacity: 0.75;
-  border-radius: 50%;
-  justify-content: center;
-  align-items: center;
-  font-size: 3rem;
-  background: none;
-  visibility: visible;
-}
-
-#timer {
-  font-family: monospace;
-  font-size: 1.2rem;
-}
+/* #endregion */
