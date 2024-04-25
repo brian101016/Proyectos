@@ -78,6 +78,8 @@ const invert = document.getElementById("invert");
 const auto_el = document.getElementById("auto");
 const consecutive_el = document.getElementById("consecutive");
 const color_theme = document.getElementById("color-theme");
+const controls_container = document.getElementById("controls-container");
+const expand_menu = document.getElementById("expand-menu");
 // #endregion
 
 // #region ##################################################################################### OBJECT LISTENERS
@@ -104,6 +106,11 @@ color_theme.onchange = (e) => {
   document.documentElement.style.setProperty("--col-up", col.c1);
   document.documentElement.style.setProperty("--col-down", col.c2);
   document.documentElement.style.setProperty("--bg", col.bg);
+};
+
+// ---------------------------------------------------------------------- EXPAND MENU
+expand_menu.onclick = () => {
+  controls_container.classList.toggle("closed");
 };
 
 // ---------------------------------------------------------------------- DOCUMENT CONTENT LOADED
