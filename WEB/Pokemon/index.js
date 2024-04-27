@@ -1,3 +1,70 @@
+/**
+ * @typedef {{
+ *  id: number,
+ *  name: string,
+ *  height: number,
+ *  weight: number,
+ *  forms: {
+ *    name: string,
+ *    url: string,
+ *  }[],
+ *  is_default: boolean,
+ *  types: {
+ *    slot: number,
+ *    type: {
+ *      name: string,
+ *      url: string,
+ *    },
+ *  }[]
+ *  species: {
+ *    name: string,
+ *    url: string,
+ *  },
+ *  sprites: {
+ *    front_default: string,
+ *    front_female: string | null,
+ *  },
+ * }} Pokemon
+ *
+ * @typedef {{
+ *  color: {
+ *    name: string,
+ *    url: string,
+ *  },
+ *  evolves_from_species: {
+ *    name: string,
+ *    url: string,
+ *  } | null,
+ *  habitat: {
+ *    name: string,
+ *    url: string,
+ *  } | null,
+ *  generation: {
+ *    name: string,
+ *    url: string,
+ *  },
+ *  gender_rate: number,
+ *  has_gender_differences: boolean,
+ *  id: number,
+ *  is_baby: boolean,
+ *  is_legendary: boolean,
+ *  is_mythical: boolean,
+ *  name: string,
+ *  shape: {
+ *    name: string,
+ *    url: string,
+ *  } | null,
+ *  forms_switchable: boolean,
+ *  varieties: {
+ *    is_default: boolean,
+ *    pokemon: {
+ *      name: string,
+ *      url: string,
+ *    },
+ *  }[],
+ * }} Species
+ */
+
 // ---------------------------------------------------------------------------------------------------- DB
 const db = {
   Acero: {
@@ -250,3 +317,114 @@ document.addEventListener("DOMContentLoaded", () => {
   // START
   sel.onchange();
 });
+
+// ---------------------------------------------------------------------------------------------------- EXPERT SYSTEM
+async function se(...deflist) {
+  const el_se = document.getElementById("se");
+  el_se.style.display = "block";
+  const el_title = document.getElementById("se-title");
+  el_title.textContent = "Generating...";
+  const el_table = document.getElementById("se-list");
+  el_table.replaceChildren();
+
+  /** @type {(number | string)[]} */
+  const pokeIDs = deflist?.length > 0 ? [...deflist] : [];
+  const maxLen = 50;
+  const topPoke = 1025;
+
+  while (pokeIDs.length < maxLen) {
+    let numRand = random_range(1, topPoke);
+    while (pokeIDs.includes(numRand)) {
+      numRand = boundaries(1, numRand + 1, topPoke);
+    }
+    pokeIDs.push(numRand);
+  }
+
+  for (const pokemon of pokeIDs) {
+    const tr = document.createElement("tr");
+    const url = "https://pokeapi.co/api/v2/pokemon/" + pokemon;
+    const request = await fetch(url);
+    if (request.status !== 200) {
+      tr.textContent = `Failed to load "${pokemon}"`;
+      el_table.appendChild(tr);
+      continue;
+    }
+
+    /** @type {Pokemon} */
+    const pokedata = await request.json();
+    const req2 = await fetch(pokedata.species.url);
+    /** @type {Species} */
+    const species = await req2.json();
+
+    tr.innerHTML = `
+      <td>${pokedata.id}</td>
+      <td>${pokedata.name}</td>
+      <td>${pokedata.height}</td>
+      <td>${pokedata.weight}</td>
+
+      <td>${species.generation.name.substring(11).toUpperCase() || "N/A"}</td>
+      <td>${species.evolves_from_species?.name || "N/A"}</td>
+
+      <td>${pokedata.types[0].type.name}</td>
+      <td>${pokedata.types[1]?.type?.name || "N/A"}</td>
+
+      <td>${
+        species.gender_rate === -1
+          ? "No gender"
+          : species.gender_rate === 0
+          ? "Always male"
+          : species.gender_rate === 8
+          ? "Always female"
+          : "Both genders"
+      }</td>
+      <td>${species.has_gender_differences}</td>
+      <td>
+        <img src="${pokedata.sprites.front_default}" alt="front default" />
+      </td>
+      <td>${
+        pokedata.sprites.front_female
+          ? `<img src="${pokedata.sprites.front_female}" alt="front female" />`
+          : "N/A"
+      }</td>
+
+      <td>${species.color?.name || "N/A"}</td>
+      <td>${species.shape?.name || "N/A"}</td>
+      <td>${species.habitat?.name || "N/A"}</td>
+
+      <td>${species.is_baby}</td>
+      <td>${species.is_legendary}</td>
+      <td>${species.is_mythical}</td>
+    
+      <td>
+        <ol>
+          ${(() => {
+            let inn = "";
+            pokedata.forms.forEach((item, i) => {
+              inn += `<li>${item.name}</li>\n`;
+            });
+            return inn;
+          })()}
+        </ol>
+      </td>
+      <td>${pokedata.is_default}</td>
+      <td>${species.forms_switchable}</td>
+
+      <td>${species.name}</td>
+      ${(() => {
+        let inn = "";
+        let isdef = false;
+        species.varieties.forEach((item, i) => {
+          inn += `<li>${item.pokemon.name}</li>\n`;
+          if (item.is_default && item.pokemon.name === pokedata.name) {
+            isdef = true;
+          }
+        });
+        return `<td><ol>${inn}</ol></td>
+          <td>${isdef}</td>`;
+      })()}
+    `;
+    el_table.appendChild(tr);
+  }
+
+  el_title.textContent = "Done!";
+}
