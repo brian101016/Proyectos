@@ -88,7 +88,7 @@ show_list(Category) :-
 % Predicado para imprimir un elemento atomico. Se usa mediante `show_list/1`.
 show_list(Element, Count, Next) :-
   % Llenamos con " " + Count hasta la posicion 6, luego ponemos el Element.
-  format("~` t~w~6|.- ~q~n", [Count, Element]),
+  format("~` t~w~6|.- ~s~n", [Count, Element]),
   Next is Count+1. % Sumar el contador.
 %
 

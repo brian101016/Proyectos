@@ -12,24 +12,24 @@ current_folder('Pokemon Game/').
 /**############################################################################
  * POKEMON IDENTIFICATION GAME
  * 
- * Programa que adivina un pokemon de una lista de 60 pokemones disponibles.
+ * Programa que adivina un pokemon de una lista de 60 pokemon disponibles.
  * 
  * Realiza preguntas de Si y No hasta dar con la respuesta que mejor se adapte.
  * 
  * Para comenzar, ingrese
  *  ?- pokestart.
  * 
- * Para mostrar la lista de pokemones, ingrese
+ * Para mostrar la lista de pokemon, ingrese
  *  ?- pokelist.
  * ############################################################################*/
 :- multifile akinator/2.
-% Acceso directo para mostrar toda la lista de animales.
+% Acceso directo para mostrar toda la lista de pokemon.
 pokelist :-
   format(
 "\n~` t~2|+~`=t~48|
-~` t~2|| Los animales disponibles son:
+~` t~2|| Los pokémon disponibles son:
 ~` t~2|+~`=t~48|~n"),
-  animal,
+  pokemon,
   format("~` t~2|+~`=t~48|").
 
 /**############################################################################
@@ -51,7 +51,7 @@ pokestart :-
 ~` t~2|| ¡Allá vamos!
 ~` t~2|+~`-t~64|~n")
   ),
-  akinator(animal, Pokemon),
+  akinator(pokemon, Pokemon),
   conclusion(Pokemon, true),
   await,
   undo.
