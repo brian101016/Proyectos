@@ -70,8 +70,8 @@ pokemon('Talonflame').   'Talonflame'  :-    two_types,     is_evolution,     fl
 pokemon('Hydreigon').    'Hydreigon'   :-    two_types,     is_evolution,     flys_or_levitates,      \+ has_mega,            \+ poketype(fantasma),  \+ has_color(rojo),         true.
 pokemon('Lucario').      'Lucario'     :-    two_types,     is_evolution,  \+ flys_or_levitates,         mega_or_dmax,           gen(6),                 has_color(azul),         true. % Originally check white
 pokemon('Abomasnow').    'Abomasnow'   :-    two_types,     is_evolution,  \+ flys_or_levitates,         mega_or_dmax,           gen(6),              \+ has_color(azul),         true.
-pokemon('Hatterene').    'Hatterene'   :-    two_types,     is_evolution,  \+ flys_or_levitates,         mega_or_dmax,        \+ gen(6),                 has_color(pink),         true. % Originally check white
-pokemon('Gardevoir').    'Gardevoir'   :-    two_types,     is_evolution,  \+ flys_or_levitates,         mega_or_dmax,        \+ gen(6),              \+ has_color(pink),         true.
+pokemon('Hatterene').    'Hatterene'   :-    two_types,     is_evolution,  \+ flys_or_levitates,         mega_or_dmax,        \+ gen(6),                 has_color(rosa),         true. % Originally check white
+pokemon('Gardevoir').    'Gardevoir'   :-    two_types,     is_evolution,  \+ flys_or_levitates,         mega_or_dmax,        \+ gen(6),              \+ has_color(rosa),         true.
 pokemon('Meowscarada').  'Meowscarada' :-    two_types,     is_evolution,  \+ flys_or_levitates,      \+ mega_or_dmax,           gen(9),                 is_starter,              shape(biped).
 pokemon('Skeledirge').   'Skeledirge'  :-    two_types,     is_evolution,  \+ flys_or_levitates,      \+ mega_or_dmax,           gen(9),                 is_starter,           \+ shape(biped). % Better color rojo
 pokemon('Tinkaton').     'Tinkaton'    :-    two_types,     is_evolution,  \+ flys_or_levitates,      \+ mega_or_dmax,           gen(9),              \+ is_starter,              true.
@@ -79,22 +79,22 @@ pokemon('Greninja').     'Greninja'    :-    two_types,     is_evolution,  \+ fl
 pokemon('Pyroar').       'Pyroar'      :-    two_types,     is_evolution,  \+ flys_or_levitates,      \+ mega_or_dmax,        \+ gen(9),                 gen(6),               \+ is_starter.
 pokemon('Weavile').      'Weavile'     :-    two_types,     is_evolution,  \+ flys_or_levitates,      \+ mega_or_dmax,        \+ gen(9),              \+ gen(6),                  gen(4).
 pokemon('Bewear').       'Bewear'      :-    two_types,     is_evolution,  \+ flys_or_levitates,      \+ mega_or_dmax,        \+ gen(9),              \+ gen(6),               \+ gen(4).
-pokemon('Flamigo').      'Flamigo'     :-    two_types,  \+ is_evolution,     flys_or_levitates,         shape(animal),          has_wings,              has_color(pink),         true.
-pokemon('Hawlucha').     'Hawlucha'    :-    two_types,  \+ is_evolution,     flys_or_levitates,         shape(animal),          has_wings,           \+ has_color(pink),         true.
+pokemon('Flamigo').      'Flamigo'     :-    two_types,  \+ is_evolution,     flys_or_levitates,         shape(animal),          has_wings,              has_color(rosa),         true.
+pokemon('Hawlucha').     'Hawlucha'    :-    two_types,  \+ is_evolution,     flys_or_levitates,         shape(animal),          has_wings,           \+ has_color(rosa),         true.
 pokemon('Inkay').        'Inkay'       :-    two_types,  \+ is_evolution,     flys_or_levitates,         shape(animal),       \+ has_wings,              true,                    true.
 pokemon('Pecharunt').    'Pecharunt'   :-    two_types,  \+ is_evolution,     flys_or_levitates,      \+ shape(animal),          poketype(fantasma),     is_mythical,             true.
 pokemon('Rotom').        'Rotom'       :-    two_types,  \+ is_evolution,     flys_or_levitates,      \+ shape(animal),          poketype(fantasma),  \+ is_mythical,             true.
 pokemon('Klefki').       'Klefki'      :-    two_types,  \+ is_evolution,     flys_or_levitates,      \+ shape(animal),       \+ poketype(fantasma),     true,                    true.
-pokemon('Mimikyu').      'Mimikyu'     :-    two_types,  \+ is_evolution,  \+ flys_or_levitates,         poketype(fantasma),     has_color(yellow),      true,                    true.
-pokemon('Sableye').      'Sableye'     :-    two_types,  \+ is_evolution,  \+ flys_or_levitates,         poketype(fantasma),  \+ has_color(yellow),      true,                    true.
+pokemon('Mimikyu').      'Mimikyu'     :-    two_types,  \+ is_evolution,  \+ flys_or_levitates,         poketype(fantasma),     has_color(amarillo),    true,                    true.
+pokemon('Sableye').      'Sableye'     :-    two_types,  \+ is_evolution,  \+ flys_or_levitates,         poketype(fantasma),  \+ has_color(amarillo),    true,                    true.
 pokemon('Victini').      'Victini'     :-    two_types,  \+ is_evolution,  \+ flys_or_levitates,      \+ poketype(fantasma),     is_mythical,            true,                    true.
-pokemon('Impidimp').     'Impidimp'    :-    two_types,  \+ is_evolution,  \+ flys_or_levitates,      \+ poketype(fantasma),  \+ is_mythical,            has_color(pink),         true.
-pokemon('Togedemaru').   'Togedemaru'  :-    two_types,  \+ is_evolution,  \+ flys_or_levitates,      \+ poketype(fantasma),  \+ is_mythical,         \+ has_color(pink),         true.
-pokemon('Raichu').       'Raichu'      :- \+ two_types,     is_evolution,     poketype('eléctrico'),     has_color(yellow),      gen(1),                 reg('Alola'),            true.
-pokemon('Pikachu').      'Pikachu'     :- \+ two_types,     is_evolution,     poketype('eléctrico'),     has_color(yellow),      gen(1),              \+ reg('Alola'),            true.
-pokemon('Ampharos').     'Ampharos'    :- \+ two_types,     is_evolution,     poketype('eléctrico'),     has_color(yellow),   \+ gen(1),                 true,                    true.
-pokemon('Eelektrik').    'Eelektrik'   :- \+ two_types,     is_evolution,     poketype('eléctrico'),  \+ has_color(yellow),      has_fins,               true,                    true.
-pokemon('Zebstrika').    'Zebstrika'   :- \+ two_types,     is_evolution,     poketype('eléctrico'),  \+ has_color(yellow),   \+ has_fins,               true,                    true.
+pokemon('Impidimp').     'Impidimp'    :-    two_types,  \+ is_evolution,  \+ flys_or_levitates,      \+ poketype(fantasma),  \+ is_mythical,            has_color(rosa),         true.
+pokemon('Togedemaru').   'Togedemaru'  :-    two_types,  \+ is_evolution,  \+ flys_or_levitates,      \+ poketype(fantasma),  \+ is_mythical,         \+ has_color(rosa),         true.
+pokemon('Raichu').       'Raichu'      :- \+ two_types,     is_evolution,     poketype('eléctrico'),     has_color(amarillo),    gen(1),                 reg('Alola'),            true.
+pokemon('Pikachu').      'Pikachu'     :- \+ two_types,     is_evolution,     poketype('eléctrico'),     has_color(amarillo),    gen(1),              \+ reg('Alola'),            true.
+pokemon('Ampharos').     'Ampharos'    :- \+ two_types,     is_evolution,     poketype('eléctrico'),     has_color(amarillo), \+ gen(1),                 true,                    true.
+pokemon('Eelektrik').    'Eelektrik'   :- \+ two_types,     is_evolution,     poketype('eléctrico'),  \+ has_color(amarillo),    has_fins,               true,                    true.
+pokemon('Zebstrika').    'Zebstrika'   :- \+ two_types,     is_evolution,     poketype('eléctrico'),  \+ has_color(amarillo), \+ has_fins,               true,                    true.
 pokemon('Feraligatr').   'Feraligatr'  :- \+ two_types,     is_evolution,  \+ poketype('eléctrico'),     gen(2),                 has_color(azul),        is_starter,              true.
 pokemon('Wobbuffet').    'Wobbuffet'   :- \+ two_types,     is_evolution,  \+ poketype('eléctrico'),     gen(2),                 has_color(azul),     \+ is_starter,              true. % Originally check team rocket
 pokemon('Umbreon').      'Umbreon'     :- \+ two_types,     is_evolution,  \+ poketype('eléctrico'),     gen(2),              \+ has_color(azul),        true,                    true.
@@ -112,8 +112,8 @@ pokemon('Oshawott').     'Oshawott'    :- \+ two_types,  \+ is_evolution,     ge
 pokemon('Grookey').      'Grookey'     :- \+ two_types,  \+ is_evolution,     gender(both),           \+ shape(quadruped),       is_starter,          \+ poketype(water),         true.
 pokemon('Charcadet').    'Charcadet'   :- \+ two_types,  \+ is_evolution,     gender(both),           \+ shape(quadruped),    \+ is_starter,             poketype(fire),          true. % Better color rojo
 pokemon('Togepi').       'Togepi'      :- \+ two_types,  \+ is_evolution,     gender(both),           \+ shape(quadruped),    \+ is_starter,          \+ poketype(fire),          true.
-pokemon('Unown').        'Unown'       :- \+ two_types,  \+ is_evolution,  \+ gender(both),              flys_or_levitates,      shape(abstract),        has_color(black),        true.
-pokemon('Porygon').      'Porygon'     :- \+ two_types,  \+ is_evolution,  \+ gender(both),              flys_or_levitates,      shape(abstract),     \+ has_color(black),        true. % Better color azul
+pokemon('Unown').        'Unown'       :- \+ two_types,  \+ is_evolution,  \+ gender(both),              flys_or_levitates,      shape(abstract),        has_color(negro),        true.
+pokemon('Porygon').      'Porygon'     :- \+ two_types,  \+ is_evolution,  \+ gender(both),              flys_or_levitates,      shape(abstract),     \+ has_color(negro),        true. % Better color azul
 pokemon('Kyogre').       'Kyogre'      :- \+ two_types,  \+ is_evolution,  \+ gender(both),              flys_or_levitates,   \+ shape(abstract),        is_legend,               true.
 pokemon('Flabébé').      'Flabébé'     :- \+ two_types,  \+ is_evolution,  \+ gender(both),              flys_or_levitates,   \+ shape(abstract),     \+ is_legend,               true.
 pokemon('Zacian').       'Zacian'      :- \+ two_types,  \+ is_evolution,  \+ gender(both),           \+ flys_or_levitates,      gen(8),                 is_legend,               true.
