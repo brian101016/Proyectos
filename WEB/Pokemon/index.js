@@ -328,7 +328,16 @@ async function se(...deflist) {
   el_table.replaceChildren();
 
   /** @type {(number | string)[]} */
-  const pokeIDs = deflist?.length > 0 ? [...deflist] : [];
+  const pokeIDs =
+    deflist?.length > 0
+      ? [...deflist]
+      : [
+          6, 25, 26, 37, 94, 105, 132, 133, 137, 160, 175, 181, 197, 201, 202,
+          282, 302, 334, 359, 376, 382, 399, 418, 445, 448, 460, 461, 478, 479,
+          494, 501, 523, 571, 604, 635, 658, 663, 668, 669, 686, 701, 707, 745,
+          760, 763, 777, 778, 792, 810, 835, 858, 859, 870, 888, 908, 911, 935,
+          959, 973, 1025,
+        ];
   const maxLen = 50;
   const topPoke = 1025;
 
@@ -358,9 +367,7 @@ async function se(...deflist) {
 
     tr.innerHTML = `
       <td>${pokedata.id}</td>
-      <td>${pokedata.name}</td>
-      <td>${pokedata.height}</td>
-      <td>${pokedata.weight}</td>
+      <td>${species.name}</td>
 
       <td>${species.generation.name.substring(11).toUpperCase() || "N/A"}</td>
       <td>${species.evolves_from_species?.name || "N/A"}</td>
@@ -377,54 +384,57 @@ async function se(...deflist) {
           ? "Always female"
           : "Both genders"
       }</td>
-      <td>${species.has_gender_differences}</td>
       <td>
         <img src="${pokedata.sprites.front_default}" alt="front default" />
       </td>
       <td>${
         pokedata.sprites.front_female
           ? `<img src="${pokedata.sprites.front_female}" alt="front female" />`
+          : species.name === "eevee"
+          ? `<img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10205.png" alt="front female"></img>`
           : "N/A"
       }</td>
 
       <td>${species.color?.name || "N/A"}</td>
       <td>${species.shape?.name || "N/A"}</td>
-      <td>${species.habitat?.name || "N/A"}</td>
 
-      <td>${species.is_baby}</td>
       <td>${species.is_legendary}</td>
       <td>${species.is_mythical}</td>
-    
+
       <td>
-        <ol>
+        <ul>
           ${(() => {
             let inn = "";
-            pokedata.forms.forEach((item, i) => {
-              inn += `<li>${item.name}</li>\n`;
+            let mega = false;
+            species.varieties.forEach((item) => {
+              if (item.pokemon.name.includes("-mega") && !mega) {
+                inn += `<li>MEGA</li>\n`;
+                mega = true;
+              } else if (item.pokemon.name.endsWith("-gmax")) {
+                inn += `<li>GIGAMAX</li>\n`;
+              } else if (item.pokemon.name.endsWith("-alola")) {
+                inn += `<li>REG ALOLA</li>\n`;
+              } else if (item.pokemon.name.endsWith("-hisui")) {
+                inn += `<li>REG HISUI</li>\n`;
+              }
             });
+            if (inn === "") inn = "N/A";
             return inn;
           })()}
-        </ol>
+        </ul>
       </td>
-      <td>${pokedata.is_default}</td>
-      <td>${species.forms_switchable}</td>
 
-      <td>${species.name}</td>
-      ${(() => {
-        let inn = "";
-        let isdef = false;
-        species.varieties.forEach((item, i) => {
-          inn += `<li>${item.pokemon.name}</li>\n`;
-          if (item.is_default && item.pokemon.name === pokedata.name) {
-            isdef = true;
-          }
-        });
-        return `<td><ol>${inn}</ol></td>
-          <td>${isdef}</td>`;
-      })()}
+      <td>${starters.includes(pokedata.id) ? "YES" : "NO"}</td>
+      <td>${flyers.includes(pokedata.id) ? "YES" : "NO"}</td>
     `;
     el_table.appendChild(tr);
   }
 
   el_title.textContent = "Done!";
 }
+
+const starters = [6, 160, 501, 658, 810, 908, 911];
+const flyers = [
+  6, 94, 137, 201, 334, 376, 382, 445, 478, 479, 635, 663, 669, 686, 701, 707,
+  792, 973, 1025,
+];

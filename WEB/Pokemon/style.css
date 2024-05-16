@@ -288,7 +288,8 @@ select:focus {
   --color-table-hover-column: hsl(0, 0%, 75%);
 }
 
-#se ol {
+#se ol,
+#se ul {
   padding-left: 1.5rem;
   width: max-content;
   text-align: left;
