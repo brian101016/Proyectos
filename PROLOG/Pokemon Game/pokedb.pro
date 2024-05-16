@@ -93,7 +93,7 @@ pokemon('Togedemaru').   'Togedemaru'  :-    two_types,  \+ is_evolution,  \+ fl
 pokemon('Raichu').       'Raichu'      :- \+ two_types,     is_evolution,     poketype('eléctrico'),     has_color(amarillo),    gender(diff),           reg('Alola'),            true,           verify('puede surfear con su cola').
 pokemon('Pikachu').      'Pikachu'     :- \+ two_types,     is_evolution,     poketype('eléctrico'),     has_color(amarillo),    gender(diff),        \+ reg('Alola'),            true,           verify('es el mejor amigo de Ash Ketchum').
 pokemon('Ampharos').     'Ampharos'    :- \+ two_types,     is_evolution,     poketype('eléctrico'),     has_color(amarillo), \+ gender(diff),           true,                    true,           verify('tiene una bombilla en la punta de la cola'), verify('tiene anillos negros en el cuello').
-pokemon('Eelektrik').    'Eelektrik'   :- \+ two_types,     is_evolution,     poketype('eléctrico'),  \+ has_color(amarillo),    has_fins,               true,                    true,           verify('parece sanguijuela o anguila'), verify('tiene brazos').
+pokemon('Eelektross').   'Eelektross'  :- \+ two_types,     is_evolution,     poketype('eléctrico'),  \+ has_color(amarillo),    has_fins,               true,                    true,           verify('parece sanguijuela o anguila'), verify('tiene brazos').
 pokemon('Zebstrika').    'Zebstrika'   :- \+ two_types,     is_evolution,     poketype('eléctrico'),  \+ has_color(amarillo), \+ has_fins,               true,                    true,           verify('es una cebra').
 pokemon('Feraligatr').   'Feraligatr'  :- \+ two_types,     is_evolution,  \+ poketype('eléctrico'),     gen(2),                 has_color(azul),        is_starter,              true,           verify('es un cocodrilo'), verify('tiene colmillos y garras grandes').
 pokemon('Wobbuffet').    'Wobbuffet'   :- \+ two_types,     is_evolution,  \+ poketype('eléctrico'),     gen(2),                 has_color(azul),     \+ is_starter,              true,           verify('tiene los labios pintados cuando es hembra'), verify('es compinche del equipo Rocket').
@@ -135,7 +135,8 @@ legend_or_myth    :- is_legend, ! ; is_mythical.
 is_legend         :- verify('es un Pokémon legendario').
 is_mythical       :- verify('es un Pokémon mítico').
 % CLASIFICACION SEGUN FORMAS ESPECIALES
-mega_or_dmax      :- has_mega, ! ; has_dmax.
+% mega_or_dmax      :- has_mega, ! ; has_dmax.
+mega_or_dmax      :- verify('puede mega-evolucionar o tiene una forma gigamax especial').
 has_mega          :- verify('puede mega-evolucionar').
 has_dmax          :- verify('tiene una forma gigamax especial').
 % CLASIFICACION SEGUN CUERPO Y POSTURAS
