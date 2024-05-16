@@ -330,6 +330,7 @@ select:focus {
   white-space: nowrap;
   vertical-align: middle;
   font-size: 1rem;
+  text-transform: capitalize;
 }
 
 /* ------------------------- HACER HOVER SOBRE UNA FILA */

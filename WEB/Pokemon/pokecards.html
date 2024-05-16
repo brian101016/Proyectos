@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PokéAkinator Character Cards</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <style>
+      .goto-link {
+        position: fixed;
+        top: 0;
+        right: 0;
+        margin: 2rem;
+        /* border: 3px solid black; */
+        padding: 0.5em 0.75em;
+        border-radius: 0.5rem;
+        background-color: #f2fb6f;
+        color: black;
+        font-weight: 700;
+        font-size: 1.25rem;
+        text-decoration: none;
+        outline: black solid 3px;
+        transition: outline-offset 0.2s ease-in-out;
+        outline-offset: 0px;
+        z-index: 50;
+
+        &:hover {
+          outline-offset: 5px;
+        }
+
+        &:active {
+          transform: scale(0.95);
+        }
+      }
+    </style>
+
+    <a class="goto-link" href="./poketree.html"><- GO TO TREE</a>
+
+    <div id="se" style="z-index: 1">
+      <h1>Character cards</h1>
+      <h2 id="se-title">Status...</h2>
+
+      <table>
+        <thead>
+          <th title="ID">ID</th>
+          <th title="Nombre">Name</th>
+
+          <th title="Es originario de la región X?">Origin</th>
+          <th title="Es evolución de otro Pokémon?">Evolves from</th>
+
+          <th title="Tipo principal">Type 1</th>
+          <th title="Tipo secundario (opcional)">Type 2</th>
+
+          <th title="Puede ser ambos, solo macho, solo hembra o ninguno">
+            Genders
+          </th>
+
+          <th title="Apariencia normal">Default pic</th>
+          <th title="Apariencia femenina">Female pic</th>
+
+          <th title="Color de la especie">Color</th>
+          <th title="Forma física de la especie">Shape</th>
+
+          <th title="Si es considerado como 'Pokémon legendario'">Legend?</th>
+          <th title="Si es considerado como 'Pokémon mítico'">Myth?</th>
+
+          <th title="Variaciones de este Pokémon (regionales y otras)">
+            Variants
+          </th>
+
+          <th title="Si es considerado como 'Pokémon inicial'">Starter?</th>
+          <th title="Si el Pokémon puede volar o levitar">Flys?</th>
+        </thead>
+        <tbody id="se-list"></tbody>
+      </table>
+    </div>
+
+    <script>
+      // ---------------------------------------------------------------------------------------------------- EXPERT SYSTEM
+      async function se() {
+        const el_se = document.getElementById("se");
+        el_se.style.display = "block";
+        const el_title = document.getElementById("se-title");
+        el_title.textContent = "Generating...";
+        const el_table = document.getElementById("se-list");
+        el_table.replaceChildren();
+
+        /** @type {(number | string)[]} */
+        const pokeIDs = [
+          6, 25, 26, 37, 94, 105, 132, 133, 137, 160, 175, 181, 197, 201, 202,
+          282, 302, 334, 359, 376, 382, 399, 418, 445, 448, 460, 461, 478, 479,
+          494, 501, 523, 571, 604, 635, 658, 663, 668, 669, 686, 701, 707, 745,
+          760, 763, 777, 778, 792, 810, 835, 858, 859, 870, 888, 908, 911, 935,
+          959, 973, 1025,
+        ];
+
+        for (const pokemon of pokeIDs) {
+          const tr = document.createElement("tr");
+          const url = "https://pokeapi.co/api/v2/pokemon/" + pokemon;
+          const request = await fetch(url);
+          if (request.status !== 200) {
+            tr.textContent = `Failed to load "${pokemon}"`;
+            el_table.appendChild(tr);
+            continue;
+          }
+
+          const pokedata = await request.json();
+          const req2 = await fetch(pokedata.species.url);
+          const species = await req2.json();
+
+          tr.innerHTML = `
+            <td>${pokedata.id}</td>
+            <td>${species.name}</td>
+
+            <td>${
+              gens[species.generation.name.substring(11).toUpperCase()] || "N/A"
+            }</td>
+            <td>${
+              species.evolves_from_species?.name
+                ? `YES (${species.evolves_from_species?.name})`
+                : "NO"
+            }</td>
+
+            <td>${pokedata.types[0].type.name}</td>
+            <td>${pokedata.types[1]?.type?.name || "N/A"}</td>
+
+            <td>${
+              species.gender_rate === -1
+                ? "No gender"
+                : species.gender_rate === 0
+                ? "Always male"
+                : species.gender_rate === 8
+                ? "Always female"
+                : "Both genders"
+            }</td>
+            <td>
+              <img src="${
+                pokedata.sprites.front_default
+              }" alt="front default" />
+            </td>
+            <td>${
+              pokedata.sprites.front_female
+                ? `<img src="${pokedata.sprites.front_female}" alt="front female" />`
+                : species.name === "eevee"
+                ? `<img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10205.png" alt="front female"></img>`
+                : "N/A"
+            }</td>
+
+            <td>${species.color?.name || "N/A"}</td>
+            <td>${species.shape?.name || "N/A"}</td>
+
+            <td>${species.is_legendary}</td>
+            <td>${species.is_mythical}</td>
+
+            <td>
+              <ul>
+                ${(() => {
+                  let inn = "";
+                  let mega = false;
+                  species.varieties.forEach((item) => {
+                    if (item.pokemon.name.includes("-mega") && !mega) {
+                      inn += `<li>MEGA</li>\n`;
+                      mega = true;
+                    } else if (item.pokemon.name.endsWith("-gmax")) {
+                      inn += `<li>GIGAMAX</li>\n`;
+                    } else if (item.pokemon.name.endsWith("-alola")) {
+                      inn += `<li>REG ALOLA</li>\n`;
+                    } else if (item.pokemon.name.endsWith("-hisui")) {
+                      inn += `<li>REG HISUI</li>\n`;
+                    }
+                  });
+                  if (inn === "") inn = "N/A";
+                  return inn;
+                })()}
+              </ul>
+            </td>
+
+            <td>${starters.includes(pokedata.id) ? "YES" : "NO"}</td>
+            <td>${flyers.includes(pokedata.id) ? "YES" : "NO"}</td>
+          `;
+          el_table.appendChild(tr);
+        }
+
+        el_title.textContent = "Done!";
+      }
+
+      const gens = {
+        0: "Hisui",
+        I: "Kanto",
+        II: "Johto",
+        III: "Hoenn",
+        IV: "Sinnoh",
+        V: "Teselia",
+        VI: "Kalos",
+        VII: "Alola",
+        VIII: "Galar",
+        IX: "Paldea",
+      };
+      const starters = [6, 160, 501, 658, 810, 908, 911];
+      const flyers = [
+        6, 94, 137, 201, 334, 376, 382, 445, 478, 479, 635, 663, 669, 686, 701,
+        707, 792, 973, 1025,
+      ];
+
+      document.addEventListener("DOMContentLoaded", se);
+    </script>
+  </body>
+</html>

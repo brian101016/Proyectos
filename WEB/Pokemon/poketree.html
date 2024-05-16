@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Árbol de decisión Pokémon</title>
+    <!-- <link rel="stylesheet" href="style.css"> -->
   </head>
   <body>
     <style>
@@ -12,6 +13,37 @@
         padding: 0;
         box-sizing: border-box;
         font-family: sans-serif;
+      }
+
+      html {
+        background-color: #dadada;
+      }
+
+      .goto-link {
+        position: fixed;
+        top: 0;
+        left: 0;
+        margin: 2rem;
+        /* border: 3px solid black; */
+        padding: 0.5em 0.75em;
+        border-radius: 0.5rem;
+        background-color: #f2fb6f;
+        color: black;
+        font-weight: 700;
+        font-size: 1.25rem;
+        text-decoration: none;
+        outline: black solid 3px;
+        transition: outline-offset 0.2s ease-in-out;
+        outline-offset: 0px;
+        z-index: 50;
+
+        &:hover {
+          outline-offset: 5px;
+        }
+
+        &:active {
+          transform: scale(0.95);
+        }
       }
 
       canvas {
@@ -82,6 +114,8 @@
         color: #5a1414;
       }
     </style>
+
+    <a class="goto-link" href="./pokecards.html">GO TO CHAR CARDS -></a>
 
     <canvas width="2000" height="2000" id="canvas"></canvas>
 
