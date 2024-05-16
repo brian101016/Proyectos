@@ -129,15 +129,15 @@ has_wings         :- verify('tiene alas').
 has_fins          :- verify('tiene aletas').
 has_color(X)      :- format(atom(Str), "es mayormente de color ~q", [X]), verify(Str).
 % CLASIFICACION SEGUN GRUPOS
-is_starter        :- verify('es un pokémon inicial').
-is_evolution      :- verify('es evolución de otro pokémon').
+is_starter        :- verify('es un Pokémon inicial').
+is_evolution      :- verify('es evolución de otro Pokémon').
 legend_or_myth    :- is_legend, ! ; is_mythical.
-is_legend         :- verify('es un pokémon legendario').
-is_mythical       :- verify('es un pokémon mítico').
+is_legend         :- verify('es un Pokémon legendario').
+is_mythical       :- verify('es un Pokémon mítico').
 % CLASIFICACION SEGUN FORMAS ESPECIALES
 mega_or_dmax      :- has_mega, ! ; has_dmax.
 has_mega          :- verify('puede mega-evolucionar').
-has_dmax          :- verify('tiene una forma dynamax especial').
+has_dmax          :- verify('tiene una forma gigamax especial').
 % CLASIFICACION SEGUN CUERPO Y POSTURAS
 shape(animal)     :- verify('tiene forma animal').
 shape(quadruped)  :- verify('se mueve en cuatro patas').
