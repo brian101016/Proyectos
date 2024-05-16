@@ -1,0 +1,2509 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Árbol de decisión Pokémon</title>
+  </head>
+  <body>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: sans-serif;
+      }
+
+      canvas {
+        position: absolute;
+        top: 0;
+        left: 0;
+        pointer-events: none;
+      }
+
+      .container {
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+        white-space: pre;
+        width: max-content;
+
+        & .question {
+          display: flex;
+          flex-direction: row;
+          padding: 5rem 0.5rem 0;
+        }
+
+        & .answer {
+          display: flex;
+          flex-direction: column;
+
+          & > span:first-child {
+            color: green;
+          }
+        }
+
+        & .answer:first-child > span:first-child {
+          color: red;
+        }
+
+        & .goal,
+        & .undef {
+          margin: 0 1rem;
+        }
+      }
+
+      table {
+        border-collapse: collapse;
+        display: none;
+        text-align: center;
+
+        & td {
+          border: 1px solid black;
+          white-space: nowrap;
+        }
+      }
+
+      .question {
+        padding: 1.5rem 0;
+      }
+      
+      .answer {
+        color: #4a4a4a;
+      }
+
+      .goal {
+        font-weight: 700;
+        color: #458b13;
+      }
+
+      .undef {
+        font-weight: 700;
+        color: #5a1414;
+      }
+    </style>
+
+    <canvas width="2000" height="2000" id="canvas"></canvas>
+
+    <table>
+      <tbody>
+        <tr>
+          <td colspan="60" class="question">TWO TYPES</td>
+        </tr>
+
+        <tr>
+          <td colspan="29">NOT</td>
+          <td colspan="31">YES</td>
+        </tr>
+
+        <tr>
+          <td colspan="29" class="question">IS EVOLUTION</td>
+          <td colspan="31" class="question">IS EVOLUTION</td>
+        </tr>
+
+        <tr>
+          <td colspan="17">NOT</td>
+          <td colspan="12">YES</td>
+          <td colspan="11">NOT</td>
+          <td colspan="20">YES</td>
+        </tr>
+
+        <tr>
+          <td colspan="17" class="question">BOTH GENDERS</td>
+          <td colspan="12" class="question">ELECTRIC</td>
+          <td colspan="11" class="question">FLYS OR LEVITATES</td>
+          <td colspan="20" class="question">FLYS OR LEVITATES</td>
+        </tr>
+
+        <tr>
+          <td colspan="7">NOT</td>
+          <td colspan="10">YES</td>
+          <td colspan="7">NOT</td>
+          <td colspan="5">YES</td>
+          <td colspan="5">NOT</td>
+          <td colspan="6">YES</td>
+          <td colspan="11">NOT</td>
+          <td colspan="10">YES</td>
+        </tr>
+
+        <tr>
+          <td colspan="7" class="question">FLYS OR LEVITATES</td>
+          <td colspan="10" class="question">QUADRUPED</td>
+          <td colspan="7" class="question">GEN II</td>
+          <td colspan="5" class="question">YELLOW</td>
+          <td colspan="5" class="question">GHOST</td>
+          <td colspan="6" class="question">ANIMAL LIKE</td>
+          <td colspan="11" class="question">MEGA OR DMAX</td>
+          <td colspan="10" class="question">MEGA EVOLUTION</td>
+        </tr>
+
+        <tr>
+          <td colspan="3">NOT</td>
+          <td colspan="4">YES</td>
+          <td colspan="4">NOT</td>
+          <td colspan="6">YES</td>
+          <td colspan="4">NOT</td>
+          <td colspan="3">YES</td>
+          <td colspan="2">NOT</td>
+          <td colspan="3">YES</td>
+          <td colspan="3">NOT</td>
+          <td colspan="2">YES</td>
+          <td colspan="3">NOT</td>
+          <td colspan="3">YES</td>
+          <td colspan="7">NOT</td>
+          <td colspan="4">YES</td>
+          <td colspan="4">NOT</td>
+          <td colspan="5">YES</td>
+        </tr>
+
+        <tr>
+          <td colspan="3" class="question">GEN VIII</td>
+          <td colspan="4" class="question">ABSTACT</td>
+          <td colspan="4" class="question">STARTER</td>
+          <td colspan="6" class="question">GENDER DIFF</td>
+          <td colspan="4" class="question">REGIONAL</td>
+          <td colspan="3" class="question">BLUE</td>
+          <td colspan="2" class="question">FINS</td>
+          <td colspan="3" class="question">GENDER DIFF</td>
+          <td colspan="3" class="question">MYTH</td>
+          <td colspan="2" class="question">YELLOW</td>
+          <td colspan="3" class="question">GHOST</td>
+          <td colspan="3" class="question">WINGS</td>
+          <td colspan="7" class="question">GEN IX</td>
+          <td colspan="4" class="question">GEN IV</td>
+          <td colspan="4" class="question">GHOST</td>
+          <td colspan="5" class="question">BLUE</td>
+        </tr>
+
+        <tr>
+          <td>NOT</td>
+          <td colspan="2">YES</td>
+          <td colspan="2">NOT</td>
+          <td colspan="2">YES</td>
+          <td colspan="2">NOT</td>
+          <td colspan="2">YES</td>
+          <td colspan="3">NOT</td>
+          <td colspan="3">YES</td>
+          <td colspan="2">NOT</td>
+          <td colspan="2">YES</td>
+          <td>NOT</td>
+          <td colspan="2">YES</td>
+          <td>NOT</td>
+          <td>YES</td>
+          <td>NOT</td>
+          <td colspan="2">YES</td>
+          <td colspan="2">NOT</td>
+          <td>YES</td>
+          <td>NOT</td>
+          <td>YES</td>
+          <td>NOT</td>
+          <td colspan="2">YES</td>
+          <td>NOT</td>
+          <td colspan="2">YES</td>
+          <td colspan="4">NOT</td>
+          <td colspan="3">YES</td>
+          <td colspan="2">NOT</td>
+          <td colspan="2">YES</td>
+          <td colspan="2">NOT</td>
+          <td colspan="2">YES</td>
+          <td colspan="2">NOT</td>
+          <td colspan="3">YES</td>
+        </tr>
+
+        <tr>
+          <td rowspan="2" class="question">Puede transformarse en otros Pokémon</td>
+          <td colspan="2" class="question">LEGENDARY</td>
+          <td colspan="2" class="question">LEGENDARY</td>
+          <td colspan="2" class="question">BLACK</td>
+          <td colspan="2" class="question">FIRE</td>
+          <td colspan="2" class="question">WATER</td>
+          <td colspan="3" class="question">MEGA</td>
+          <td colspan="3" class="question">NORMAL</td>
+          <td colspan="2" class="question">ALWAYS FEMALE</td>
+          <td colspan="2" class="question">GROUND</td>
+          <td rowspan="2" class="question">Evoluciona por la noche</td>
+          <td colspan="2" class="question">STARTER</td>
+          <td rowspan="2" class="question">Es una cebra</td>
+          <td rowspan="2" class="question">Parece sanguijuela o anguila</td>
+          <td rowspan="2" class="question">Tiene una bombilla en la punta de la cola</td>
+          <td colspan="2" class="question">ALOLA</td>
+          <td colspan="2" class="question">PINK</td>
+          <td rowspan="2" class="question">Tiene una V roja en la frente</td>
+          <td rowspan="2" class="question">Tiene ojos de gema</td>
+          <td rowspan="2" class="question">Trata de imitar a Pikachu</td>
+          <td rowspan="2" class="question">Tiene forma de llaves</td>
+          <td colspan="2" class="question">MYTHICAL</td>
+          <td rowspan="2" class="question">Es un calamar</td>
+          <td colspan="2" class="question">PINK</td>
+          <td colspan="4" class="question">GEN VI</td>
+          <td colspan="3" class="question">STARTER</td>
+          <td colspan="2" class="question">PINK</td>
+          <td colspan="2" class="question">WHITE</td>
+          <td colspan="2" class="question">RED</td>
+          <td colspan="2" class="question">LEGENDARY</td>
+          <td colspan="2" class="question">RED</td>
+          <td colspan="3" class="question">GEN III</td>
+        </tr>
+
+        <tr>
+          <!-- <td></td> -->
+          <td>NOT</td>
+          <td>YES</td>
+          <td>NOT</td>
+          <td>YES</td>
+          <td>NOT</td>
+          <td>YES</td>
+          <td>NOT</td>
+          <td>YES</td>
+          <td>NOT</td>
+          <td>YES</td>
+          <td colspan="2">NOT</td>
+          <td>YES</td>
+          <td>NOT</td>
+          <td colspan="2">YES</td>
+          <td>NOT</td>
+          <td>YES</td>
+          <td>NOT</td>
+          <td>YES</td>
+          <!-- <td></td> -->
+          <td>NOT</td>
+          <td>YES</td>
+          <!-- <td></td> -->
+          <!-- <td></td> -->
+          <!-- <td></td> -->
+          <td>NOT</td>
+          <td>YES</td>
+          <td>NOT</td>
+          <td>YES</td>
+          <!-- <td></td> -->
+          <!-- <td></td> -->
+          <!-- <td></td> -->
+          <!-- <td></td> -->
+          <td>NOT</td>
+          <td>YES</td>
+          <!-- <td></td> -->
+          <td>NOT</td>
+          <td>YES</td>
+          <td colspan="2">NOT</td>
+          <td colspan="2">YES</td>
+          <td>NOT</td>
+          <td colspan="2">YES</td>
+          <td>NOT</td>
+          <td>YES</td>
+          <td>NOT</td>
+          <td>YES</td>
+          <td>NOT</td>
+          <td>YES</td>
+          <td>NOT</td>
+          <td>YES</td>
+          <td>NOT</td>
+          <td>YES</td>
+          <td>NOT</td>
+          <td colspan="2">YES</td>
+        </tr>
+
+        <tr>
+          <td rowspan="2" class="question">Tiene ojos de puntitos</td>
+          <td rowspan="2" class="question">Son varios Pokémon en fila</td>
+          <td rowspan="2" class="question">Pelea con una espada en la boca</td>
+          <td rowspan="2" class="question">Se transporta en una flor</td>
+          <td rowspan="2" class="question">Dicen que es el océano personificado</td>
+          <td rowspan="2" class="question">Fue creado con un código de programación</td>
+          <td rowspan="2" class="question">Tiene forma de letra</td>
+          <td rowspan="2" class="question">Parece un huevo</td>
+          <td rowspan="2" class="question">Evoluciona con una armadura especial</td>
+          <td rowspan="2" class="question">Es un mono</td>
+          <td rowspan="2" class="question">Es una nutria</td>
+          <td colspan="2" class="question">ALOLA</td>
+          <td rowspan="2" class="question">Tiene un cuerno en forma de media luna</td>
+          <td rowspan="2" class="question">Es una nutria</td>
+          <td colspan="2" class="question">DMAX</td>
+          <td rowspan="2" class="question">Es un canino</td>
+          <td rowspan="2" class="question">Parece que usa tacones o botas</td>
+          <td rowspan="2" class="question">Tiene pelo largo con una liga al final</td>
+          <td rowspan="2" class="question">Utiliza un hueso para atacar</td>
+          <td rowspan="2" class="question">Tiene anillos amarillos en su cuerpo</td>
+          <td rowspan="2" class="question">Tiene los labios pintados cuando es hembra</td>
+          <td rowspan="2" class="question">Es un cocodrilo</td>
+          <td class="goal">Zebstrika</td>
+          <td rowspan="2" class="question">Tiene brazos</td>
+          <td rowspan="2" class="question">Tiene anillos negros en el cuello</td>
+          <td rowspan="2" class="question">Es el mejor amigo de Ash Ketchum</td>
+          <td rowspan="2" class="question">Puede surfear con su cola</td>
+          <td rowspan="2" class="question">Es un erizo</td>
+          <td rowspan="2" class="question">Es un duende</td>
+          <td rowspan="2" class="question">Se conoce como el Pokémon victoria</td>
+          <td class="goal">Sableye</td>
+          <td class="goal">Mimikyu</td>
+          <td class="goal">Klefki</td>
+          <td rowspan="2" class="question">Puede convertirse en electrodomésticos</td>
+          <td rowspan="2" class="question">Hipnotiza a las personas con mochis</td>
+          <td rowspan="2" class="question">Evoluciona cuando está de cabeza</td>
+          <td rowspan="2" class="question">Parece luchador de lucha libre</td>
+          <td rowspan="2" class="question">Es un flamenco</td>
+          <td colspan="2" class="question">GEN IV</td>
+          <td colspan="2" class="question">STARTER</td>
+          <td rowspan="2" class="question">Utiliza un gran martillo para atacar</td>
+          <td colspan="2" class="question">STAND UP</td>
+          <td rowspan="2" class="question">Tiene un vestido blanco largo</td>
+          <td rowspan="2" class="question">Tiene un sombrero de bruja</td>
+          <td rowspan="2" class="question">Tiene un pincho en el pecho y las manos</td>
+          <td rowspan="2" class="question">Tiene las manos, pies y cola de color verde</td>
+          <td rowspan="2" class="question">Es un dragón</td>
+          <td rowspan="2" class="question">Es un águila</td>
+          <td rowspan="2" class="question">Siempre es hembra</td>
+          <td rowspan="2" class="question">Simboliza a la luna</td>
+          <td rowspan="2" class="question">Es un fantasma</td>
+          <td rowspan="2" class="question">Es un dragón</td>
+          <td rowspan="2" class="question">Parece un tiburón martillo</td>
+          <td colspan="2" class="question">WINGS</td>
+        </tr>
+
+        <tr>
+          <!-- <td></td> -->
+          <!-- <td></td> -->
+          <!-- <td></td> -->
+          <!-- <td></td> -->
+          <!-- <td></td> -->
+          <!-- <td></td> -->
+          <!-- <td></td> -->
+          <!-- <td></td> -->
+          <!-- <td></td> -->
+          <!-- <td></td> -->
+          <!-- <td></td> -->
+          <td>NOT</td>
+          <td>YES</td>
+          <!-- <td></td> -->
+          <!-- <td></td> -->
+          <td>NOT</td>
+          <td>YES</td>
+          <!-- <td></td> -->
+          <!-- <td></td> -->
+          <!-- <td></td> -->
+          <!-- <td></td> -->
+          <!-- <td></td> -->
+          <!-- <td></td> -->
+          <!-- <td></td> -->
+          <td>--</td>
+          <!-- <td></td> -->
+          <!-- <td></td> -->
+          <!-- <td></td> -->
+          <!-- <td></td> -->
+          <!-- <td></td> -->
+          <!-- <td></td> -->
+          <!-- <td></td> -->
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <!-- <td></td> -->
+          <!-- <td></td> -->
+          <!-- <td></td> -->
+          <!-- <td></td> -->
+          <!-- <td></td> -->
+          <td>NOT</td>
+          <td>YES</td>
+          <td>NOT</td>
+          <td>YES</td>
+          <!-- <td></td> -->
+          <td>NOT</td>
+          <td>YES</td>
+          <!-- <td></td> -->
+          <!-- <td></td> -->
+          <!-- <td></td> -->
+          <!-- <td></td> -->
+          <!-- <td></td> -->
+          <!-- <td></td> -->
+          <!-- <td></td> -->
+          <!-- <td></td> -->
+          <!-- <td></td> -->
+          <!-- <td></td> -->
+          <!-- <td></td> -->
+          <td>NOT</td>
+          <td>YES</td>
+        </tr>
+
+        <tr>
+          <td class="goal">Ditto</td>
+          <td class="goal">Falinks</td>
+          <td class="goal">Zacian</td>
+          <td class="goal">Flabébé</td>
+          <td class="goal">Kyogre</td>
+          <td class="goal">Porygon</td>
+          <td class="goal">Unown</td>
+          <td class="goal">Togepi</td>
+          <td class="goal">Charcadet</td>
+          <td class="question">Usa un palo para pelear</td>
+          <td class="question">Usa una concha marina para pelear</td>
+          <td class="question">Es un perro Corgi</td>
+          <td class="question">Tiene nueve colas</td>
+          <td class="goal">Absol</td>
+          <td class="question">Tiene un flotador en el cuello</td>
+          <td class="question">Es un castor</td>
+          <td class="question">Evoluciona en ocho formas distintas</td>
+          <td class="question">Evoluciona según la posición del sol</td>
+          <td class="goal">Tsareena</td>
+          <td class="goal">Zoroark</td>
+          <td class="goal">Marowak</td>
+          <td class="goal">Umbreon</td>
+          <td class="question">Es compinche del equipo Rocket</td>
+          <td class="question">Tiene colmillos y garras grandes</td>
+          <td>--</td>
+          <td class="goal">Eelektross</td>
+          <td class="goal">Ampharos</td>
+          <td class="goal">Pikachu</td>
+          <td class="goal">Raichu</td>
+          <td class="question">Tiene mejillas amarillas</td>
+          <td class="question">Tiene la lengua de fuera</td>
+          <td class="goal">Victini</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td class="goal">Rotom</td>
+          <td class="goal">Pecharunt</td>
+          <td class="goal">Inkay</td>
+          <td class="goal">Hawlucha</td>
+          <td class="goal">Flamigo</td>
+          <td class="question">Es un oso</td>
+          <td class="question">Usa sus grandes garras para escalar</td>
+          <td class="question">Tiene diferencia de género</td>
+          <td class="question">Usa su propia lengua como bufanda</td>
+          <td class="goal">Tinkaton</td>
+          <td class="question">Tiene un ave de fuego en la nariz</td>
+          <td class="question">Tiene un gran antifaz oscuro</td>
+          <td class="question">Tiene una protuberancia rosa en el pecho</td>
+          <td class="goal">Hatterene</td>
+          <td class="goal">Lucario</td>
+          <td class="question">Representa a un pino nevado</td>
+          <td class="question">Tiene tres cabezas</td>
+          <td class="question">Tiene puntos rojos por el cuerpo y alas</td>
+          <td class="question">Tiene un par de cuernos de hielo</td>
+          <td class="goal">Lunala</td>
+          <td class="question">Tiene una sonrisa burlona</td>
+          <td class="question">Tiene una llama en la punta de la cola</td>
+          <td class="goal">Garchomp</td>
+          <td class="question">Tiene una X en el rostro</td>
+          <td class="question">Tiene alas en forma de nubes</td>
+        </tr>
+
+        <tr>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td class="goal">Grookey</td>
+          <td class="goal">Oshawott</td>
+          <td class="goal">Yamper</td>
+          <td class="goal">Vulpix</td>
+          <td>--</td>
+          <td class="goal">Buizel</td>
+          <td class="goal">Bidoof</td>
+          <td class="goal">Eevee</td>
+          <td class="goal">Lycanroc</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td class="goal">Wobbuffet</td>
+          <td class="goal">Feraligatr</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td class="goal">Togedemaru</td>
+          <td class="goal">Impidimp</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td class="question">Tiene una fuerza descomunal</td>
+          <td class="goal">Weavile</td>
+          <td class="question">Tiene melena si es macho, o cresta si es hembra</td>
+          <td class="goal">Greninja</td>
+          <td>--</td>
+          <td class="goal">Skeledirge</td>
+          <td class="goal">Meowscarada</td>
+          <td class="goal">Gardevoir</td>
+          <td>--</td>
+          <td>--</td>
+          <td class="goal">Abomasnow</td>
+          <td class="goal">Hydreigon</td>
+          <td class="goal">Talonflame</td>
+          <td class="goal">Froslass</td>
+          <td>--</td>
+          <td class="goal">Gengar</td>
+          <td class="goal">Charizard</td>
+          <td>--</td>
+          <td class="goal">Metagross</td>
+          <td class="goal">Altaria</td>
+        </tr>
+
+        <tr>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td class="goal">Bewear</td>
+          <td>--</td>
+          <td class="goal">Pyroar</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+          <td>--</td>
+        </tr>
+      </tbody>
+    </table>
+    
+    <div class="container" id="container">
+      
+      <h1>Es de dos tipos distintos?</h1>
+      <div class="question">
+
+        <div class="answer">
+          <span>NO</span>
+
+          <span>Es evolución de otro Pokémon?</span>
+          <div class="question">
+    
+            <div class="answer">
+              <span>NO</span>
+    
+              <span>Existe en ambos géneros?</span>
+              <div class="question">
+        
+                <div class="answer">
+                  <span>NO</span>
+                  
+                  <span>Puede volar o levitar?</span>
+                  <div class="question">
+            
+                    <div class="answer">
+                      <span>NO</span>
+                      
+                      <span>Es originario de la región de Galar?</span>
+                      <div class="question">
+                
+                        <div class="answer">
+                          <span>NO</span>
+                          
+                          <span>Puede transformarse en otros Pokémon?</span>
+                          <div class="question">
+                    
+                            <div class="answer">
+                              <span>NO</span>
+                              
+                              <span class="undef">UNDEFINED</span>
+                            </div>
+                            <div class="answer">
+                              <span>YES</span>
+                              
+                              <span>Tiene ojos de puntitos?</span>
+                              <div class="question">
+                        
+                                <div class="answer">
+                                  <span>NO</span>
+                                  
+                                  <span class="undef">UNDEFINED</span>
+                                </div>
+                                <div class="answer">
+                                  <span>YES</span>
+                                  
+                                  <span class="goal">Ditto</span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="answer">
+                          <span>YES</span>
+                          
+                          <span>Es un Pokémon legendario?</span>
+                          <div class="question">
+                    
+                            <div class="answer">
+                              <span>NO</span>
+                              
+                              <span>Son varios Pokémon en fila?</span>
+                              <div class="question">
+                        
+                                <div class="answer">
+                                  <span>NO</span>
+                                  
+                                  <span class="undef">UNDEFINED</span>
+                                </div>
+                                <div class="answer">
+                                  <span>YES</span>
+                                  
+                                  <span class="goal">Falinks</span>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="answer">
+                              <span>YES</span>
+                              
+                              <span>Pelea con una espada en la boca?</span>
+                              <div class="question">
+                        
+                                <div class="answer">
+                                  <span>NO</span>
+                                  
+                                  <span class="undef">UNDEFINED</span>
+                                </div>
+                                <div class="answer">
+                                  <span>YES</span>
+                                  
+                                  <span class="goal">Zacian</span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="answer">
+                      <span>YES</span>
+                      
+                      <span>Tiene una forma abstracta?</span>
+                      <div class="question">
+                
+                        <div class="answer">
+                          <span>NO</span>
+                          
+                          <span>Es un Pokémon legendario?</span>
+                          <div class="question">
+                    
+                            <div class="answer">
+                              <span>NO</span>
+                              
+                              <span>Se transporta en una flor?</span>
+                              <div class="question">
+                        
+                                <div class="answer">
+                                  <span>NO</span>
+                                  
+                                  <span class="undef">UNDEFINED</span>
+                                </div>
+                                <div class="answer">
+                                  <span>YES</span>
+                                  
+                                  <span class="goal">Flabébé</span>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="answer">
+                              <span>YES</span>
+                              
+                              <span>Dicen que es el océano personificado?</span>
+                              <div class="question">
+                        
+                                <div class="answer">
+                                  <span>NO</span>
+                                  
+                                  <span class="undef">UNDEFINED</span>
+                                </div>
+                                <div class="answer">
+                                  <span>YES</span>
+                                  
+                                  <span class="goal">Kyogre</span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="answer">
+                          <span>YES</span>
+                          
+                          <span>Es mayormente de color negro?</span>
+                          <div class="question">
+                    
+                            <div class="answer">
+                              <span>NO</span>
+                              
+                              <span>Fue creado con un código de programación?</span>
+                              <div class="question">
+                        
+                                <div class="answer">
+                                  <span>NO</span>
+                                  
+                                  <span class="undef">UNDEFINED</span>
+                                </div>
+                                <div class="answer">
+                                  <span>YES</span>
+                                  
+                                  <span class="goal">Porygon</span>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="answer">
+                              <span>YES</span>
+                              
+                              <span>Tiene forma de letra?</span>
+                              <div class="question">
+                        
+                                <div class="answer">
+                                  <span>NO</span>
+                                  
+                                  <span class="undef">UNDEFINED</span>
+                                </div>
+                                <div class="answer">
+                                  <span>YES</span>
+                                  
+                                  <span class="goal">Unown</span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="answer">
+                  <span>YES</span>
+                  
+                  <span>Se mueve en cuatro patas?</span>
+                  <div class="question">
+            
+                    <div class="answer">
+                      <span>NO</span>
+                      
+                      <span>Es un Pokémon inicial?</span>
+                      <div class="question">
+                
+                        <div class="answer">
+                          <span>NO</span>
+                          
+                          <span>Es de tipo fuego?</span>
+                          <div class="question">
+                    
+                            <div class="answer">
+                              <span>NO</span>
+                              
+                              <span>Parece un huevo?</span>
+                              <div class="question">
+                        
+                                <div class="answer">
+                                  <span>NO</span>
+                                  
+                                  <span class="undef">UNDEFINED</span>
+                                </div>
+                                <div class="answer">
+                                  <span>YES</span>
+                                  
+                                  <span class="goal">Togepi</span>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="answer">
+                              <span>YES</span>
+                              
+                              <span>Evoluciona con una armadura especial?</span>
+                              <div class="question">
+                        
+                                <div class="answer">
+                                  <span>NO</span>
+                                  
+                                  <span class="undef">UNDEFINED</span>
+                                </div>
+                                <div class="answer">
+                                  <span>YES</span>
+                                  
+                                  <span class="goal">Charcadet</span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="answer">
+                          <span>YES</span>
+                          
+                          <span>Es de tipo agua?</span>
+                          <div class="question">
+                    
+                            <div class="answer">
+                              <span>NO</span>
+                              
+                              <span>Es un mono?</span>
+                              <div class="question">
+                        
+                                <div class="answer">
+                                  <span>NO</span>
+                                  
+                                  <span class="undef">UNDEFINED</span>
+                                </div>
+                                <div class="answer">
+                                  <span>YES</span>
+                                  
+                                  <span>Usa un palo para pelear?</span>
+                                  <div class="question">
+                            
+                                    <div class="answer">
+                                      <span>NO</span>
+                                      
+                                      <span class="undef">UNDEFINED</span>
+                                    </div>
+                                    <div class="answer">
+                                      <span>YES</span>
+                                      
+                                      <span class="goal">Grookey</span>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="answer">
+                              <span>YES</span>
+                              
+                              <span>Es una nutria?</span>
+                              <div class="question">
+                        
+                                <div class="answer">
+                                  <span>NO</span>
+                                  
+                                  <span class="undef">UNDEFINED</span>
+                                </div>
+                                <div class="answer">
+                                  <span>YES</span>
+                                  
+                                  <span>Usa una concha marina para pelear?</span>
+                                  <div class="question">
+                            
+                                    <div class="answer">
+                                      <span>NO</span>
+                                      
+                                      <span class="undef">UNDEFINED</span>
+                                    </div>
+                                    <div class="answer">
+                                      <span>YES</span>
+                                      
+                                      <span class="goal">Oshawott</span>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="answer">
+                      <span>YES</span>
+                      
+                      <span>Tiene diferencias físicas según su género?</span>
+                      <div class="question">
+                
+                        <div class="answer">
+                          <span>NO</span>
+                          
+                          <span>Puede mega-evolucionar?</span>
+                          <div class="question">
+                    
+                            <div class="answer">
+                              <span>NO</span>
+                              
+                              <span>Tiene forma regional de Alola?</span>
+                              <div class="question">
+                        
+                                <div class="answer">
+                                  <span>NO</span>
+                                  
+                                  <span>Es un perro Corgi?</span>
+                                  <div class="question">
+                            
+                                    <div class="answer">
+                                      <span>NO</span>
+                                      
+                                      <span class="undef">UNDEFINED</span>
+                                    </div>
+                                    <div class="answer">
+                                      <span>YES</span>
+                                      
+                                      <span class="goal">Yamper</span>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="answer">
+                                  <span>YES</span>
+                                  
+                                  <span>Tiene nueve colas?</span>
+                                  <div class="question">
+                            
+                                    <div class="answer">
+                                      <span>NO</span>
+                                      
+                                      <span class="undef">UNDEFINED</span>
+                                    </div>
+                                    <div class="answer">
+                                      <span>YES</span>
+                                      
+                                      <span class="goal">Vulpix</span>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="answer">
+                              <span>YES</span>
+                              
+                              <span>Tiene un cuerno en forma de media luna?</span>
+                              <div class="question">
+                        
+                                <div class="answer">
+                                  <span>NO</span>
+                                  
+                                  <span class="undef">UNDEFINED</span>
+                                </div>
+                                <div class="answer">
+                                  <span>YES</span>
+                                  
+                                  <span class="goal">Absol</span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="answer">
+                          <span>YES</span>
+                          
+                          <span>Es de tipo normal?</span>
+                          <div class="question">
+                    
+                            <div class="answer">
+                              <span>NO</span>
+                              
+                              <span>Es una nutria?</span>
+                              <div class="question">
+                        
+                                <div class="answer">
+                                  <span>NO</span>
+                                  
+                                  <span class="undef">UNDEFINED</span>
+                                </div>
+                                <div class="answer">
+                                  <span>YES</span>
+                                  
+                                  <span>Tiene un flotador en el cuello?</span>
+                                  <div class="question">
+                            
+                                    <div class="answer">
+                                      <span>NO</span>
+                                      
+                                      <span class="undef">UNDEFINED</span>
+                                    </div>
+                                    <div class="answer">
+                                      <span>YES</span>
+                                      
+                                      <span class="goal">Buizel</span>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="answer">
+                              <span>YES</span>
+                              
+                              <span>Tiene una forma dynamax especial?</span>
+                              <div class="question">
+                        
+                                <div class="answer">
+                                  <span>NO</span>
+                                  
+                                  <span>Es un castor</span>
+                                  <div class="question">
+                            
+                                    <div class="answer">
+                                      <span>NO</span>
+                                      
+                                      <span class="undef">UNDEFINED</span>
+                                    </div>
+                                    <div class="answer">
+                                      <span>YES</span>
+                                      
+                                      <span class="goal">Bidoof</span>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="answer">
+                                  <span>YES</span>
+                                  
+                                  <span>Evolcuiona en ocho formas distintas?</span>
+                                  <div class="question">
+                            
+                                    <div class="answer">
+                                      <span>NO</span>
+                                      
+                                      <span class="undef">UNDEFINED</span>
+                                    </div>
+                                    <div class="answer">
+                                      <span>YES</span>
+                                      
+                                      <span class="goal">Eevee</span>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="answer">
+              <span>YES</span>
+              
+              <span>Es de tipo eléctrico?</span>
+              <div class="question">
+        
+                <div class="answer">
+                  <span>NO</span>
+                  
+                  <span>Es originario de la región de Johto?</span>
+                  <div class="question">
+            
+                    <div class="answer">
+                      <span>NO</span>
+                      
+                      <span>Tiene otras variantes según la región?</span>
+                      <div class="question">
+                
+                        <div class="answer">
+                          <span>NO</span>
+                          
+                          <span>Existe únicamente como hembra?</span>
+                          <div class="question">
+                    
+                            <div class="answer">
+                              <span>NO</span>
+                              
+                              <span>Es un canino?</span>
+                              <div class="question">
+                        
+                                <div class="answer">
+                                  <span>NO</span>
+                                  
+                                  <span class="undef">UNDEFINED</span>
+                                </div>
+                                <div class="answer">
+                                  <span>YES</span>
+                                  
+                                  <span>Evolcuiona según la posición del sol?</span>
+                                  <div class="question">
+                            
+                                    <div class="answer">
+                                      <span>NO</span>
+                                      
+                                      <span class="undef">UNDEFINED</span>
+                                    </div>
+                                    <div class="answer">
+                                      <span>YES</span>
+                                      
+                                      <span class="goal">Lycanroc</span>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="answer">
+                              <span>YES</span>
+                              
+                              <span>Parece que usa tacones o botas?</span>
+                              <div class="question">
+                        
+                                <div class="answer">
+                                  <span>NO</span>
+                                  
+                                  <span class="undef">UNDEFINED</span>
+                                </div>
+                                <div class="answer">
+                                  <span>YES</span>
+                                  
+                                  <span class="goal">Tsareena</span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="answer">
+                          <span>YES</span>
+                          
+                          <span>Es de tipo tierra?</span>
+                          <div class="question">
+                    
+                            <div class="answer">
+                              <span>NO</span>
+                              
+                              <span>Tiene pelo largo con una liga al final?</span>
+                              <div class="question">
+                        
+                                <div class="answer">
+                                  <span>NO</span>
+                                  
+                                  <span class="undef">UNDEFINED</span>
+                                </div>
+                                <div class="answer">
+                                  <span>YES</span>
+                                  
+                                  <span class="goal">Zoroark</span>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="answer">
+                              <span>YES</span>
+                              
+                              <span>Utiliza un hueso para atacar?</span>
+                              <div class="question">
+                        
+                                <div class="answer">
+                                  <span>NO</span>
+                                  
+                                  <span class="undef">UNDEFINED</span>
+                                </div>
+                                <div class="answer">
+                                  <span>YES</span>
+                                  
+                                  <span class="goal">Marowak</span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="answer">
+                      <span>YES</span>
+
+                      <span>Es mayormente de color azul?</span>
+                      <div class="question">
+                
+                        <div class="answer">
+                          <span>NO</span>
+                          
+                          <span>Evoluciona por la noche?</span>
+                          <div class="question">
+                    
+                            <div class="answer">
+                              <span>NO</span>
+                              
+                              <span class="undef">UNDEFINED</span>
+                            </div>
+                            <div class="answer">
+                              <span>YES</span>
+                              
+                              <span>Tiene anillos amarillos en su cuerpo?</span>
+                              <div class="question">
+                        
+                                <div class="answer">
+                                  <span>NO</span>
+                                  
+                                  <span class="undef">UNDEFINED</span>
+                                </div>
+                                <div class="answer">
+                                  <span>YES</span>
+                                  
+                                  <span class="goal">Umbreon</span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="answer">
+                          <span>YES</span>
+                          
+                          <span>Es un Pokémon inicial?</span>
+                          <div class="question">
+                    
+                            <div class="answer">
+                              <span>NO</span>
+                              
+                              <span>Tiene los labios pintados cuando es hembra?</span>
+                              <div class="question">
+                        
+                                <div class="answer">
+                                  <span>NO</span>
+                                  
+                                  <span class="undef">UNDEFINED</span>
+                                </div>
+                                <div class="answer">
+                                  <span>YES</span>
+                                  
+                                  <span>Es compinche del equipo Rocket?</span>
+                                  <div class="question">
+                            
+                                    <div class="answer">
+                                      <span>NO</span>
+                                      
+                                      <span class="undef">UNDEFINED</span>
+                                    </div>
+                                    <div class="answer">
+                                      <span>YES</span>
+                                      
+                                      <span class="goal">Wobbuffet</span>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="answer">
+                              <span>YES</span>
+                              
+                              <span>Es un cocodrilo?</span>
+                              <div class="question">
+                        
+                                <div class="answer">
+                                  <span>NO</span>
+                                  
+                                  <span class="undef">UNDEFINED</span>
+                                </div>
+                                <div class="answer">
+                                  <span>YES</span>
+                                  
+                                  <span>Tiene colmillos y garras grandes?</span>
+                                  <div class="question">
+                            
+                                    <div class="answer">
+                                      <span>NO</span>
+                                      
+                                      <span class="undef">UNDEFINED</span>
+                                    </div>
+                                    <div class="answer">
+                                      <span>YES</span>
+                                      
+                                      <span class="goal">Feraligatr</span>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="answer">
+                  <span>YES</span>
+                  
+                  <span>Es mayormente de color amarillo?</span>
+                  <div class="question">
+            
+                    <div class="answer">
+                      <span>NO</span>
+                      
+                      <span>Tiene aletas?</span>
+                      <div class="question">
+                
+                        <div class="answer">
+                          <span>NO</span>
+                          
+                          <span>Es una cebra?</span>
+                          <div class="question">
+                    
+                            <div class="answer">
+                              <span>NO</span>
+                              
+                              <span class="undef">UNDEFINED</span>
+                            </div>
+                            <div class="answer">
+                              <span>YES</span>
+                              
+                              <span class="goal">Zebstrika</span>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="answer">
+                          <span>YES</span>
+                          
+                          <span>Parece sanguijuela o anguila?</span>
+                          <div class="question">
+                    
+                            <div class="answer">
+                              <span>NO</span>
+                              
+                              <span class="undef">UNDEFINED</span>
+                            </div>
+                            <div class="answer">
+                              <span>YES</span>
+                              
+                              <span>Tiene brazos?</span>
+                              <div class="question">
+                        
+                                <div class="answer">
+                                  <span>NO</span>
+                                  
+                                  <span class="undef">UNDEFINED</span>
+                                </div>
+                                <div class="answer">
+                                  <span>YES</span>
+                                  
+                                  <span class="goal">Eelektross</span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="answer">
+                      <span>YES</span>
+                      
+                      <span>Tiene diferencias físicas según su género?</span>
+                      <div class="question">
+                
+                        <div class="answer">
+                          <span>NO</span>
+                          
+                          <span>Tiene una bombilla en la punta de la cola?</span>
+                          <div class="question">
+                    
+                            <div class="answer">
+                              <span>NO</span>
+                              
+                              <span class="undef">UNDEFINED</span>
+                            </div>
+                            <div class="answer">
+                              <span>YES</span>
+                              
+                              <span>Tiene anillos negros en el cuello?</span>
+                              <div class="question">
+                        
+                                <div class="answer">
+                                  <span>NO</span>
+                                  
+                                  <span class="undef">UNDEFINED</span>
+                                </div>
+                                <div class="answer">
+                                  <span>YES</span>
+                                  
+                                  <span class="goal">Ampharos</span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="answer">
+                          <span>YES</span>
+                          
+                          <span>Tiene forma regional de Alola?</span>
+                          <div class="question">
+                    
+                            <div class="answer">
+                              <span>NO</span>
+                              
+                              <span>Es el mejor amigo de Ash Ketchum?</span>
+                              <div class="question">
+                        
+                                <div class="answer">
+                                  <span>NO</span>
+                                  
+                                  <span class="undef">UNDEFINED</span>
+                                </div>
+                                <div class="answer">
+                                  <span>YES</span>
+                                  
+                                  <span class="goal">Pikachu</span>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="answer">
+                              <span>YES</span>
+                              
+                              <span>Puede surfear con su cola?</span>
+                              <div class="question">
+                        
+                                <div class="answer">
+                                  <span>NO</span>
+                                  
+                                  <span class="undef">UNDEFINED</span>
+                                </div>
+                                <div class="answer">
+                                  <span>YES</span>
+                                  
+                                  <span class="goal">Raichu</span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="answer">
+          <span>YES</span>
+
+          <span>Es evolución de otro Pokémon?</span>
+          <div class="question">
+    
+            <div class="answer">
+              <span>NO</span>
+              
+              <span>Puede volar o levitar?</span>
+              <div class="question">
+        
+                <div class="answer">
+                  <span>NO</span>
+                  
+                  <span>Es de tipo fantasma?</span>
+                  <div class="question">
+            
+                    <div class="answer">
+                      <span>NO</span>
+                      
+                      <span>Es un Pokémon mítico?</span>
+                      <div class="question">
+                
+                        <div class="answer">
+                          <span>NO</span>
+                          
+                          <span>Es mayormente de color rosa?</span>
+                          <div class="question">
+                    
+                            <div class="answer">
+                              <span>NO</span>
+                              
+                              <span>Es un erizo?</span>
+                              <div class="question">
+                        
+                                <div class="answer">
+                                  <span>NO</span>
+                                  
+                                  <span class="undef">UNDEFINED</span>
+                                </div>
+                                <div class="answer">
+                                  <span>YES</span>
+                                  
+                                  <span>Tiene mejillas amarillas?</span>
+                                  <div class="question">
+                            
+                                    <div class="answer">
+                                      <span>NO</span>
+                                      
+                                      <span class="undef">UNDEFINED</span>
+                                    </div>
+                                    <div class="answer">
+                                      <span>YES</span>
+                                      
+                                      <span class="goal">Togedemaru</span>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="answer">
+                              <span>YES</span>
+                              
+                              <span>Es un duende?</span>
+                              <div class="question">
+                        
+                                <div class="answer">
+                                  <span>NO</span>
+                                  
+                                  <span class="undef">UNDEFINED</span>
+                                </div>
+                                <div class="answer">
+                                  <span>YES</span>
+                                  
+                                  <span>Tiene la lengua de fuera?</span>
+                                  <div class="question">
+                            
+                                    <div class="answer">
+                                      <span>NO</span>
+                                      
+                                      <span class="undef">UNDEFINED</span>
+                                    </div>
+                                    <div class="answer">
+                                      <span>YES</span>
+                                      
+                                      <span class="goal">Impidimp</span>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="answer">
+                          <span>YES</span>
+                          
+                          <span>Tiene una V roja en la frente?</span>
+                          <div class="question">
+                    
+                            <div class="answer">
+                              <span>NO</span>
+                              
+                              <span class="undef">UNDEFINED</span>
+                            </div>
+                            <div class="answer">
+                              <span>YES</span>
+                              
+                              <span>Se conoce como el Pokémon victoria?</span>
+                              <div class="question">
+                        
+                                <div class="answer">
+                                  <span>NO</span>
+                                  
+                                  <span class="undef">UNDEFINED</span>
+                                </div>
+                                <div class="answer">
+                                  <span>YES</span>
+                                  
+                                  <span class="goal">Victini</span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="answer">
+                      <span>YES</span>
+                      
+                      <span>Es mayormente de color amarillo?</span>
+                      <div class="question">
+                
+                        <div class="answer">
+                          <span>NO</span>
+                          
+                          <span>Tiene ojos de gema?</span>
+                          <div class="question">
+                    
+                            <div class="answer">
+                              <span>NO</span>
+                              
+                              <span class="undef">UNDEFINED</span>
+                            </div>
+                            <div class="answer">
+                              <span>YES</span>
+                              
+                              <span class="goal">Sableye</span>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="answer">
+                          <span>YES</span>
+                          
+                          <span>Trata de imitar a Pikachu?</span>
+                          <div class="question">
+                    
+                            <div class="answer">
+                              <span>NO</span>
+                              
+                              <span class="undef">UNDEFINED</span>
+                            </div>
+                            <div class="answer">
+                              <span>YES</span>
+                              
+                              <span class="goal">Mimikyu</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="answer">
+                  <span>YES</span>
+                  
+                  <span>Tiene forma animal?</span>
+                  <div class="question">
+            
+                    <div class="answer">
+                      <span>NO</span>
+                      
+                      <span>Es de tipo fantasma?</span>
+                      <div class="question">
+                
+                        <div class="answer">
+                          <span>NO</span>
+                          
+                          <span>Tiene forma de llaves?</span>
+                          <div class="question">
+                    
+                            <div class="answer">
+                              <span>NO</span>
+                              
+                              <span class="undef">UNDEFINED</span>
+                            </div>
+                            <div class="answer">
+                              <span>YES</span>
+                              
+                              <span class="goal">Klefki</span>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="answer">
+                          <span>YES</span>
+                          
+                          <span>Es un Pokémon mítico?</span>
+                          <div class="question">
+                    
+                            <div class="answer">
+                              <span>NO</span>
+                              
+                              <span>Puede convertirse en electrodomésticos?</span>
+                              <div class="question">
+                        
+                                <div class="answer">
+                                  <span>NO</span>
+                                  
+                                  <span class="undef">UNDEFINED</span>
+                                </div>
+                                <div class="answer">
+                                  <span>YES</span>
+                                  
+                                  <span class="goal">Rotom</span>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="answer">
+                              <span>YES</span>
+                              
+                              <span>Hipnotiza a las personas con mochis?</span>
+                              <div class="question">
+                        
+                                <div class="answer">
+                                  <span>NO</span>
+                                  
+                                  <span class="undef">UNDEFINED</span>
+                                </div>
+                                <div class="answer">
+                                  <span>YES</span>
+                                  
+                                  <span class="goal">Pecharunt</span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="answer">
+                      <span>YES</span>
+                      
+                      <span>Tiene alas?</span>
+                      <div class="question">
+                
+                        <div class="answer">
+                          <span>NO</span>
+                          
+                          <span>Es un calamar?</span>
+                          <div class="question">
+                    
+                            <div class="answer">
+                              <span>NO</span>
+                              
+                              <span class="undef">UNDEFINED</span>
+                            </div>
+                            <div class="answer">
+                              <span>YES</span>
+                              
+                              <span>Evoluciona cuando está de cabeza?</span>
+                              <div class="question">
+                        
+                                <div class="answer">
+                                  <span>NO</span>
+                                  
+                                  <span class="undef">UNDEFINED</span>
+                                </div>
+                                <div class="answer">
+                                  <span>YES</span>
+                                  
+                                  <span class="goal">Inkay</span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="answer">
+                          <span>YES</span>
+                          
+                          <span>Es mayormente de color rosa?</span>
+                          <div class="question">
+                    
+                            <div class="answer">
+                              <span>NO</span>
+                              
+                              <span>Parece luchador de lucha libre?</span>
+                              <div class="question">
+                        
+                                <div class="answer">
+                                  <span>NO</span>
+                                  
+                                  <span class="undef">UNDEFINED</span>
+                                </div>
+                                <div class="answer">
+                                  <span>YES</span>
+                                  
+                                  <span class="goal">Hawlucha</span>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="answer">
+                              <span>YES</span>
+                              
+                              <span>Es un flamenco?</span>
+                              <div class="question">
+                        
+                                <div class="answer">
+                                  <span>NO</span>
+                                  
+                                  <span class="undef">UNDEFINED</span>
+                                </div>
+                                <div class="answer">
+                                  <span>YES</span>
+                                  
+                                  <span class="goal">Flamigo</span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="answer">
+              <span>YES</span>
+    
+              <span>Puede volar o levitar?</span>
+              <div class="question">
+        
+                <div class="answer">
+                  <span>NO</span>
+                  
+                  <span>Puede mega-evolucionar o tiene dynamax especial</span>
+                  <div class="question">
+            
+                    <div class="answer">
+                      <span>NO</span>
+                      
+                      <span>Es originario de la región de Paldea?</span>
+                      <div class="question">
+                
+                        <div class="answer">
+                          <span>NO</span>
+                          
+                          <span>Es originario de la región de Kalos?</span>
+                          <div class="question">
+                    
+                            <div class="answer">
+                              <span>NO</span>
+                              
+                              <span>Es originario de la región de Sinnoh?</span>
+                              <div class="question">
+                        
+                                <div class="answer">
+                                  <span>NO</span>
+                                  
+                                  <span>Es un oso?</span>
+                                  <div class="question">
+                            
+                                    <div class="answer">
+                                      <span>NO</span>
+                                      
+                                      <span class="undef">UNDEFINED</span>
+                                    </div>
+                                    <div class="answer">
+                                      <span>YES</span>
+                                      
+                                      <span>Tiene una fuerza descomunal?</span>
+                                      <div class="question">
+                                
+                                        <div class="answer">
+                                          <span>NO</span>
+                                          
+                                          <span class="undef">UNDEFINED</span>
+                                        </div>
+                                        <div class="answer">
+                                          <span>YES</span>
+                                          
+                                          <span class="goal">Bewear</span>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="answer">
+                                  <span>YES</span>
+                                  
+                                  <span>Usa sus grandes garras para escalar?</span>
+                                  <div class="question">
+                            
+                                    <div class="answer">
+                                      <span>NO</span>
+                                      
+                                      <span class="undef">UNDEFINED</span>
+                                    </div>
+                                    <div class="answer">
+                                      <span>YES</span>
+                                      
+                                      <span class="goal">Weavile</span>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="answer">
+                              <span>YES</span>
+                              
+                              <span>Es un Pokémon inicial?</span>
+                              <div class="question">
+                        
+                                <div class="answer">
+                                  <span>NO</span>
+                                  
+                                  <span>Tiene diferencia de género?</span>
+                                  <div class="question">
+                            
+                                    <div class="answer">
+                                      <span>NO</span>
+                                      
+                                      <span class="undef">UNDEFINED</span>
+                                    </div>
+                                    <div class="answer">
+                                      <span>YES</span>
+                                      
+                                      <span>Tiene melena si es macho, o cresta si es hembra?</span>
+                                      <div class="question">
+                                
+                                        <div class="answer">
+                                          <span>NO</span>
+                                          
+                                          <span class="undef">UNDEFINED</span>
+                                        </div>
+                                        <div class="answer">
+                                          <span>YES</span>
+                                          
+                                          <span class="goal">Pyroar</span>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="answer">
+                                  <span>YES</span>
+                                  
+                                  <span>Usa su propia lengua como bufanda?</span>
+                                  <div class="question">
+                            
+                                    <div class="answer">
+                                      <span>NO</span>
+                                      
+                                      <span class="undef">UNDEFINED</span>
+                                    </div>
+                                    <div class="answer">
+                                      <span>YES</span>
+                                      
+                                      <span class="goal">Greninja</span>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="answer">
+                          <span>YES</span>
+                          
+                          <span>Es un Pokémon inicial?</span>
+                          <div class="question">
+                    
+                            <div class="answer">
+                              <span>NO</span>
+                              
+                              <span>Utiliza un gran martillo para atacar?</span>
+                              <div class="question">
+                        
+                                <div class="answer">
+                                  <span>NO</span>
+                                  
+                                  <span class="undef">UNDEFINED</span>
+                                </div>
+                                <div class="answer">
+                                  <span>YES</span>
+                                  
+                                  <span class="goal">Tinkaton</span>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="answer">
+                              <span>YES</span>
+                              
+                              <span>Se mueve en dos patas?</span>
+                              <div class="question">
+                        
+                                <div class="answer">
+                                  <span>NO</span>
+                                  
+                                  <span>Tiene un ave de fuego en la nariz?</span>
+                                  <div class="question">
+                            
+                                    <div class="answer">
+                                      <span>NO</span>
+                                      
+                                      <span class="undef">UNDEFINED</span>
+                                    </div>
+                                    <div class="answer">
+                                      <span>YES</span>
+                                      
+                                      <span class="goal">Skeledirge</span>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="answer">
+                                  <span>YES</span>
+                                  
+                                  <span>Tiene un gran antifaz oscuro?</span>
+                                  <div class="question">
+                            
+                                    <div class="answer">
+                                      <span>NO</span>
+                                      
+                                      <span class="undef">UNDEFINED</span>
+                                    </div>
+                                    <div class="answer">
+                                      <span>YES</span>
+                                      
+                                      <span class="goal">Meowscarada</span>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="answer">
+                      <span>YES</span>
+                      
+                      <span>Es originario de la región de Sinnoh?</span>
+                      <div class="question">
+                
+                        <div class="answer">
+                          <span>NO</span>
+
+                          <span>Es mayormente de color rosa?</span>
+                          <div class="question">
+                    
+                            <div class="answer">
+                              <span>NO</span>
+                              
+                              <span>Tiene un vestido blanco largo?</span>
+                              <div class="question">
+                        
+                                <div class="answer">
+                                  <span>NO</span>
+                                  
+                                  <span class="undef">UNDEFINED</span>
+                                </div>
+                                <div class="answer">
+                                  <span>YES</span>
+                                  
+                                  <span>Tiene una protuberancia rosa en el pecho?</span>
+                                  <div class="question">
+                            
+                                    <div class="answer">
+                                      <span>NO</span>
+                                      
+                                      <span class="undef">UNDEFINED</span>
+                                    </div>
+                                    <div class="answer">
+                                      <span>YES</span>
+
+                                      <span class="goal">Gardevoir</span>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="answer">
+                              <span>YES</span>
+                              
+                              <span>Tiene un sombrero de bruja?</span>
+                              <div class="question">
+                        
+                                <div class="answer">
+                                  <span>NO</span>
+                                  
+                                  <span class="undef">UNDEFINED</span>
+                                </div>
+                                <div class="answer">
+                                  <span>YES</span>
+                                  
+                                  <span class="goal">Hatterene</span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="answer">
+                          <span>YES</span>
+                          
+                          <span>Es mayormente de color blanco?</span>
+                          <div class="question">
+                    
+                            <div class="answer">
+                              <span>NO</span>
+                              
+                              <span>Tiene un pincho en el pecho y las manos?</span>
+                              <div class="question">
+                        
+                                <div class="answer">
+                                  <span>NO</span>
+                                  
+                                  <span class="undef">UNDEFINED</span>
+                                </div>
+                                <div class="answer">
+                                  <span>YES</span>
+                                  
+                                  <span class="goal">Lucario</span>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="answer">
+                              <span>YES</span>
+                              
+                              <span>Tiene las manos, pies y cola de color verde?</span>
+                              <div class="question">
+                        
+                                <div class="answer">
+                                  <span>NO</span>
+                                  
+                                  <span class="undef">UNDEFINED</span>
+                                </div>
+                                <div class="answer">
+                                  <span>YES</span>
+                                  
+                                  <span>Representa a un pino nevado?</span>
+                                  <div class="question">
+                            
+                                    <div class="answer">
+                                      <span>NO</span>
+                                      
+                                      <span class="undef">UNDEFINED</span>
+                                    </div>
+                                    <div class="answer">
+                                      <span>YES</span>
+                                      
+                                      <span class="goal">Abomasnow</span>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="answer">
+                  <span>YES</span>
+                  
+                  <span>Puede mega-evolucionar?</span>
+                  <div class="question">
+            
+                    <div class="answer">
+                      <span>NO</span>
+                      
+                      <span>Es de tipo fantasma?</span>
+                      <div class="question">
+                
+                        <div class="answer">
+                          <span>NO</span>
+                          
+                          <span>Es mayormente de color rojo?</span>
+                          <div class="question">
+                    
+                            <div class="answer">
+                              <span>NO</span>
+                              
+                              <span>Es un dragón?</span>
+                              <div class="question">
+                        
+                                <div class="answer">
+                                  <span>NO</span>
+                                  
+                                  <span class="undef">UNDEFINED</span>
+                                </div>
+                                <div class="answer">
+                                  <span>YES</span>
+                                  
+                                  <span>Tiene tres cabezas?</span>
+                                  <div class="question">
+                            
+                                    <div class="answer">
+                                      <span>NO</span>
+                                      
+                                      <span class="undef">UNDEFINED</span>
+                                    </div>
+                                    <div class="answer">
+                                      <span>YES</span>
+                                      
+                                      <span class="goal">Hydreigon</span>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="answer">
+                              <span>YES</span>
+                              
+                              <span>Es un águila?</span>
+                              <div class="question">
+                        
+                                <div class="answer">
+                                  <span>NO</span>
+                                  
+                                  <span class="undef">UNDEFINED</span>
+                                </div>
+                                <div class="answer">
+                                  <span>YES</span>
+                                  
+                                  <span>Tiene puntos rojos por el cuerpo y las alas?</span>
+                                  <div class="question">
+                            
+                                    <div class="answer">
+                                      <span>NO</span>
+                                      
+                                      <span class="undef">UNDEFINED</span>
+                                    </div>
+                                    <div class="answer">
+                                      <span>YES</span>
+                                      
+                                      <span class="goal">Talonflame</span>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="answer">
+                          <span>YES</span>
+                          
+                          <span>Es un Pokémon legendario?</span>
+                          <div class="question">
+                    
+                            <div class="answer">
+                              <span>NO</span>
+                              
+                              <span>Siempre es hembra?</span>
+                              <div class="question">
+                        
+                                <div class="answer">
+                                  <span>NO</span>
+                                  
+                                  <span class="undef">UNDEFINED</span>
+                                </div>
+                                <div class="answer">
+                                  <span>YES</span>
+                                  
+                                  <span>Tiene un par de cuernos de hielo?</span>
+                                  <div class="question">
+                            
+                                    <div class="answer">
+                                      <span>NO</span>
+                                      
+                                      <span class="undef">UNDEFINED</span>
+                                    </div>
+                                    <div class="answer">
+                                      <span>YES</span>
+                                      
+                                      <span class="goal">Froslass</span>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="answer">
+                              <span>YES</span>
+                              
+                              <span>Simboliza a la luna?</span>
+                              <div class="question">
+                        
+                                <div class="answer">
+                                  <span>NO</span>
+                                  
+                                  <span class="undef">UNDEFINED</span>
+                                </div>
+                                <div class="answer">
+                                  <span>YES</span>
+                                  
+                                  <span class="goal">Lunala</span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="answer">
+                      <span>YES</span>
+                      
+                      <span>Es mayormente de color azul?</span>
+                      <div class="question">
+                
+                        <div class="answer">
+                          <span>NO</span>
+                          
+                          <span>Es mayormente de color rojo?</span>
+                          <div class="question">
+                    
+                            <div class="answer">
+                              <span>NO</span>
+                              
+                              <span>Es un fantasma?</span>
+                              <div class="question">
+                        
+                                <div class="answer">
+                                  <span>NO</span>
+                                  
+                                  <span class="undef">UNDEFINED</span>
+                                </div>
+                                <div class="answer">
+                                  <span>YES</span>
+                                  
+                                  <span>Tiene una sonrisa burlona?</span>
+                                  <div class="question">
+                            
+                                    <div class="answer">
+                                      <span>NO</span>
+                                      
+                                      <span class="undef">UNDEFINED</span>
+                                    </div>
+                                    <div class="answer">
+                                      <span>YES</span>
+                                      
+                                      <span class="goal">Gengar</span>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="answer">
+                              <span>YES</span>
+                              
+                              <span>Es un dragón?</span>
+                              <div class="question">
+                        
+                                <div class="answer">
+                                  <span>NO</span>
+                                  
+                                  <span class="undef">UNDEFINED</span>
+                                </div>
+                                <div class="answer">
+                                  <span>YES</span>
+                                  
+                                  <span>Tiene una llama en la punta de la cola?</span>
+                                  <div class="question">
+                            
+                                    <div class="answer">
+                                      <span>NO</span>
+                                      
+                                      <span class="undef">UNDEFINED</span>
+                                    </div>
+                                    <div class="answer">
+                                      <span>YES</span>
+                                      
+                                      <span class="goal">Charizard</span>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="answer">
+                          <span>YES</span>
+                          
+                          <span>Es originario de la región de Hoenn?</span>
+                          <div class="question">
+                    
+                            <div class="answer">
+                              <span>NO</span>
+                              
+                              <span>Parece un tiburón martillo?</span>
+                              <div class="question">
+                        
+                                <div class="answer">
+                                  <span>NO</span>
+                                  
+                                  <span class="undef">UNDEFINED</span>
+                                </div>
+                                <div class="answer">
+                                  <span>YES</span>
+                                  
+                                  <span class="goal">Garchomp</span>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="answer">
+                              <span>YES</span>
+                              
+                              <span>Tiene alas?</span>
+                              <div class="question">
+                        
+                                <div class="answer">
+                                  <span>NO</span>
+                                  
+                                  <span>Tiene una X en el rostro?</span>
+                                  <div class="question">
+                            
+                                    <div class="answer">
+                                      <span>NO</span>
+                                      
+                                      <span class="undef">UNDEFINED</span>
+                                    </div>
+                                    <div class="answer">
+                                      <span>YES</span>
+                                      
+                                      <span class="goal">Metagross</span>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="answer">
+                                  <span>YES</span>
+                                  
+                                  <span>Tiene alas en forma de nubes?</span>
+                                  <div class="question">
+                            
+                                    <div class="answer">
+                                      <span>NO</span>
+                                      
+                                      <span class="undef">UNDEFINED</span>
+                                    </div>
+                                    <div class="answer">
+                                      <span>YES</span>
+                                      
+                                      <span class="goal">Altaria</span>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const containerEl = document.getElementById("container");
+      /** @type HTMLCanvasElement */
+      const canvasEl = document.getElementById("canvas");
+      /** @type CanvasRenderingContext2D */
+      const ctx = canvasEl?.getContext?.("2d");
+
+      // ################################################## DRAW FUNCTION
+      function draw() {
+        ctx.reset();
+        ctx.lineWidth = 2;
+        ctx.strokeStyle = "#ff0000";
+
+        canvasEl.width = containerEl.offsetWidth;
+        canvasEl.height = containerEl.offsetHeight;
+
+        const arr = document.querySelectorAll("div.question");
+        arr.forEach((question) => {
+          const cx = question.offsetLeft + question.offsetWidth / 2;
+          const cy = question.offsetTop;
+          
+          question.childNodes.forEach((child, index) => {
+            if (child.nodeName === "#text") return;
+
+            if (ctx.strokeStyle === "#ff0000") ctx.strokeStyle = "#00ff00";
+            else ctx.strokeStyle = "#ff0000";
+
+            const rx = child.offsetLeft + child.offsetWidth / 2;
+            const ry = child.offsetTop;
+            
+            ctx.beginPath();
+            ctx.moveTo(cx, cy);
+            ctx.lineTo(rx, ry);
+            ctx.stroke();
+          })
+        });
+      }
+      
+      // ################################################## START DRAW
+      document.addEventListener("DOMContentLoaded", draw);
+    </script>
+  </body>
+</html>
