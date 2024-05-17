@@ -595,6 +595,8 @@ function reset() {
   chartSize.y = parseInt(inp_y.value) || 4;
   cont.style.width = chartSize.x * 100 + "px";
   cont.style.height = chartSize.y * 100 + "px";
+  cont.style.setProperty("--chart-w", cont.style.width);
+  cont.style.setProperty("--chart-h", cont.style.height);
   emptyCoords.x = exterior.x = chartSize.x;
   emptyCoords.y = exterior.y = chartSize.y - 1;
   playing = auto = false;
@@ -621,6 +623,7 @@ function block(disabled) {
   consecutive_el.disabled = disabled;
   previewBtn.disabled = disabled;
   stat.textContent = generating ? "Loading..." : "Playing...";
+  gen.classList.remove("start-point");
   if (disabled) return reset();
   // UN-BLOCK, volver a activar todo por primera vez
   playing = true;
@@ -628,6 +631,7 @@ function block(disabled) {
   setConsecutive(consecutive_el.checked);
   prevlog = structuredClone(coords);
   timer.restart();
+  gen.classList.remove("levitate", "pulse");
 }
 
 // ---------------------------------------------------------------------- GEN START
@@ -663,7 +667,7 @@ async function genStart() {
   preview.style.width = xx + "px";
   preview.style.height = yy + "px";
   preview.style.backgroundSize = `${xx}px ${yy}px`;
-  cont.replaceChildren();
+  cont.replaceChildren(document.querySelector("#chart > div.container"));
   const max = chartSize.x * chartSize.y;
   pieces.length = coords.length = positions.length = 0;
   pieces.length = coords.length = max;
@@ -693,6 +697,7 @@ async function genStart() {
 function won() {
   playing = false;
   timer.stop();
+  gen.classList.add("levitate", "pulse");
   setConsecutive(consecutive_el.checked);
 }
 // #endregion
@@ -740,19 +745,23 @@ function updatePiece(index) {
   const chartCoords = parseCoords(index);
   const coord = coords[index] || chartCoords;
 
-  piece.src = url;
   piece.className = "piece";
   piece.style.top = coord.y * 100 + "px";
   piece.style.left = coord.x * 100 + "px";
-  piece.style.backgroundImage = `url(${url})`;
-  piece.style.backgroundPositionX = `-${chartCoords.x * 100}px`;
-  piece.style.backgroundPositionY = `-${chartCoords.y * 100}px`;
-  piece.style.backgroundSize = `${chartSize.x * 100}px ${chartSize.y * 100}px`;
+
+  /** @type HTMLDivElement */
+  const img = piece.firstChild || document.createElement("div");
+  img.className = "img";
+  img.style.backgroundImage = `url(${url})`;
+  img.style.backgroundPositionX = `-${chartCoords.x * 100}px`;
+  img.style.backgroundPositionY = `-${chartCoords.y * 100}px`;
+  img.style.backgroundSize = `${chartSize.x * 100}px ${chartSize.y * 100}px`;
 
   if (!pieces[index]) {
     pieces[index] = piece;
     coords[index] = coord;
     cont.appendChild(piece);
+    piece.appendChild(img);
   }
 }
 

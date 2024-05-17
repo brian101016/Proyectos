@@ -74,6 +74,10 @@ html {
   --col-down-1: color-mix(in srgb, var(--col-down) 66%, var(--bg));
   --col-down-2: color-mix(in srgb, var(--col-down) 33%, var(--bg));
 
+  /* ---------------------------------------------------------------------- CONTRAST COLORS */
+  --contrast-light: hsl(from var(--col-up) h calc(s + 0.15) calc(l + 0.25));
+  --contrast-dark: hsl(from var(--col-up) h s clamp(0.1, calc(l - 0.2), 0.9));
+
   min-height: 100dvh;
   transition: --col-up 1s ease-in, --col-down 1s ease-in, --bg 1s ease-in;
 
@@ -142,6 +146,7 @@ html {
   background-color: var(--bg);
   background-repeat: repeat-x;
   background-position-x: 0%;
+  background-attachment: fixed;
 
   /* ---------------------------------------------------------------------- BACKGROUND ANIMATIONS */
   /* prettier-ignore */
@@ -191,6 +196,7 @@ button {
 /* #endregion */
 
 /* #region ##################################################################################### CONTROLS CONTAINER */
+/* ---------------------------------------------------------------------- CONTROLS CONTAINER */
 #controls-container {
   position: absolute;
   padding: 0.75rem 1.25rem;
@@ -206,15 +212,19 @@ button {
   &.closed {
     translate: 0% -100%;
 
-    & #expand-menu > span {
-      transform: rotate(90deg);
+    & #expand-menu {
+      &:hover {
+        text-shadow: 3px -3px 9px #00000040, 3px -3px 0px #00000040;
+      }
+
+      & > span {
+        transform: rotate(90deg);
+      }
     }
   }
 
-  --color-light: hsl(from var(--col-up) h calc(s + 0.15) calc(l + 0.25));
-  --color-dark: hsl(from var(--col-up) h s clamp(0.1, calc(l - 0.2), 0.9));
-  color: var(--color-light);
-  background-color: var(--color-dark);
+  color: var(--contrast-light);
+  background-color: var(--contrast-dark);
 
   & input,
   & select,
@@ -234,115 +244,12 @@ button {
   }
 
   & select option {
-    color: var(--color-light);
-    background-color: var(--color-dark);
-  }
-}
-/* #endregion */
-
-/* #region ##################################################################################### CHART & PREVIEW */
-/* ---------------------------------------------------------------------- GENERAL STYLES */
-#chart,
-#preview {
-  border: 2px solid black;
-  position: relative;
-  min-height: 200px;
-  min-width: 200px;
-  max-height: 800px;
-  max-width: 800px;
-  margin: auto;
-  box-sizing: content-box;
-  aspect-ratio: 1/1;
-  box-shadow: -6px 6px black;
-}
-
-/* ---------------------------------------------------------------------- CHART::AFTER */
-#chart::after {
-  content: "";
-  display: block;
-  position: absolute;
-  width: 100px;
-  height: 100px;
-  bottom: -1.5px;
-  left: 100%;
-  border: 2px solid black;
-  box-sizing: content-box;
-  border-left: 0;
-  z-index: -1;
-}
-
-/* ---------------------------------------------------------------------- CHART > SPAN */
-#chart > span {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 25px;
-  font-family: system-ui;
-  font-weight: 500;
-  filter: drop-shadow(-4px 4px 1px #49494968);
-}
-/* #endregion */
-
-/* #region ##################################################################################### OTHER ELEMENTS */
-/* ---------------------------------------------------------------------- PIECE */
-.piece {
-  display: inline;
-  width: 100px;
-  height: 100px;
-  position: absolute;
-  aspect-ratio: 1/1;
-  transition: top 0.1s ease-in, left 0.1s ease-in;
-}
-
-/* ---------------------------------------------------------------------- START BUTTON */
-#gen {
-  --color: #ffe200;
-  position: absolute;
-  top: 20%;
-
-  font-size: 2rem;
-
-  background-image: linear-gradient(315deg, #e1be02, #ffe200);
-  text-shadow: 2px 2px 0px #959000;
-
-  &:active {
-    box-shadow: 1px 1px black, 5px 5px #959000 inset;
-    text-shadow: none;
-    animation: 1s pulse 0s 1 paused ease-out,
-      2s levitate 0s infinite alternate ease-in-out,
-      1s pulse -1s 2 running ease-out;
-    --color: #b9b200;
+    color: var(--contrast-light);
+    background-color: var(--contrast-dark);
   }
 }
 
-/* ---------------------------------------------------------------------- PREVIEW BUTTON */
-#preview-btn {
-  display: flex;
-  position: absolute;
-  width: 50px;
-  height: 50px;
-  top: -2px;
-  right: 100%;
-  margin: 25px;
-  /* border: 2px solid red; */
-  opacity: 0.75;
-  border-radius: 50%;
-  justify-content: center;
-  align-items: center;
-  font-size: 3rem;
-  background: none;
-  visibility: visible;
-}
-
-/* ---------------------------------------------------------------------- TIMER */
-#timer {
-  font-family: monospace;
-  font-size: 1.2rem;
-}
-
+/* ---------------------------------------------------------------------- EXPAND MENU */
 #expand-menu {
   position: absolute;
   font-size: 1.5rem;
@@ -354,6 +261,8 @@ button {
   padding: 0.3em 1.5em;
   padding-left: 0.75rem;
   user-select: none;
+  text-shadow: 0px 0px 0px #00000080, 0px 0px 0px #00000080;
+  transition: text-shadow 0.5s ease-in-out;
 
   & > span {
     display: block;
@@ -382,9 +291,206 @@ button {
   &:hover {
     cursor: pointer;
     /* background-color: red; */
-    text-shadow: 0px 0px 8px #00000080;
-    /* text-shadow: 3px 3px 0px #00000080; */
+    text-shadow: -3px 3px 9px #00000040, -3px 3px 0px #00000040;
   }
+}
+/* #endregion */
+
+/* #region ##################################################################################### CHART & PREVIEW */
+/* ---------------------------------------------------------------------- GENERAL STYLES */
+#chart,
+#preview {
+  border: 2px solid black;
+  position: relative;
+  min-height: 200px;
+  min-width: 200px;
+  max-height: 800px;
+  max-width: 800px;
+  margin: auto;
+  box-sizing: content-box;
+  aspect-ratio: 1/1;
+  box-shadow: inset 6px 6px 6px 0px #00000060, 6px 6px black;
+  z-index: 1;
+}
+
+/* ---------------------------------------------------------------------- CHART::AFTER */
+#chart::after {
+  content: "";
+  display: block;
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  bottom: -1.5px;
+  left: 100%;
+  border: 2px solid black;
+  box-sizing: content-box;
+  border-left: 0;
+  /* box-shadow: inset 0px 0px 10px 0px #00000080, 6px 6px 0px black; */
+  /* filter: brightness(0.85); */
+  background-size: 100% calc(100% + 4px);
+  box-shadow: 6px 6px 0px black;
+  /* box-shadow: inset 15px 0px 10px -15px #000000, 6px 6px 0px black; */
+  /* box-shadow: inset 0 0 15px -3px #227c9d, -6px 6px black; */
+  z-index: -2;
+}
+
+/* ---------------------------------------------------------------------- CONTAINER */
+.container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  z-index: 6;
+}
+/* #endregion */
+
+/* #region ##################################################################################### OTHER ELEMENTS */
+/* ---------------------------------------------------------------------- PIECE */
+.piece {
+  /* display: inline; */
+  width: 100px;
+  height: 100px;
+  position: absolute;
+  aspect-ratio: 1/1;
+  transition: top 0.1s ease-in, left 0.1s ease-in;
+  /* box-shadow: 6px 6px 6px 0px #00000060; */
+  /* z-index: 5; */
+  overflow: visible;
+
+  &::before {
+    content: "";
+    box-shadow: 6px 6px 6px 0px #00000060;
+    z-index: -1;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+
+  & > .img {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+/* ---------------------------------------------------------------------- PREVIEW BUTTON */
+#preview-btn {
+  display: flex;
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  top: -2px;
+  right: 100%;
+  margin: 25px;
+  /* border: 2px solid red; */
+  opacity: 0.75;
+  border-radius: 50%;
+  justify-content: center;
+  align-items: center;
+  font-size: 3rem;
+  background: none;
+  visibility: visible;
+}
+
+/* ---------------------------------------------------------------------- STATUS */
+#status {
+  position: absolute;
+  width: calc(100% - 4px);
+  font-size: 1.5rem;
+  font-family: monospace;
+  font-weight: 500;
+  color: white;
+  text-align: left;
+  padding: 0.25rem 0.75rem;
+  top: 100%;
+  left: calc(0% + 4px);
+  background-color: black;
+  /* filter: drop-shadow(-4px 4px 1px #49494968); */
+}
+
+/* ---------------------------------------------------------------------- START BUTTON */
+#gen {
+  --self-w: 172px;
+  --color: #ffe200;
+  /* --color: var(--contrast-dark); */
+  --c-2: #e6cb00;
+  /* --c-2: hsl(from var(--contrast-dark) h s clamp(0.1, calc(l - 0.01), 1)); */
+  --c-3: #b39e00;
+  /* --c-3: hsl(from var(--contrast-dark) h s clamp(0.1, calc(l - 0.03), 1)); */
+  --c-4: #998700;
+  /* --c-4: hsl(from var(--contrast-dark) h s clamp(0.1, calc(l - 0.04), 1)); */
+  position: fixed;
+
+  font-size: 2rem;
+  /* color: var(--contrast-light); */
+  color: black;
+
+  background-image: linear-gradient(315deg, var(--c-2), var(--color));
+  text-shadow: 2px 2px 0px var(--c-4);
+  transition: top 0.85s ease-in-out, left 0.85s ease-in-out;
+
+  --aux: calc(50% + (var(--chart-w) / 2));
+  left: calc(var(--aux) + (100% - var(--aux)) / 2 - (var(--self-w) / 2));
+
+  &:hover {
+    cursor: pointer;
+    filter: brightness(1.2);
+  }
+
+  &:active,
+  &:disabled {
+    box-shadow: 1px 1px black, 5px 5px var(--c-4) inset;
+    text-shadow: none;
+    --color: var(--c-3);
+  }
+
+  &:active {
+    animation: 1s pulse 0s 1 paused ease-out,
+      2s levitate -2s 1 alternate paused ease-in-out,
+      1s pulse -1s 2 running ease-out;
+
+    &.levitate {
+      animation: 1s pulse 0s 1 paused ease-out,
+        2s levitate 0s infinite alternate ease-in-out,
+        1s pulse -1s 2 running ease-out;
+    }
+  }
+
+  &:disabled {
+    cursor: wait;
+    filter: none;
+    animation: 1s pulse 0s 1 paused ease-out,
+      2s levitate -2s 0 alternate paused ease-in-out,
+      1s pulse -1s 0 paused ease-out;
+
+    &.levitate {
+      animation: 1s pulse 0s 1 paused ease-out,
+        2s levitate 0s infinite alternate ease-in-out,
+        1s pulse -1s 0 paused ease-out;
+    }
+  }
+
+  &.start-point {
+    left: calc(50% - var(--self-w) / 2);
+  }
+}
+
+/* ---------------------------------------------------------------------- TIMER */
+#timer {
+  font-family: monospace;
+  position: absolute;
+  background-color: black;
+  color: white;
+  font-weight: 600;
+  font-size: 1.5rem;
+  padding: 0.25rem 0.75rem;
+  top: 100%;
+  right: 0%;
 }
 /* #endregion */
 
@@ -399,7 +505,6 @@ button {
     #c0d6df 10px,
     #c0d6df 20px
   );
-  box-shadow: inset 0 0 15px -3px #227c9d, -6px 6px black;
 }
 
 /* ---------------------------------------------------------------------- REFLECTIVE */
@@ -462,7 +567,8 @@ button {
   translate: -4px -4px;
   box-shadow: 5px 5px black;
 
-  &:active {
+  &:active,
+  &:disabled {
     translate: 0px 0px;
     box-shadow: 1px 1px black;
   }

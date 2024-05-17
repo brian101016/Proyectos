@@ -3,12 +3,11 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Puzzle 1.5.3.2</title>
+    <title>Puzzle 1.5.3.3</title>
     <link rel="stylesheet" href="puzzle.css" />
   </head>
   <body>
-    <div id="controls-container">
-      <h2 id="status">Select chart size</h2>
+    <div id="controls-container" class="closed">
       <label for="size-x">Change chart size: x:</label>
       <input
         id="size-x"
@@ -48,8 +47,6 @@
         id="consecutive"
         title="Starts a new game after winning (3s)"
       />
-      <label>Timer:</label>
-      <span id="timer" class="timer"> 00:00:00.000 </span>
       <label for="color-theme">Paleta de colores:</label>
       <select id="color-theme"></select>
       <div id="expand-menu">
@@ -62,11 +59,16 @@
         <button id="preview-btn">?</button>
       </div>
 
-      <div id="chart" class="bg-filler">
-        <span> En espera... </span>
+      <div id="chart" class="bg-filler" style="width: 400px; height: 400px">
+        <!-- <h2 id="status">Select chart size</h2> -->
+        <div class="container">
+          <span id="status"> En espera... </span>
+          <span id="timer" class="timer"> 00:00:00.000 </span>
+          <button id="gen" class="in3d reflective levitate pulse start-point">
+            Start
+          </button>
+        </div>
       </div>
-
-      <button id="gen" class="in3d reflective levitate pulse">Start</button>
     </div>
 
     <script src="../Wold Global/scripts.js"></script>
