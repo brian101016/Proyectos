@@ -243,6 +243,12 @@ button {
     border: none;
   }
 
+  & input[type="range"] {
+    border: none;
+    padding: 0;
+    margin: 0;
+  }
+
   & select option {
     color: var(--contrast-light);
     background-color: var(--contrast-dark);
@@ -410,6 +416,7 @@ button {
   top: 100%;
   left: calc(0% + 4px);
   background-color: black;
+  white-space: pre-line;
   /* filter: drop-shadow(-4px 4px 1px #49494968); */
 }
 

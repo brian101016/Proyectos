@@ -62,7 +62,6 @@ const colors = {
   Pulparindo: { c1: "#594192", bg: "#ebebeb", c2: "#5fbbe7" },
   Clouds: { c1: "#fafafa", bg: "#1ec4d1", c2: "#fafafa" },
 };
-// Nombre: { c1: "white", bg: "gray", c2: "black" },
 
 // ---------------------------------------------------------------------- CONSTANTS
 const cont = document.getElementById("chart");
@@ -80,6 +79,7 @@ const consecutive_el = document.getElementById("consecutive");
 const color_theme = document.getElementById("color-theme");
 const controls_container = document.getElementById("controls-container");
 const expand_menu = document.getElementById("expand-menu");
+const speed_el = document.getElementById("speed");
 // #endregion
 
 // #region ##################################################################################### OBJECT LISTENERS
@@ -111,6 +111,11 @@ color_theme.onchange = (e) => {
 // ---------------------------------------------------------------------- EXPAND MENU
 expand_menu.onclick = () => {
   controls_container.classList.toggle("closed");
+};
+
+// ---------------------------------------------------------------------- SPEED
+speed_el.onchange = (e) => {
+  delay = parseInt(e.target.value);
 };
 
 // ---------------------------------------------------------------------- DOCUMENT CONTENT LOADED
@@ -228,7 +233,7 @@ function setConsecutive(value) {
   if (playing) return;
   if (!value) return (stat.textContent = "WIN!");
 
-  stat.textContent = "WIN! New one will start soon...";
+  stat.textContent = "WIN!\nNew one will start soon...";
   consecutive_num = setTimeout(genStart, 3000);
 }
 // #endregion

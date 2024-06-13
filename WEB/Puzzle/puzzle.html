@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Puzzle 1.5.3.3</title>
+    <title>Puzzle 1.5.3.4</title>
     <link rel="stylesheet" href="puzzle.css" />
   </head>
   <body>
@@ -49,6 +49,24 @@
       />
       <label for="color-theme">Paleta de colores:</label>
       <select id="color-theme"></select>
+      <label for="speed">Delay:</label>
+      <input
+        type="range"
+        name="speed"
+        id="speed"
+        min="0"
+        max="300"
+        step="15"
+        value="150"
+        list="speed-markers"
+      />
+      <datalist id="speed-markers">
+        <option value="0"></option>
+        <option value="75"></option>
+        <option value="150" label=">"></option>
+        <option value="225"></option>
+        <option value="300"></option>
+      </datalist>
       <div id="expand-menu">
         <span> ➤ </span>
       </div>
